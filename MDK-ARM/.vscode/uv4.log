@@ -1,3 +1,4 @@
 Load "GTrackModuleTest\\GTrackModuleTest.axf" 
-Erase Done.Programming Done.Verify OK.Application running ...
-Flash Load finished at 15:32:24
+ST-LINK USB communication error
+Error: Flash Download failed  -  Target DLL has been cancelled
+Flash Load finished at 15:46:41

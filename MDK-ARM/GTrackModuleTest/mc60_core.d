@@ -1,7 +1,7 @@
 gtrackmoduletest/mc60_core.o: \
   ..\Core\Src\peripheral\mc60\mc60_core\mc60_core.c \
   ..\Core\Src\peripheral\mc60\mc60_core\mc60_core.h \
-  C:\Keil_v5\ARM\ARMCLANG\Bin\..\include\stdbool.h ..\Core\Inc\main.h \
+  C:\Keil_v5\ARM\ARMCLANG\Bin\..\include\stdbool.h \
   ..\Drivers\STM32F0xx_HAL_Driver\Inc\stm32f0xx_hal.h \
   ..\Core\Inc\stm32f0xx_hal_conf.h \
   ..\Drivers\STM32F0xx_HAL_Driver\Inc\stm32f0xx_hal_rcc.h \
@@ -34,5 +34,6 @@ gtrackmoduletest/mc60_core.o: \
   ..\Drivers\STM32F0xx_HAL_Driver\Inc\stm32f0xx_hal_uart.h \
   ..\Drivers\STM32F0xx_HAL_Driver\Inc\stm32f0xx_hal_uart_ex.h \
   ..\Core\Src\peripheral\mc60\mc60_core\..\..\..\application\usart\usart_app.h \
-  ..\Core\Inc\usart.h ..\Core\Inc\..\Src\application\usart\fifo_app.h \
+  ..\Core\Inc\usart.h ..\Core\Inc\main.h \
+  ..\Core\Inc\..\Src\application\usart\fifo_app.h \
   ..\Core\Src\peripheral\mc60\mc60_core\..\..\..\application\usart\fifo_app.h
