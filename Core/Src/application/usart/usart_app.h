@@ -4,7 +4,9 @@
 #include <stdbool.h>
 #include "stm32f0xx_hal.h"
 #include "usart.h"
+#include "tim.h"
 #include "fifo_app.h"
+#include "../signal/signal_app.h"
 
 #define APP_CHAR_LF     0x0A
 
@@ -24,6 +26,8 @@ void APP_UART_OutChar(UART_HandleTypeDef* huart, char data);
 void APP_UART_OutString(UART_HandleTypeDef* huart, const char* str);
 /* Truyền toàn bộ ký tự trong FIFO */
 void APP_UART_FIFO_Flush(UART_HandleTypeDef* huart);
+void APP_UART_FlushToUART_Char(UART_HandleTypeDef* huart_transmit, UART_HandleTypeDef* huart_receive);
+void APP_UART_FlushToUART_String(UART_HandleTypeDef* huart_transmit, UART_HandleTypeDef* huart_receive);
 
 /* Kiểm tra con trỏ Get và Put, nếu bằng nhau thì FIFO trống */
 bool APP_UART_FIFO_isEmpty(UART_HandleTypeDef* huart);

@@ -18,6 +18,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "tim.h"
 #include "usart.h"
 #include "gpio.h"
 
@@ -47,7 +48,12 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
+bool MC60_PowerOff_Request = 0;
+bool MC60_PowerOff_Status = 0;
 
+bool STM32_SLEEP_Request = 0;
+bool STM32_SLEEP_Status = 0;
+bool STM32_WAKEUP_Request = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -58,7 +64,16 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+// void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef* htim) {
+//   MC60_PowerOff_Request = 1;
+//   if(STM32_SLEEP_Status) {
+//     STM32_WAKEUP_Request = 1;
+//     HAL_ResumeTick();
+//   }
+//   else {
+//     STM32_SLEEP_Request = 1;
+//   }
+// }
 
 /* USER CODE END 0 */
 
@@ -78,7 +93,11 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
+  APP_UART_Init(huart_terminal, 63);
+  APP_UART_Init(huart_mc60, 300);
 
+  MC60_Init(huart_mc60);
+	
   /* USER CODE END Init */
 
   /* Configure the system clock */
@@ -92,45 +111,69 @@ int main(void)
   MX_GPIO_Init();
   MX_USART1_UART_Init();
   MX_USART3_UART_Init();
+  MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
-  APP_UART_Init(huart_terminal, 63);
-  APP_UART_Init(huart_mc60, 63);
 
-  MC60_Init(huart_mc60);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  __HAL_TIM_CLEAR_FLAG(&htim3, TIM_SR_UIF);   // Prevent interrupt triggered immediately after calling HAL_TIM_Base_Start_IT()
+  HAL_TIM_Base_Start_IT(&htim3);
+
   APP_UART_StartReceive(huart_terminal);
   APP_UART_StartReceive(huart_mc60);
 
+  APP_UART_OutString(huart_terminal, "------ Power on MC60 ------\n");
   MC60_PowerOn();
+  //HAL_GPIO_WritePin(GNSS_EN_GPIO_Port, GNSS_EN_Pin, 1);
+  APP_UART_OutString(huart_terminal, "------ Check MC60 status ------\n");
+  MC60_ATCommand_Execute("AT");
+  HAL_Delay(6000);
+  APP_UART_FlushToUART_String(huart_terminal, huart_mc60);
+  MC60_PowerOff_Status = 0;
+  
+  APP_UART_OutString(huart_terminal, "------ Power on GNSS ------\n");
   MC60_GNSS_Power_On(1);
 
-  while (1)
-  {
+  while (1) {
     /* USER CODE END WHILE */
-
     /* USER CODE BEGIN 3 */
     /* Receive command from Terminal and send to MC60 */
-    if(!APP_UART_FIFO_isEmpty(huart_terminal)) {
+    if (!APP_UART_FIFO_isEmpty(huart_terminal)) {
       char data = APP_UART_InChar(huart_terminal);
-      switch (data)
-      {
+      switch (data) {
       case '!':
-        MC60_GNSS_ReferenceLocation_Read();
+        APP_UART_OutString(huart_terminal, "------ Power On ------\n");
+        __HAL_TIM_SetCounter(&htim3, 0);
+        MC60_PowerOn();
+        MC60_ATCommand_Execute("AT");
+        MC60_PowerOff_Status = 0;
         break;
-      
+
       case '@':
-        MC60_GNSS_EPO_SetEnable(1);
+        HAL_GPIO_WritePin(MC60_PWRKEY_GPIO_Port, MC60_PWRKEY_Pin, 0);
         break;
-      
+
       case '#':
-        MC60_GNSS_EPO_Trigger();
+        HAL_GPIO_WritePin(MC60_PWRKEY_GPIO_Port, MC60_PWRKEY_Pin, 1);
+        break;
+
+      case '^':
+        APP_UART_OutString(huart_terminal, "------ Power Off ------\n");
+        MC60_PowerOff();
         break;
 
       case '*':
         NVIC_SystemReset();
+        break;
+      
+      case '~':
+        APP_UART_OutString(huart_terminal, "------ Go to bed ------\n");
+        APP_SIGNAL_LED_SetState(0);
+        APP_SIGNAL_PWR_SetState(0);
+        HAL_SuspendTick();
+        HAL_PWR_EnterSLEEPMode(PWR_MAINREGULATOR_ON, PWR_SLEEPENTRY_WFI); 
         break;
 
       default:
@@ -140,9 +183,32 @@ int main(void)
     }
 
     /* Display response to Terminal */
-    if(!APP_UART_FIFO_isEmpty(huart_mc60)) {
-      char data = APP_UART_InChar(huart_mc60);
-      APP_UART_OutChar(huart_terminal, data);
+    APP_UART_FlushToUART_Char(huart_mc60, huart_terminal);
+
+    /* Turn off MC60 if MC60 is not used for a specific time */
+    if (MC60_PowerOff_Request) {
+      MC60_PowerOff_Request = 0;
+      if(!MC60_PowerOff_Status) {
+        MC60_PowerOff_Status = 1;
+        APP_UART_OutString(huart_terminal, "------ Time out! Turning off MC60 ------\n");
+        MC60_PowerOff();
+      }
+
+      if(STM32_SLEEP_Request) {
+         STM32_SLEEP_Request = 0;
+         STM32_SLEEP_Status = 1;
+         APP_SIGNAL_LED_SetState(0);
+         APP_SIGNAL_PWR_SetState(0);
+         HAL_SuspendTick();
+         HAL_PWR_EnterSLEEPMode(PWR_MAINREGULATOR_ON, PWR_SLEEPENTRY_WFI); 
+      }
+
+      if(STM32_WAKEUP_Request) {
+        STM32_WAKEUP_Request = 0;
+        STM32_SLEEP_Status = 0;
+        APP_SIGNAL_PWR_SetState(1);
+        APP_SIGNAL_LED_SetState(1);
+      }
     }
   }
   /* USER CODE END 3 */
@@ -164,10 +230,7 @@ void SystemClock_Config(void)
   RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI;
   RCC_OscInitStruct.HSIState = RCC_HSI_ON;
   RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
-  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
-  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI;
-  RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL2;
-  RCC_OscInitStruct.PLL.PREDIV = RCC_PREDIV_DIV1;
+  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_NONE;
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
   {
     Error_Handler();
@@ -177,8 +240,8 @@ void SystemClock_Config(void)
   */
   RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
                               |RCC_CLOCKTYPE_PCLK1;
-  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
-  RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV2;
+  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_HSI;
+  RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
 
   if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_0) != HAL_OK)

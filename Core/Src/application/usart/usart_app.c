@@ -14,11 +14,16 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef* huart) {
     if (huart == huart_terminal) {
         Fifo_Put(&Fifo_1, Rx_data);
         // APP_UART_OutChar(huart, Rx_data);
+    if(huart == huart_terminal) {
+        HAL_ResumeTick();
+        APP_SIGNAL_LED_SetState(1);
+        APP_SIGNAL_PWR_SetState(1);
+    }
     }
 
     if (huart == huart_mc60) {
         Fifo_Put(&Fifo_3, Rx_data);
-        // APP_UART_OutChar(&huart_terminal, Rx_data);
+        __HAL_TIM_SetCounter(&htim3, 0);
     }
 
     HAL_UART_Receive_IT(huart, &Rx_data, 1);
@@ -64,6 +69,18 @@ void APP_UART_FIFO_Flush(UART_HandleTypeDef* huart) {
     while (!Fifo_isEmpty(Fifo_n)) {
         data = Fifo_Get(Fifo_n);
         APP_UART_OutChar(huart_terminal, data);
+    }
+}
+void APP_UART_FlushToUART_Char(UART_HandleTypeDef* huart_transmit, UART_HandleTypeDef* huart_receive) {
+    if (!APP_UART_FIFO_isEmpty(huart_transmit)) {
+        char data = APP_UART_InChar(huart_transmit);
+        APP_UART_OutChar(huart_receive, data);
+    }
+}
+
+void APP_UART_FlushToUART_String(UART_HandleTypeDef* huart_transmit, UART_HandleTypeDef* huart_receive) {
+    while (!APP_UART_FIFO_isEmpty(huart_transmit)) {
+        APP_UART_FlushToUART_Char(huart_transmit, huart_receive);
     }
 }
 

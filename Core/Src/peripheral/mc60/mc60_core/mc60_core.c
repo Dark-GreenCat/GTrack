@@ -7,17 +7,17 @@ void MC60_Init(UART_HandleTypeDef* huart) {
 }
 
 void MC60_PowerOn(void) {
+    HAL_GPIO_WritePin(MC60_VBAT_GPIO_Port, MC60_VBAT_Pin, 0);
     HAL_GPIO_WritePin(MC60_PWRKEY_GPIO_Port, MC60_PWRKEY_Pin, 0);
     HAL_Delay(100);
     HAL_GPIO_WritePin(MC60_PWRKEY_GPIO_Port, MC60_PWRKEY_Pin, 1);
     HAL_Delay(1200);
     HAL_GPIO_WritePin(MC60_PWRKEY_GPIO_Port, MC60_PWRKEY_Pin, 0);
+    HAL_Delay(1200);
 }
 
 void MC60_PowerOff(void) {
-    HAL_GPIO_WritePin(MC60_PWRKEY_GPIO_Port, MC60_PWRKEY_Pin, 1);
-    HAL_Delay(900);
-    HAL_GPIO_WritePin(MC60_PWRKEY_GPIO_Port, MC60_PWRKEY_Pin, 0);
+    MC60_ATCommand_Write("AT+QPOWD", "1");
 }
 
 void MC60_ATCommand_Send(const char* str) {
@@ -52,4 +52,5 @@ void MC60_ATCommand_Write_2Parameter(const char* str, const char* parameter1, co
 
 void MC60_ATCommand_Execute(const char* str) {
     MC60_ATCommand_Send(str);
+    MC60_ATCommand_Send("\r\n");
 }

@@ -18,8 +18,8 @@
                 "d:\\OneDrive - Hanoi University of Science and Technology\\Desktop\\MC60\\GTrackModuleTest\\Core\\Src\\application\\usart",
                 "d:\\OneDrive - Hanoi University of Science and Technology\\Desktop\\MC60\\GTrackModuleTest\\Core\\Src\\application\\signal",
                 "d:\\OneDrive - Hanoi University of Science and Technology\\Desktop\\MC60\\GTrackModuleTest\\Core\\Src\\peripheral\\mc60\\mc60_core",
-                "d:\\OneDrive - Hanoi University of Science and Technology\\Desktop\\MC60\\GTrackModuleTest\\Core\\Src",
                 "d:\\OneDrive - Hanoi University of Science and Technology\\Desktop\\MC60\\GTrackModuleTest\\Core\\Src\\peripheral\\mc60\\gnss",
+                "d:\\OneDrive - Hanoi University of Science and Technology\\Desktop\\MC60\\GTrackModuleTest\\Core\\Src",
                 "d:\\OneDrive - Hanoi University of Science and Technology\\Desktop\\MC60\\GTrackModuleTest\\Drivers\\STM32F0xx_HAL_Driver\\Src",
                 "${default}",
                 "${workspaceFolder}/**"

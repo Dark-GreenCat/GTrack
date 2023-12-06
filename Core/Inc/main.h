@@ -59,6 +59,8 @@ void Error_Handler(void);
 /* Private defines -----------------------------------------------------------*/
 #define GSM_EN_Pin GPIO_PIN_12
 #define GSM_EN_GPIO_Port GPIOB
+#define GNSS_EN_Pin GPIO_PIN_13
+#define GNSS_EN_GPIO_Port GPIOB
 #define MC60_PWRKEY_Pin GPIO_PIN_14
 #define MC60_PWRKEY_GPIO_Port GPIOB
 #define LED_GREEN_Pin GPIO_PIN_11
