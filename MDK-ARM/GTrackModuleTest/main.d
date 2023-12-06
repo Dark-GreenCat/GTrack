@@ -36,9 +36,11 @@ gtrackmoduletest/main.o: ..\Core\Src\main.c ..\Core\Inc\main.h \
   ..\Core\Inc\..\Src\application\usart\fifo_app.h ..\Core\Inc\gpio.h \
   ..\Core\Src\application\usart\usart_app.h \
   C:\Keil_v5\ARM\ARMCLANG\Bin\..\include\stdbool.h \
-  ..\Core\Inc\..\Src\application\usart\..\signal\signal_app.h \
+  ..\Core\Src\application\usart\fifo_app.h \
+  ..\Core\Src\application\usart\..\signal\signal_app.h \
   ..\Core\Src\application\signal\signal_app.h \
+  ..\Core\Src\application\timer\timer_app.h \
   ..\Core\Src\peripheral\mc60\gnss\gnss.h \
   ..\Core\Src\peripheral\mc60\gnss\..\mc60_core\mc60_core.h \
-  ..\Core\Src\peripheral\mc60\gnss\..\mc60_core\..\..\..\application\usart\usart_app.h \
+  ..\Core\Src\peripheral\mc60\mc60_core\..\..\..\application\usart\usart_app.h \
   ..\Core\Src\peripheral\mc60\gnss\gnss_def.h

@@ -11,6 +11,7 @@
 "gtrackmoduletest\usart.o"
 "gtrackmoduletest\stm32f0xx_it.o"
 "gtrackmoduletest\stm32f0xx_hal_msp.o"
+"gtrackmoduletest\timer_app.o"
 "gtrackmoduletest\stm32f0xx_hal_tim.o"
 "gtrackmoduletest\stm32f0xx_hal_tim_ex.o"
 "gtrackmoduletest\stm32f0xx_hal_rcc.o"

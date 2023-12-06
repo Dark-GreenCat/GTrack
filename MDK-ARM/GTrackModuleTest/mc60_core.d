@@ -38,5 +38,5 @@ gtrackmoduletest/mc60_core.o: \
   ..\Core\Src\peripheral\mc60\mc60_core\..\..\..\application\usart\usart_app.h \
   ..\Core\Inc\usart.h ..\Core\Inc\main.h \
   ..\Core\Inc\..\Src\application\usart\fifo_app.h ..\Core\Inc\tim.h \
-  ..\Core\Src\peripheral\mc60\mc60_core\..\..\..\application\usart\fifo_app.h \
-  ..\Core\Src\peripheral\mc60\mc60_core\..\..\..\application\usart\..\signal\signal_app.h
+  ..\Core\Src\application\usart\fifo_app.h \
+  ..\Core\Src\application\usart\..\signal\signal_app.h

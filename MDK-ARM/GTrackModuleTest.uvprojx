@@ -341,7 +341,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F030xC</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;../Drivers/STM32F0xx_HAL_Driver/Inc;../Drivers/STM32F0xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F0xx/Include;../Drivers/CMSIS/Include;../Core/Src/application/*;../Core/Src/peripheral/*</IncludePath>
+              <IncludePath>../Core/Inc;../Drivers/STM32F0xx_HAL_Driver/Inc;../Drivers/STM32F0xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F0xx/Include;../Drivers/CMSIS/Include;..\Core\Src\application;..\Core\Src\peripheral;..\Core\Src\application\timer;..\Core\Src\application\signal;..\Core\Src\application\usart;..\Core\Src\peripheral\mc60\mc60_core;..\Core\Src\peripheral\mc60\gnss</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -551,6 +551,11 @@
               <FileName>stm32f0xx_hal_msp.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Core/Src/stm32f0xx_hal_msp.c</FilePath>
+            </File>
+            <File>
+              <FileName>timer_app.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\Src\application\timer\timer_app.c</FilePath>
             </File>
           </Files>
         </Group>

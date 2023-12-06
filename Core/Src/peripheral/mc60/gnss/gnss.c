@@ -2,6 +2,7 @@
 
 void MC60_GNSS_Power_On(bool PowerState) {
     MC60_ATCommand_Write("AT+QGNSSC", PowerState ? "1" : "0");
+    HAL_GPIO_WritePin(GNSS_EN_GPIO_Port, GNSS_EN_Pin, PowerState);
 }
 
 void MC60_GNSS_Power_GetStatus() {

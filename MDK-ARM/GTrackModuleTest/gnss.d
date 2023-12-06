@@ -35,9 +35,9 @@ gtrackmoduletest/gnss.o: ..\Core\Src\peripheral\mc60\gnss\gnss.c \
   ..\Drivers\STM32F0xx_HAL_Driver\Inc\stm32f0xx_hal_tim_ex.h \
   ..\Drivers\STM32F0xx_HAL_Driver\Inc\stm32f0xx_hal_uart.h \
   ..\Drivers\STM32F0xx_HAL_Driver\Inc\stm32f0xx_hal_uart_ex.h \
-  ..\Core\Src\peripheral\mc60\gnss\..\mc60_core\..\..\..\application\usart\usart_app.h \
+  ..\Core\Src\peripheral\mc60\mc60_core\..\..\..\application\usart\usart_app.h \
   ..\Core\Inc\usart.h ..\Core\Inc\main.h \
   ..\Core\Inc\..\Src\application\usart\fifo_app.h ..\Core\Inc\tim.h \
-  ..\Core\Src\peripheral\mc60\gnss\..\mc60_core\..\..\..\application\usart\fifo_app.h \
-  ..\Core\Src\peripheral\mc60\gnss\..\mc60_core\..\..\..\application\usart\..\signal\signal_app.h \
+  ..\Core\Src\application\usart\fifo_app.h \
+  ..\Core\Src\application\usart\..\signal\signal_app.h \
   ..\Core\Src\peripheral\mc60\gnss\gnss_def.h

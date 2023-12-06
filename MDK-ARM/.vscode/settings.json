@@ -10,6 +10,7 @@
         "stm32f0xx_hal.h": "c",
         "stm32f0xx_hal_def.h": "c",
         "gnss_def.h": "c",
-        "gnss.h": "c"
+        "gnss.h": "c",
+        "timer_app.h": "c"
     }
 }
