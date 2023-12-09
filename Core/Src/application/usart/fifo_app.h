@@ -10,13 +10,13 @@
 // Last modification date: change this to the last modification date or look very silly
 #include <stdint.h>
 
-#define FIFO_SIZE_MAX 300
+#define FIFO_SIZE_MAX 512
 
 // Declare state variables for FiFo
 //        size, buffer, put and get indexes
 typedef struct {
-    uint8_t PutI;  // index to put new
-    uint8_t GetI;  // index of oldest
+    uint32_t PutI;  // index to put new
+    uint32_t GetI;  // index of oldest
     uint32_t Size;
     uint8_t Fifo[FIFO_SIZE_MAX];
 } Fifo_t;

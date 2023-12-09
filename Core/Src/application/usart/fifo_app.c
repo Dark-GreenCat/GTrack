@@ -34,7 +34,7 @@ uint8_t Fifo_Put(Fifo_t* Fifo, char data) {
 //         If the FIFO has data, remove it, and return it
 uint8_t Fifo_Get(Fifo_t* Fifo) {
   if (Fifo_isEmpty(Fifo)) return 0; // fail if empty
-  uint8_t dataIndex = Fifo->GetI;
+  uint32_t dataIndex = Fifo->GetI;
   Fifo->GetI = (Fifo->GetI + 1) % Fifo->Size; // next place to get
   return Fifo->Fifo[dataIndex];
 }

@@ -114,12 +114,15 @@ int main(void)
   APP_UART_OutString(huart_terminal, "\n\t>> Running command: AT\n");
   MC60_ATCommand_Execute("AT");
   HAL_Delay(6000);
-  APP_UART_FlushToUART_String(huart_terminal, huart_mc60);
+  APP_UART_FlushToUART_String(huart_mc60, huart_terminal);
   
   APP_UART_OutString(huart_terminal, "\n-------- Power on GNSS --------\n");
   MC60_GNSS_Power_On(1);
-
+  HAL_Delay(3000);
+APP_UART_FlushToUART_String(huart_mc60, huart_terminal);
+	
   // APP_TIMER_Start();
+  char Destination[512];
   while (1) {
     /* USER CODE END WHILE */
     /* USER CODE BEGIN 3 */
@@ -136,9 +139,15 @@ int main(void)
         break;
       }
     }
-
+	
+	MC60_ATCommand_Send("AT+QGNSSRD?\n");
+	HAL_Delay(5000);
     /* Display response to Terminal */
-    APP_UART_FlushToUART_Char(huart_mc60, huart_terminal);
+    while(!APP_UART_FIFO_isEmpty(huart_mc60)) {
+		APP_UART_readStringUtil(huart_mc60, '\n', Destination);
+		APP_UART_OutString(huart_terminal, "\nRead: ");
+		APP_UART_OutString(huart_terminal, Destination);
+	}
   }
   /* USER CODE END 3 */
 }
