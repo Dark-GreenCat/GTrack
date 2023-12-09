@@ -48,12 +48,7 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-bool MC60_PowerOff_Request = 0;
-bool MC60_PowerOff_Status = 0;
 
-bool STM32_SLEEP_Request = 0;
-bool STM32_SLEEP_Status = 0;
-bool STM32_WAKEUP_Request = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
