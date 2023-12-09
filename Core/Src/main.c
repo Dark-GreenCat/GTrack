@@ -64,16 +64,6 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-// void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef* htim) {
-//   MC60_PowerOff_Request = 1;
-//   if(STM32_SLEEP_Status) {
-//     STM32_WAKEUP_Request = 1;
-//     HAL_ResumeTick();
-//   }
-//   else {
-//     STM32_SLEEP_Request = 1;
-//   }
-// }
 
 /* USER CODE END 0 */
 
@@ -184,32 +174,6 @@ int main(void)
 
     /* Display response to Terminal */
     APP_UART_FlushToUART_Char(huart_mc60, huart_terminal);
-
-    /* Turn off MC60 if MC60 is not used for a specific time */
-    // if (MC60_PowerOff_Request) {
-    //   MC60_PowerOff_Request = 0;
-    //   if(!MC60_PowerOff_Status) {
-    //     MC60_PowerOff_Status = 1;
-    //     APP_UART_OutString(huart_terminal, "------ Time out! Turning off MC60 ------\n");
-    //     MC60_PowerOff();
-    //   }
-
-    //   if(STM32_SLEEP_Request) {
-    //      STM32_SLEEP_Request = 0;
-    //      STM32_SLEEP_Status = 1;
-    //      APP_SIGNAL_LED_SetState(0);
-    //      APP_SIGNAL_PWR_SetState(0);
-    //      HAL_SuspendTick();
-    //      HAL_PWR_EnterSLEEPMode(PWR_MAINREGULATOR_ON, PWR_SLEEPENTRY_WFI); 
-    //   }
-
-    //   if(STM32_WAKEUP_Request) {
-    //     STM32_WAKEUP_Request = 0;
-    //     STM32_SLEEP_Status = 0;
-    //     APP_SIGNAL_PWR_SetState(1);
-    //     APP_SIGNAL_LED_SetState(1);
-    //   }
-    // }
   }
   /* USER CODE END 3 */
 }
