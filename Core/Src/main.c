@@ -120,7 +120,6 @@ int main(void)
   MC60_ATCommand_Execute("AT");
   HAL_Delay(6000);
   APP_UART_FlushToUART_String(huart_terminal, huart_mc60);
-  // MC60_PowerOff_Status = 0;
   
   APP_UART_OutString(huart_terminal, "\n-------- Power on GNSS --------\n");
   MC60_GNSS_Power_On(1);
@@ -133,37 +132,8 @@ int main(void)
     if (!APP_UART_FIFO_isEmpty(huart_terminal)) {
       char data = APP_UART_InChar(huart_terminal);
       switch (data) {
-      case '!':
-        APP_UART_OutString(huart_terminal, "------ Power On ------\n");
-        __HAL_TIM_SetCounter(htim_app, 0);
-        MC60_PowerOn();
-        MC60_ATCommand_Execute("AT");
-        MC60_PowerOff_Status = 0;
-        break;
-
-      case '@':
-        HAL_GPIO_WritePin(MC60_PWRKEY_GPIO_Port, MC60_PWRKEY_Pin, 0);
-        break;
-
-      case '#':
-        HAL_GPIO_WritePin(MC60_PWRKEY_GPIO_Port, MC60_PWRKEY_Pin, 1);
-        break;
-
-      case '^':
-        APP_UART_OutString(huart_terminal, "------ Power Off ------\n");
-        MC60_PowerOff();
-        break;
-
       case '*':
         NVIC_SystemReset();
-        break;
-      
-      case '~':
-        APP_UART_OutString(huart_terminal, "------ Go to bed ------\n");
-        APP_SIGNAL_LED_SetState(0);
-        APP_SIGNAL_PWR_SetState(0);
-        HAL_SuspendTick();
-        HAL_PWR_EnterSLEEPMode(PWR_MAINREGULATOR_ON, PWR_SLEEPENTRY_WFI); 
         break;
 
       default:
