@@ -19,11 +19,14 @@ void APP_UART_Init(UART_HandleTypeDef* huart, uint32_t size);
 void APP_UART_StartReceive(UART_HandleTypeDef* huart);
 /* Busy-wait đợi FIFO có dữ liệu -> Trả về kí tự */
 char APP_UART_InChar(UART_HandleTypeDef* huart);
+void APP_UART_readStringUtil(UART_HandleTypeDef* huart, char terminatedChar, char* destination);
 
 /* Truyền 1 ký tự */
 void APP_UART_OutChar(UART_HandleTypeDef* huart, char data);
 /* Truyền từng ký tự của xâu */
 void APP_UART_OutString(UART_HandleTypeDef* huart, const char* str);
+void APP_UART_OutNumber(UART_HandleTypeDef* huart, uint32_t number);
+
 /* Truyền toàn bộ ký tự trong FIFO */
 void APP_UART_FIFO_Flush(UART_HandleTypeDef* huart);
 void APP_UART_FlushToUART_Char(UART_HandleTypeDef* huart_transmit, UART_HandleTypeDef* huart_receive);

@@ -51,6 +51,17 @@ char APP_UART_InChar(UART_HandleTypeDef* huart) {
     return Fifo_Get(Fifo_n);
 }
 
+void APP_UART_readStringUtil(UART_HandleTypeDef* huart, char terminatedChar, char* destination) {
+    char data = APP_UART_InChar(huart);
+    while (data != terminatedChar) {
+        *destination++ = data;
+        data = APP_UART_InChar(huart);
+    }
+
+    *destination = '\0';
+}
+
+ 
 void APP_UART_OutChar(UART_HandleTypeDef* huart, char data) {
     HAL_UART_Transmit(huart, (uint8_t*)&data, 1, 1);
 }
@@ -58,6 +69,17 @@ void APP_UART_OutChar(UART_HandleTypeDef* huart, char data) {
 void APP_UART_OutString(UART_HandleTypeDef* huart, const char* str) {
     while (*str != '\0')
         APP_UART_OutChar(huart, (uint8_t)*str++);
+}
+
+void APP_UART_OutNumber(UART_HandleTypeDef* huart, uint32_t number) {
+    if(number == 0) APP_UART_OutChar(huart, '0');
+
+    while (number != 0) {
+        uint8_t last_digit = number % 10;
+        number /= 10;
+
+        APP_UART_OutChar(huart, last_digit + '0');
+    }
 }
 
 void APP_UART_FIFO_Flush(UART_HandleTypeDef* huart) {

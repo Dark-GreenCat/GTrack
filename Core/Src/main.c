@@ -135,7 +135,7 @@ int main(void)
   APP_UART_OutString(huart_terminal, "\n-------- Power on GNSS --------\n");
   MC60_GNSS_Power_On(1);
 
-  APP_TIMER_Start();
+  // APP_TIMER_Start();
   while (1) {
     /* USER CODE END WHILE */
     /* USER CODE BEGIN 3 */
@@ -145,7 +145,7 @@ int main(void)
       switch (data) {
       case '!':
         APP_UART_OutString(huart_terminal, "------ Power On ------\n");
-        __HAL_TIM_SetCounter(&htim3, 0);
+        __HAL_TIM_SetCounter(htim_app, 0);
         MC60_PowerOn();
         MC60_ATCommand_Execute("AT");
         MC60_PowerOff_Status = 0;
