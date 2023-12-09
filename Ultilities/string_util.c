@@ -1,13 +1,38 @@
 #include "string_util.h"
-#include <stdint.h>
-#include <string.h>
+
+int16_t UTIL_STRING_compareDifference(const char* String, const char* CompareString) {
+    int16_t Difference;
+    while (*String != '\0' && *CompareString != '\0') {
+         Difference = *String++ - *CompareString++;
+         if(Difference != 0) break;
+    }
+    
+    if (*String != '\0' && *CompareString == '\0') return 1;
+    if (*String == '\0' && *CompareString != '\0') return -1;
+    return Difference;
+}
+
+int16_t UTIL_STRING_compareDifferenceFirstNChar(const char* String, const char* CompareString, const uint32_t NumberOfChar) {
+    int16_t Difference;
+    uint32_t Index;
+    for(Index = 0; Index < NumberOfChar; Index++) {
+        if(String[Index] == '\0' || CompareString[Index] == '\0') break;
+        Difference = String[Index] - CompareString[Index];
+        if(Difference != 0) break;
+    }
+    
+    Index--;
+    if (String[Index] != '\0' && CompareString[Index] == '\0') return 1;
+    if (String[Index] == '\0' && CompareString[Index] != '\0') return -1;
+    return Difference;
+}
 
 bool UTIL_STRING_isStartWith(const char* String, const char* StartString) {
-    return !((bool) strncmp(String, StartString, strlen(StartString)));
+    return !((bool) UTIL_STRING_compareDifferenceFirstNChar(String, StartString, strlen(StartString)));
 }
 
 bool UTIL_STRING_comparedTo(const char* String, const char* CompareString) {
-    return !((bool) strcmp(String, CompareString));
+    return !((bool) UTIL_STRING_compareDifference(String, CompareString));
 }
 
 uint32_t UTIL_STRING_getLength(const char* String) {

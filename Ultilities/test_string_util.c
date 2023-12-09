@@ -1,8 +1,10 @@
 #include <stdint.h>
 #include <stdio.h>
+#include <string.h>
 #include "string_util.h"
 
 char* test_str1 = "Hello My name is Barry Alen";
+uint32_t test_str_compare_number = 3;
 char* test_str_startWith = "Hello ";
 char* test_str_comparedTo = "HelloMy name is Barry Alen";
 
@@ -20,6 +22,8 @@ char test_str_getSubStringBetweenChar1 = 'a',
      test_str_getSubStringBetweenChar2 = 'y';
 
 int main() {
+    printf("\nCompare difference between \"%s\" to \"%s\": %d", test_str1, test_str_startWith, UTIL_STRING_compareDifference(test_str1, test_str_startWith));
+    printf("\nCompare difference between first %d character of \"%s\" to \"%s\": %d", test_str_compare_number, test_str1, test_str_startWith, UTIL_STRING_compareDifferenceFirstNChar(test_str1, test_str_startWith, test_str_compare_number));
     printf("\nDoes \"%s\" start with \"%s\": %d", test_str1, test_str_startWith, UTIL_STRING_isStartWith(test_str1, test_str_startWith)); 
     printf("\nDoes \"%s\" is the same with \"%s\": %d", test_str1, test_str_comparedTo, UTIL_STRING_comparedTo(test_str1, test_str_comparedTo));
     printf("\nLength of \"%s\": %d", test_str_getLength, UTIL_STRING_getLength(test_str_getLength));

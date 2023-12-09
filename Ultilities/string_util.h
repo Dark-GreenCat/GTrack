@@ -5,6 +5,8 @@
 #include <string.h>
 #include <stdbool.h>
 
+int16_t UTIL_STRING_compareDifference(const char* String, const char* CompareString);
+int16_t UTIL_STRING_compareDifferenceFirstNChar(const char* String, const char* CompareString, const uint32_t NumberOfChar);
 bool UTIL_STRING_isStartWith(const char* String, const char* StartString);
 bool UTIL_STRING_comparedTo(const char* String, const char* CompareString);
 uint32_t UTIL_STRING_getLength(const char* String);
