@@ -78,8 +78,8 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
-  APP_UART_Init(huart_terminal, 63);
-  APP_UART_Init(huart_mc60, 300);
+  APP_UART_Init(huart_terminal, 64);
+  APP_UART_Init(huart_mc60, 256);
   APP_TIMER_Init(&htim3);
 
   MC60_Init(huart_mc60);
@@ -114,31 +114,44 @@ int main(void)
   APP_UART_OutString(huart_terminal, "\n\t>> Running command: AT\n");
   MC60_ATCommand_Execute("AT");
   HAL_Delay(6000);
-  APP_UART_FlushToUART_String(huart_terminal, huart_mc60);
+  APP_UART_FlushToUART_String(huart_mc60, huart_terminal);
   
   APP_UART_OutString(huart_terminal, "\n-------- Power on GNSS --------\n");
   MC60_GNSS_Power_On(1);
-
+  HAL_Delay(3000);
+  APP_UART_FlushToUART_String(huart_mc60, huart_terminal);
+	
   // APP_TIMER_Start();
+  char Destination[512];
+  bool isDone = false;
+  char MC60_data;
   while (1) {
     /* USER CODE END WHILE */
     /* USER CODE BEGIN 3 */
-    /* Receive command from Terminal and send to MC60 */
-    if (!APP_UART_FIFO_isEmpty(huart_terminal)) {
+    if(!APP_UART_FIFO_isEmpty(huart_terminal)) {
       char data = APP_UART_InChar(huart_terminal);
-      switch (data) {
-      case '*':
-        NVIC_SystemReset();
-        break;
-
-      default:
-        APP_UART_OutChar(huart_mc60, data);
-        break;
-      }
+      APP_UART_OutChar(huart_mc60, data);
     }
-
-    /* Display response to Terminal */
-    APP_UART_FlushToUART_Char(huart_mc60, huart_terminal);
+    
+    if (!APP_UART_FIFO_isEmpty(huart_mc60)) {
+      isDone = false;
+      MC60_data = APP_UART_InChar(huart_mc60);
+      while (MC60_data != '\n') {
+        APP_UART_OutChar(huart_terminal, MC60_data);
+        if (APP_UART_FIFO_isEmpty(huart_mc60)) break;
+        MC60_data = APP_UART_InChar(huart_mc60);
+      }
+      if(MC60_data == '\n') isDone = true;
+      if(isDone) APP_UART_OutString(huart_terminal, "\n------ DONE -------\n");
+    }
+	// MC60_ATCommand_Send("AT+QGNSSRD?\n");
+	// HAL_Delay(5000);
+    // /* Display response to Terminal */
+    // while(!APP_UART_FIFO_isEmpty(huart_mc60)) {
+	// 	APP_UART_readStringUtil(huart_mc60, '\n', Destination);
+	// 	APP_UART_OutString(huart_terminal, "\nRead: ");
+	// 	APP_UART_OutString(huart_terminal, Destination);
+	// }
   }
   /* USER CODE END 3 */
 }
