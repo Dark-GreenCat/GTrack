@@ -10,7 +10,7 @@
 // Last modification date: change this to the last modification date or look very silly
 #include <stdint.h>
 
-#define FIFO_SIZE_MAX 256
+#define FIFO_SIZE_MAX 512
 
 // Declare state variables for FiFo
 //        size, buffer, put and get indexes

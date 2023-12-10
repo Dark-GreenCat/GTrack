@@ -1,4 +1,5 @@
 #include "usart_app.h"
+#include <stdbool.h>
 
 UART_HandleTypeDef* huart_terminal = &huart1;
 UART_HandleTypeDef* huart_mc60 = &huart3;
@@ -44,24 +45,25 @@ char APP_UART_InChar(UART_HandleTypeDef* huart) {
     return Fifo_Get(Fifo_n);
 }
 
-bool APP_UART_readStringUtil(UART_HandleTypeDef *huart, char terminatedChar, char *destination) {
-    static char *p_destination;
-    static bool isFirstCall = true;
+bool APP_UART_readStringUntil(UART_HandleTypeDef *huart, char terminatedChar, char *destination) {
+    static bool isFirstInit = true;
+    static char* p_Destination = NULL;
+    
+    if(isFirstInit) p_Destination = destination;
+    isFirstInit = false;
     bool isDone = false;
-    if (isFirstCall) p_destination = destination;
     if (!APP_UART_FIFO_isEmpty(huart)) {
-        isFirstCall = false;
-        char data = APP_UART_InChar(huart);
-        while (data != terminatedChar) {
-          *p_destination++ = data;
-          if (APP_UART_FIFO_isEmpty(huart)) break;
-          data = APP_UART_InChar(huart);
-        }
-        if (data == terminatedChar) isDone = true;
-    if (isDone) {
-        *p_destination = '\0';
-        isFirstCall = true;
-    }
+      char data = APP_UART_InChar(huart);
+      while (data != terminatedChar) {
+        *p_Destination++ = data;
+        if (APP_UART_FIFO_isEmpty(huart)) break;
+        data = APP_UART_InChar(huart);
+      }
+      if(data == terminatedChar) isDone = true;
+      if (isDone) {
+        *p_Destination = '\0';
+        p_Destination = destination;
+      }
     }
 
     return isDone;
