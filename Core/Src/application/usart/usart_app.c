@@ -13,17 +13,10 @@ void HAL_UART_TxCpltCallback(UART_HandleTypeDef* huart) {
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef* huart) {
     if (huart == huart_terminal) {
         Fifo_Put(&Fifo_1, Rx_data);
-        // APP_UART_OutChar(huart, Rx_data);
-    if(huart == huart_terminal) {
-        HAL_ResumeTick();
-        APP_SIGNAL_LED_SetState(1);
-        APP_SIGNAL_PWR_SetState(1);
-    }
     }
 
     if (huart == huart_mc60) {
         Fifo_Put(&Fifo_3, Rx_data);
-        __HAL_TIM_SetCounter(&htim3, 0);
     }
 
     HAL_UART_Receive_IT(huart, &Rx_data, 1);
@@ -47,21 +40,33 @@ char APP_UART_InChar(UART_HandleTypeDef* huart) {
     if (huart == huart_terminal) Fifo_n = &Fifo_1;
     if (huart == huart_mc60) Fifo_n = &Fifo_3;
 
-    while (Fifo_isEmpty(Fifo_n));
+    if (Fifo_isEmpty(Fifo_n)) return -1;
     return Fifo_Get(Fifo_n);
 }
 
-void APP_UART_readStringUtil(UART_HandleTypeDef* huart, char terminatedChar, char* destination) {
-    char data = APP_UART_InChar(huart);
-    while (data != terminatedChar) {
-        *destination++ = data;
-        data = APP_UART_InChar(huart);
+bool APP_UART_readStringUtil(UART_HandleTypeDef *huart, char terminatedChar, char *destination) {
+    static char *p_destination;
+    static bool isFirstCall = true;
+    bool isDone = false;
+    if (isFirstCall) p_destination = destination;
+    if (!APP_UART_FIFO_isEmpty(huart)) {
+        isFirstCall = false;
+        char data = APP_UART_InChar(huart);
+        while (data != terminatedChar) {
+          *p_destination++ = data;
+          if (APP_UART_FIFO_isEmpty(huart)) break;
+          data = APP_UART_InChar(huart);
+        }
+        if (data == terminatedChar) isDone = true;
+    if (isDone) {
+        *p_destination = '\0';
+        isFirstCall = true;
+    }
     }
 
-    *destination = '\0';
+    return isDone;
 }
 
- 
 void APP_UART_OutChar(UART_HandleTypeDef* huart, char data) {
     HAL_UART_Transmit(huart, (uint8_t*)&data, 1, 1);
 }
