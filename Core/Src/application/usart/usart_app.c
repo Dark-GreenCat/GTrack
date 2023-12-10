@@ -1,5 +1,4 @@
 #include "usart_app.h"
-#include <stdbool.h>
 
 UART_HandleTypeDef* huart_terminal = &huart1;
 UART_HandleTypeDef* huart_mc60 = &huart3;
@@ -45,18 +44,18 @@ char APP_UART_InChar(UART_HandleTypeDef* huart) {
     return Fifo_Get(Fifo_n);
 }
 
-bool APP_UART_readStringUntil(UART_HandleTypeDef *huart, char terminatedChar, char *destination) {
+bool APP_UART_ReadStringUntil(UART_HandleTypeDef *huart, char terminatedChar, char *destination) {
     static bool isFirstInit = true;
     static char* p_Destination = NULL;
     
     if(isFirstInit) p_Destination = destination;
     isFirstInit = false;
     bool isDone = false;
-    if (!APP_UART_FIFO_isEmpty(huart)) {
+    if (APP_UART_IsAvailable(huart)) {
       char data = APP_UART_InChar(huart);
       while (data != terminatedChar) {
         *p_Destination++ = data;
-        if (APP_UART_FIFO_isEmpty(huart)) break;
+        if (!APP_UART_IsAvailable(huart)) break;
         data = APP_UART_InChar(huart);
       }
       if(data == terminatedChar) isDone = true;
@@ -101,24 +100,24 @@ void APP_UART_FIFO_Flush(UART_HandleTypeDef* huart) {
     }
 }
 void APP_UART_FlushToUART_Char(UART_HandleTypeDef* huart_transmit, UART_HandleTypeDef* huart_receive) {
-    if (!APP_UART_FIFO_isEmpty(huart_transmit)) {
+    if (APP_UART_IsAvailable(huart_transmit)) {
         char data = APP_UART_InChar(huart_transmit);
         APP_UART_OutChar(huart_receive, data);
     }
 }
 
 void APP_UART_FlushToUART_String(UART_HandleTypeDef* huart_transmit, UART_HandleTypeDef* huart_receive) {
-    while (!APP_UART_FIFO_isEmpty(huart_transmit)) {
+    while (APP_UART_IsAvailable(huart_transmit)) {
         APP_UART_FlushToUART_Char(huart_transmit, huart_receive);
     }
 }
 
-bool APP_UART_FIFO_isEmpty(UART_HandleTypeDef* huart) {
+bool APP_UART_IsAvailable(UART_HandleTypeDef* huart) {
     Fifo_t* Fifo_n = NULL;
     if (huart == huart_terminal) Fifo_n = &Fifo_1;
     if (huart == huart_mc60) Fifo_n = &Fifo_3;
 
-    return Fifo_isEmpty(Fifo_n);
+    return !Fifo_isEmpty(Fifo_n);
 }
 
 

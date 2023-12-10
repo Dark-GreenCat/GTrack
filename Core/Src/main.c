@@ -122,16 +122,16 @@ int main(void)
   APP_UART_FlushToUART_String(huart_mc60, huart_terminal);
 	
   // APP_TIMER_Start();
-  char Destination[128];
+  char SerialLine[128];
   while (1) {
     /* USER CODE END WHILE */
     /* USER CODE BEGIN 3 */
     APP_UART_FlushToUART_Char(huart_terminal, huart_mc60);
 
-    bool isDone = APP_UART_readStringUntil(huart_mc60, '\n', Destination);
+    bool isDone = APP_UART_ReadStringUntil(huart_mc60, '\n', SerialLine);
     if (isDone) {
       APP_UART_OutString(huart_terminal, "\nRead: ");
-      APP_UART_OutString(huart_terminal, Destination);
+      APP_UART_OutString(huart_terminal, SerialLine);
     }
   }
   /* USER CODE END 3 */
