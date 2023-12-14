@@ -5,6 +5,8 @@
 #include "../mc60_core/mc60_core.h"
 #include "../Ultilities/string_util.h"
 
+#define MC60_GNSS_TIMEOUT   5000
+
 /* 2.1.1. AT+QGNSSC Control Power Supply of GNSS Module */
 void MC60_GNSS_Power_On(bool PowerState);
 void MC60_GNSS_Power_GetStatus();
