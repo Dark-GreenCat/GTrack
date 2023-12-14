@@ -13,8 +13,42 @@ void MC60_GNSS_Set_NavigationInfo_Protocol(const char* protocol) {
     MC60_ATCommand_Write("AT+QGNSSRD", protocol);
 }
 
-void MC60_GNSS_Get_NavigationInfo(void) {
+void MC60_GNSS_Get_NavigationInfo() {
     MC60_ATCommand_Read("AT+QGNSSRD");
+    bool isNavigationFinish = false;
+    static char SerialLine[128];
+    while (!isNavigationFinish) {
+      bool isDone = APP_UART_ReadStringUntil(huart_mc60, '\n', SerialLine);
+      if (isDone) {
+        if (UTIL_STRING_isStartWith(SerialLine, "OK")) {
+            isNavigationFinish = true;
+            break;
+        }
+        if (UTIL_STRING_isStartWith(SerialLine, "\r")) {
+            continue;
+        }
+        if (UTIL_STRING_isStartWith(SerialLine, "AT+")) {
+            APP_UART_OutString(huart_terminal, "\n\n\n------ GETTING NAVIGATION INFORMATION ------");
+            continue;
+        }
+        APP_UART_OutString(huart_terminal, "\nRead: ");
+        APP_UART_OutString(huart_terminal, SerialLine);
+        char *p_SerialLine = SerialLine;
+        UTIL_STRING_getSubStringAfterChar(p_SerialLine, ' ', p_SerialLine);
+        UTIL_STRING_getSubStringBeforeChar(p_SerialLine, '\r', p_SerialLine);
+
+        char GNGLL_Data[50];
+        uint32_t index = -1;
+        uint8_t timeout = 15;
+        do {
+          p_SerialLine += index + 1;
+          UTIL_STRING_getSubStringBeforeChar(p_SerialLine, ',', GNGLL_Data);
+          APP_UART_OutString(huart_terminal, "\n    Data: ");
+          APP_UART_OutString(huart_terminal, GNGLL_Data);
+          index = (uint32_t)UTIL_STRING_indexOf(p_SerialLine, ',');
+        } while (index != (uint32_t)-1 && timeout--);
+      }
+    }
 }
 
 void MC60_GNSS_Send_NMEACmd(const char* cmdString) {

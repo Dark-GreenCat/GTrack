@@ -1,8 +1,9 @@
 #ifndef __GNSS_H
 #define __GNSS_H
 
+#include <stdbool.h>
 #include "../mc60_core/mc60_core.h"
-#include "gnss_def.h"
+#include "../Ultilities/string_util.h"
 
 /* 2.1.1. AT+QGNSSC Control Power Supply of GNSS Module */
 void MC60_GNSS_Power_On(bool PowerState);

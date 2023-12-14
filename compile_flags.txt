@@ -26,3 +26,5 @@ Core\Src\application\usart
 Core\Src\peripheral\mc60\mc60_core
 -I
 Core\Src\peripheral\mc60\gnss
+-I
+Ultilities
