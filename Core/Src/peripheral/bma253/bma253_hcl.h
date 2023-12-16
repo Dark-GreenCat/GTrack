@@ -26,7 +26,13 @@ typedef struct {
 	/*! store the fifo configuration register*/
 	uint8_t fifo_config;
 	/*! function pointer to the SPI/I2C write function */
-    uint8_t (*write) (uint8_t dev_addr, uint8_t reg_addr, uint8_t* p_data, uint16_t write_length);
+    void (*write) (uint8_t dev_addr, uint8_t reg_addr, uint8_t* p_data, uint16_t write_length);
 	/*! function pointer to the SPI/I2C read function */
-    uint8_t (*read) (uint8_t dev_addr, uint8_t reg_addr, uint8_t* p_data, uint16_t read_length);
+    void (*read) (uint8_t dev_addr, uint8_t reg_addr, uint8_t* p_data, uint16_t read_length);
 } bma253_t;
+
+
+
+void HCL_BMA253_Init(bma253_t* bma253);
+void HCL_BMA253_Read_Reg(uint8_t reg_addr, uint8_t *data_u8, uint8_t len_u8);
+void HCL_BMA253_Write_Reg(uint8_t reg_addr, uint8_t *data_u8, uint8_t len_u8);
