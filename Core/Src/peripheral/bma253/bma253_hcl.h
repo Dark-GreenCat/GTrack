@@ -2,11 +2,6 @@
 #include "../HCL/i2c/i2c_hcl.h"
 #include "stdint.h"
 
-
-#define HCL_BMA253_I2C_DEVICE_ADDRESS_SHIFT     1
-#define HCL_BMA253_REG_SIZE                     1
-#define HCL_BMA253_TIMEOUT                      1000
-
 /*!
  *	@brief bma2x2 initialization struct
  *	struct bma2x2_t is used for assigning the following parameters.
@@ -32,13 +27,13 @@ typedef struct {
 	/*! store the fifo configuration register*/
 	uint8_t fifo_config;
 	/*! function pointer to the SPI/I2C read function */
-    void (*read) (I2C_HandleTypeDef* hi2c, uint8_t dev_addr, uint8_t reg_addr, uint8_t* p_data, uint16_t read_length);
+    void (*read) (uint8_t dev_addr, uint8_t reg_addr, uint8_t* p_data, uint16_t read_length);
 	/*! function pointer to the SPI/I2C write function */
-    void (*write) (I2C_HandleTypeDef* hi2c, uint8_t dev_addr, uint8_t reg_addr, uint8_t* p_data, uint16_t write_length);
+    void (*write) (uint8_t dev_addr, uint8_t reg_addr, uint8_t* p_data, uint16_t write_length);
 } bma253_t;
 
 
 
 void HCL_BMA253_Init(bma253_t* bma253);
-void HCL_BMA253_Read_Reg(I2C_HandleTypeDef* hi2c, uint8_t dev_addr, uint8_t reg_addr, uint8_t* p_data, uint16_t read_length);
-void HCL_BMA253_Write_Reg(I2C_HandleTypeDef* hi2c, uint8_t dev_addr, uint8_t reg_addr, uint8_t* p_data, uint16_t write_length);
+void HCL_BMA253_Read_Reg(bma253_t* bma253, uint8_t reg_addr, uint8_t* p_data, uint16_t read_length);
+void HCL_BMA253_Write_Reg(bma253_t* bma253, uint8_t reg_addr, uint8_t* p_data, uint16_t write_length);
