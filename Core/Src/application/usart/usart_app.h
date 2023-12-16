@@ -26,6 +26,9 @@ void APP_UART_OutChar(UART_HandleTypeDef* huart, char data);
 /* Truyền từng ký tự của xâu */
 void APP_UART_OutString(UART_HandleTypeDef* huart, const char* str);
 void APP_UART_OutNumber(UART_HandleTypeDef* huart, uint32_t number);
+void APP_UART_OutNumber_Signed(UART_HandleTypeDef* huart, int32_t number);
+void APP_UART_OutBinary_8BIT(UART_HandleTypeDef* huart, uint8_t data);
+void APP_UART_OutBinary_16BIT(UART_HandleTypeDef* huart, uint16_t data);
 
 /* Truyền toàn bộ ký tự trong FIFO */
 void APP_UART_FIFO_Flush(UART_HandleTypeDef* huart);

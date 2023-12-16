@@ -78,13 +78,56 @@ void APP_UART_OutString(UART_HandleTypeDef* huart, const char* str) {
 }
 
 void APP_UART_OutNumber(UART_HandleTypeDef* huart, uint32_t number) {
-    if(number == 0) APP_UART_OutChar(huart, '0');
+    if(number == 0) {
+        APP_UART_OutChar(huart, '0');
+        return;
+    }
 
+	char number_str[10];
+	uint8_t index = 0;
     while (number != 0) {
-        uint8_t last_digit = number % 10;
+        number_str[index++] = number % 10 + '0';
         number /= 10;
+    }
 
-        APP_UART_OutChar(huart, last_digit + '0');
+    while(index--) APP_UART_OutChar(huart, number_str[index]);
+}
+
+void APP_UART_OutNumber_Signed(UART_HandleTypeDef* huart, int32_t number) {
+    if(number == 0) {
+		APP_UART_OutChar(huart, '0');
+		return;
+	}
+
+    bool isSigned = (number < 0);
+	if(isSigned) number = -number;
+
+	char number_str[10];
+	uint8_t index = 0;
+    while (number != 0) {
+        number_str[index++] = number % 10 + '0';
+        number /= 10;
+    }
+	
+    if(isSigned) APP_UART_OutChar(huart, '-');
+	while(index--) APP_UART_OutChar(huart, number_str[index]);
+}
+
+void APP_UART_OutBinary_8BIT(UART_HandleTypeDef* huart, uint8_t data) {
+    uint8_t bit;
+	uint8_t i = 8;
+    while(i--) {
+        bit = (data & (1 << i)) ? 1 : 0;
+        APP_UART_OutChar(huart, bit + '0');
+    }
+}
+
+void APP_UART_OutBinary_16BIT(UART_HandleTypeDef* huart, uint16_t data) {
+    uint8_t bit;
+	uint8_t i = 16;
+    while(i--) {
+        bit = (data & (1 << i)) ? 1 : 0;
+        APP_UART_OutChar(huart, bit + '0');
     }
 }
 
