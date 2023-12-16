@@ -70,3 +70,9 @@ int16_t PCL_BMA253_Get_Accel_Y(BMA253_TypeDef* pcl_bma253) {
 int16_t PCL_BMA253_Get_Accel_Z(BMA253_TypeDef* pcl_bma253) {
     return PCL_BMA253_Get_Accel(pcl_bma253, BMA2x2_ACCEL_Z12_LSB_REG);
 }
+
+int16_t PCL_BMA253_Get_Accel_XYZ(BMA253_TypeDef* pcl_bma253, BMA253_Accel_Data_t* pcl_bma253_accel_data) {
+    pcl_bma253_accel_data->x = PCL_BMA253_Get_Accel_X(pcl_bma253);
+    pcl_bma253_accel_data->y = PCL_BMA253_Get_Accel_Y(pcl_bma253);
+    pcl_bma253_accel_data->z = PCL_BMA253_Get_Accel_Z(pcl_bma253);
+}

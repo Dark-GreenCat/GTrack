@@ -110,26 +110,22 @@ int main(void)
   /* USER CODE BEGIN WHILE */
 
   APP_UART_StartReceive(huart_terminal);
-  int16_t accel_x,
-          accel_y,
-          accel_z;
+  BMA253_Accel_Data_t accel_data;
   while (1) {
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
     HAL_Delay(1000);
     APP_UART_FlushToUART_String(huart_terminal, huart_terminal);
-    accel_x = PCL_BMA253_Get_Accel_X(&pcl_bma253);
-    accel_y = PCL_BMA253_Get_Accel_Y(&pcl_bma253);
-    accel_z = PCL_BMA253_Get_Accel_Z(&pcl_bma253);
+    PCL_BMA253_Get_Accel_XYZ(&pcl_bma253, &accel_data);
 
     APP_UART_OutString(huart_terminal, "\n\n------ START READ ------");
     APP_UART_OutString(huart_terminal, "\nx = ");
-    APP_UART_OutNumber_Signed(huart_terminal, accel_x);
+    APP_UART_OutNumber_Signed(huart_terminal, accel_data.x);
     APP_UART_OutString(huart_terminal, "\ny = ");
-    APP_UART_OutNumber_Signed(huart_terminal, accel_y);
+    APP_UART_OutNumber_Signed(huart_terminal, accel_data.y);
     APP_UART_OutString(huart_terminal, "\nz = ");
-    APP_UART_OutNumber_Signed(huart_terminal, accel_z);
+    APP_UART_OutNumber_Signed(huart_terminal, accel_data.z);
   }
   /* USER CODE END 3 */
 }

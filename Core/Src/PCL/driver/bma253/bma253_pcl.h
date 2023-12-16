@@ -10,6 +10,12 @@ typedef struct {
     I2C_HandleTypeDef* hi2c;
 } BMA253_TypeDef;
 
+typedef struct {
+    int16_t x;
+    int16_t y;
+    int16_t z;
+} BMA253_Accel_Data_t;
+
 
 static void __PCL_BMA253_Read_Reg(uint8_t dev_addr, uint8_t reg_addr, uint8_t* p_data, uint16_t read_length);
 static void __PCL_BMA253_Write_Reg(uint8_t dev_addr, uint8_t reg_addr, uint8_t* p_data, uint16_t write_length);
@@ -29,3 +35,4 @@ int16_t PCL_BMA253_Get_Accel(BMA253_TypeDef* pcl_bma253, uint8_t BMA2x2_ACCEL_12
 int16_t PCL_BMA253_Get_Accel_X(BMA253_TypeDef* pcl_bma253);
 int16_t PCL_BMA253_Get_Accel_Y(BMA253_TypeDef* pcl_bma253);
 int16_t PCL_BMA253_Get_Accel_Z(BMA253_TypeDef* pcl_bma253);
+int16_t PCL_BMA253_Get_Accel_XYZ(BMA253_TypeDef* pcl_bma253, BMA253_Accel_Data_t* pcl_bma253_accel_data);
