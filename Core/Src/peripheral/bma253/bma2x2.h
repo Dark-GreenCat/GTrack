@@ -441,13 +441,13 @@ burst_read(device_addr, register_addr, register_data, rd_len)
 #define		BMA2x2_SELF_TEST_SIGN_RANGE		((u8)2)
 
 /**************************************************************/
-/**\name	ERROR CODE DEFINITIONS    */
+/**\name	_ERROR CODE DEFINITIONS    */
 /**************************************************************/
 #define E_OUT_OF_RANGE          ((s8)-2)
 #define E_BMA2x2_NULL_PTR       ((s8)-127)
 #define BMA2x2_NULL             ((void *)0)
-#define ERROR			((s8)-1)
-#define	SUCCESS			((u8)0)
+#define _ERROR			((s8)-1)
+#define	_SUCCESS			((u8)0)
 /**************************************************************/
 /**\name	RETURN TYPE DEFINITION    */
 /**************************************************************/
