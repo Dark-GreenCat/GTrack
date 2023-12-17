@@ -1,9 +1,7 @@
 #include "bma253_pcl.h"
 
-static I2C_HandleTypeDef* pcl_i2c = NULL;
-
-void __PCL_BMA253_Read_Reg(uint8_t dev_addr, uint8_t reg_addr, uint8_t* p_data, uint16_t read_length) {
-    HCL_I2C_Mem_Read(pcl_i2c, 
+void __PCL_BMA253_Read_Reg(I2C_HandleTypeDef* hi2c, uint8_t dev_addr, uint8_t reg_addr, uint8_t* p_data, uint16_t read_length) {
+    HCL_I2C_Mem_Read(hi2c, 
                 dev_addr << PCL_BMA253_I2C_DEVICE_ADDRESS_SHIFT, 
                 reg_addr, PCL_BMA253_REG_SIZE, 
                 p_data, 
@@ -11,8 +9,8 @@ void __PCL_BMA253_Read_Reg(uint8_t dev_addr, uint8_t reg_addr, uint8_t* p_data, 
                 PCL_BMA253_TIMEOUT);
 }
 
-void __PCL_BMA253_Write_Reg(uint8_t dev_addr, uint8_t reg_addr, uint8_t* p_data, uint16_t write_length) {
-    HCL_I2C_Mem_Write(pcl_i2c, 
+void __PCL_BMA253_Write_Reg(I2C_HandleTypeDef* hi2c, uint8_t dev_addr, uint8_t reg_addr, uint8_t* p_data, uint16_t write_length) {
+    HCL_I2C_Mem_Write(hi2c, 
                 dev_addr << PCL_BMA253_I2C_DEVICE_ADDRESS_SHIFT, 
                 reg_addr, PCL_BMA253_REG_SIZE, 
                 p_data, 
@@ -22,26 +20,17 @@ void __PCL_BMA253_Write_Reg(uint8_t dev_addr, uint8_t reg_addr, uint8_t* p_data,
 
 void PCL_BMA253_Init(BMA253_TypeDef* pcl_bma253, I2C_HandleTypeDef* hi2c) {
     pcl_bma253->hi2c = hi2c;
-    pcl_bma253->bma253.dev_addr = BMA2x2_I2C_ADDR1;
+    pcl_bma253->dev_addr = BMA253_I2C_ADDR1;
 
-    I2C_HandleTypeDef* pcl_i2c_old = pcl_i2c;
-    pcl_i2c = pcl_bma253->hi2c;
-    HCL_BMA253_Init(&pcl_bma253->bma253, __PCL_BMA253_Read_Reg, __PCL_BMA253_Write_Reg);
-    pcl_i2c = pcl_i2c_old;
+    HCL_BMA253_Init(pcl_bma253, __PCL_BMA253_Read_Reg, __PCL_BMA253_Write_Reg);
 }
 
 void PCL_BMA253_Mem_Read(BMA253_TypeDef* pcl_bma253, uint8_t reg_addr, uint8_t* p_data, uint16_t read_length) {
-    I2C_HandleTypeDef* pcl_i2c_old = pcl_i2c;
-    pcl_i2c = pcl_bma253->hi2c;
-    HCL_BMA253_Read_Reg(&pcl_bma253->bma253, reg_addr, p_data, read_length);
-    pcl_i2c = pcl_i2c_old;
+    HCL_BMA253_Read_Reg(pcl_bma253, reg_addr, p_data, read_length);
 }
 
 void PCL_BMA253_Mem_Write(BMA253_TypeDef* pcl_bma253, uint8_t reg_addr, uint8_t* p_data, uint16_t write_length) {
-    I2C_HandleTypeDef* pcl_i2c_old = pcl_i2c;
-    pcl_i2c = pcl_bma253->hi2c;
-    HCL_BMA253_Write_Reg(&pcl_bma253->bma253, reg_addr, p_data, write_length);
-    pcl_i2c = pcl_i2c_old;
+    HCL_BMA253_Write_Reg(pcl_bma253, reg_addr, p_data, write_length);
 }
 
 int16_t PCL_BMA253_Get_Accel(BMA253_TypeDef* pcl_bma253, uint8_t BMA253_ACCEL_12BIT_LSB_REG) {

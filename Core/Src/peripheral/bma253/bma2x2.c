@@ -372,7 +372,7 @@ s8 *accel_x_s8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_X_AXIS_MSB_ADDR, &data,
 			BMA253_GEN_READ_WRITE_LENGTH);
-			*accel_x_s8 = BMA2x2_GET_BITSLICE(data,
+			*accel_x_s8 = BMA253_GET_BITSLICE(data,
 			BMA253_ACCEL_X_MSB);
 		}
 	return com_rslt;
@@ -494,7 +494,7 @@ s8 *accel_y_s8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_Y_AXIS_MSB_ADDR, &data,
 			BMA253_GEN_READ_WRITE_LENGTH);
-			*accel_y_s8 = BMA2x2_GET_BITSLICE(data,
+			*accel_y_s8 = BMA253_GET_BITSLICE(data,
 			BMA253_ACCEL_Y_MSB);
 		}
 	return com_rslt;
@@ -616,7 +616,7 @@ s8 *accel_z_s8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_Z_AXIS_MSB_ADDR, &data,
 			BMA253_GEN_READ_WRITE_LENGTH);
-			*accel_z_s8 = BMA2x2_GET_BITSLICE(data,
+			*accel_z_s8 = BMA253_GET_BITSLICE(data,
 			BMA253_ACCEL_Z_MSB);
 		}
 	return com_rslt;
@@ -791,21 +791,21 @@ struct BMA253_ACCEL_eight_resolution *accel)
 		(p_bma2x2->dev_addr,
 		BMA2x2_X_AXIS_MSB_ADDR, &data_u8,
 		BMA253_GEN_READ_WRITE_LENGTH);
-		accel->x = BMA2x2_GET_BITSLICE(data_u8,
+		accel->x = BMA253_GET_BITSLICE(data_u8,
 		BMA253_ACCEL_X_MSB);
 
 		com_rslt = p_bma2x2->BMA2x2_BUS_READ_FUNC
 		(p_bma2x2->dev_addr,
 		BMA2x2_Y_AXIS_MSB_ADDR, &data_u8,
 		BMA253_GEN_READ_WRITE_LENGTH);
-		accel->y = BMA2x2_GET_BITSLICE(data_u8,
+		accel->y = BMA253_GET_BITSLICE(data_u8,
 		BMA253_ACCEL_Y_MSB);
 
 		com_rslt = p_bma2x2->BMA2x2_BUS_READ_FUNC
 		(p_bma2x2->dev_addr,
 		BMA2x2_Z_AXIS_MSB_ADDR, &data_u8,
 		BMA253_GEN_READ_WRITE_LENGTH);
-		accel->z = BMA2x2_GET_BITSLICE(data_u8,
+		accel->z = BMA253_GET_BITSLICE(data_u8,
 		BMA253_ACCEL_Z_MSB);
 		}
 	return com_rslt;
@@ -941,7 +941,7 @@ u8 *frame_count_u8)
 			p_bma2x2->dev_addr,
 			BMA2x2_FIFO_FRAME_COUNT_STAT_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			*frame_count_u8 = BMA2x2_GET_BITSLICE(data_u8,
+			*frame_count_u8 = BMA253_GET_BITSLICE(data_u8,
 			BMA2x2_FIFO_FRAME_COUNT_STAT);
 		}
 	return com_rslt;
@@ -978,7 +978,7 @@ u8 *fifo_overrun_u8)
 			p_bma2x2->dev_addr,
 			BMA2x2_FIFO_OVERRUN_STAT_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			*fifo_overrun_u8 = BMA2x2_GET_BITSLICE(data_u8,
+			*fifo_overrun_u8 = BMA253_GET_BITSLICE(data_u8,
 			BMA2x2_FIFO_OVERRUN_STAT);
 		}
 	return com_rslt;
@@ -1054,7 +1054,7 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_get_range(u8 *range_u8)
 		com_rslt = p_bma2x2->BMA2x2_BUS_READ_FUNC(p_bma2x2->dev_addr,
 		BMA2x2_RANGE_SELECT_REG, &data_u8,
 		BMA253_GEN_READ_WRITE_LENGTH);
-		data_u8 = BMA2x2_GET_BITSLICE(data_u8, BMA2x2_RANGE_SELECT);
+		data_u8 = BMA253_GET_BITSLICE(data_u8, BMA2x2_RANGE_SELECT);
 		*range_u8 = data_u8;
 	}
 	return com_rslt;
@@ -1101,22 +1101,22 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_set_range(u8 range_u8)
 			BMA253_GEN_READ_WRITE_LENGTH);
 			switch (range_u8) {
 			case BMA2x2_RANGE_2G:
-				data_u8  = BMA2x2_SET_BITSLICE(data_u8,
+				data_u8  = BMA253_SET_BITSLICE(data_u8,
 				BMA2x2_RANGE_SELECT,
 				BMA2x2_RANGE_2G);
 			break;
 			case BMA2x2_RANGE_4G:
-				data_u8  = BMA2x2_SET_BITSLICE(data_u8,
+				data_u8  = BMA253_SET_BITSLICE(data_u8,
 				BMA2x2_RANGE_SELECT,
 				BMA2x2_RANGE_4G);
 			break;
 			case BMA2x2_RANGE_8G:
-				data_u8  = BMA2x2_SET_BITSLICE(data_u8,
+				data_u8  = BMA253_SET_BITSLICE(data_u8,
 				BMA2x2_RANGE_SELECT,
 				BMA2x2_RANGE_8G);
 			break;
 			case BMA2x2_RANGE_16G:
-				data_u8  = BMA2x2_SET_BITSLICE(data_u8,
+				data_u8  = BMA253_SET_BITSLICE(data_u8,
 				BMA2x2_RANGE_SELECT,
 				BMA2x2_RANGE_16G);
 			break;
@@ -1173,7 +1173,7 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_get_bw(u8 *bw_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_BW_REG, &data_u8,
 			BMA253_GEN_READ_WRITE_LENGTH);
-			data_u8 = BMA2x2_GET_BITSLICE(data_u8, BMA2x2_BW);
+			data_u8 = BMA253_GET_BITSLICE(data_u8, BMA2x2_BW);
 			*bw_u8 = data_u8;
 		}
 	return com_rslt;
@@ -1263,7 +1263,7 @@ if (p_bma2x2 == BMA2x2_NULL) {
 			(p_bma2x2->dev_addr,
 			BMA2x2_BW_REG, &data_u8,
 			BMA253_GEN_READ_WRITE_LENGTH);
-			data_u8 = BMA2x2_SET_BITSLICE(data_u8,
+			data_u8 = BMA253_SET_BITSLICE(data_u8,
 			BMA2x2_BW, data_bw_u8);
 			com_rslt += bma2x2_write_reg
 			(BMA2x2_BW_REG, &data_u8,
@@ -1323,7 +1323,7 @@ if (p_bma2x2 == BMA2x2_NULL) {
 			(p_bma2x2->dev_addr,
 			BMA2x2_BW_REG, &data_u8,
 			BMA253_GEN_READ_WRITE_LENGTH);
-			data_u8 = BMA2x2_SET_BITSLICE
+			data_u8 = BMA253_SET_BITSLICE
 			(data_u8, BMA2x2_BW, data_bw_u8);
 			com_rslt += bma2x2_write_reg(
 			BMA2x2_BW_REG, &data_u8,
@@ -1493,7 +1493,7 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_set_power_mode(u8 power_mode_u8)
 		mode_ctr_twel_reg =  p_bma2x2->low_mode_reg;
 
 		/* write the power mode to the register 0x12*/
-		data2_u8  = BMA2x2_SET_BITSLICE(data2_u8, BMA2x2_LOW_POWER_MODE,
+		data2_u8  = BMA253_SET_BITSLICE(data2_u8, BMA2x2_LOW_POWER_MODE,
 					mode_ctr_twel_reg);
 		com_rslt += bma2x2_write_reg(BMA2x2_LOW_POWER_MODE_REG,
 					&data2_u8, 1);
@@ -1506,7 +1506,7 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_set_power_mode(u8 power_mode_u8)
 			(p_bma2x2->power_mode_u8 == BMA2x2_MODE_LOWPOWER2)) &&
 				(power_mode_u8 == BMA2x2_MODE_NORMAL)) {
 				/* Enter the power mode to suspend*/
-				data_u8  = BMA2x2_SET_BITSLICE(data_u8,
+				data_u8  = BMA253_SET_BITSLICE(data_u8,
 				BMA2x2_MODE_CTRL, BMA253_SHIFT_FOUR_BITS);
 				/* write the power mode to suspend*/
 				com_rslt += bma2x2_write_reg(
@@ -1518,7 +1518,7 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_set_power_mode(u8 power_mode_u8)
 			}
 
 		/* write the power mode to 0x11 register*/
-		data_u8  = BMA2x2_SET_BITSLICE(data_u8, BMA2x2_MODE_CTRL,
+		data_u8  = BMA253_SET_BITSLICE(data_u8, BMA2x2_MODE_CTRL,
 			mode_ctr_eleven_reg);
 		com_rslt += bma2x2_write_reg(BMA2x2_MODE_CTRL_REG, &data_u8, 1);
 		/*A minimum delay of atleast 450us is required for
@@ -1653,7 +1653,7 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_get_sleep_durn(u8 *sleep_durn_u8)
 			com_rslt = p_bma2x2->BMA2x2_BUS_READ_FUNC
 			(p_bma2x2->dev_addr, BMA2x2_SLEEP_DURN_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			*sleep_durn_u8 = BMA2x2_GET_BITSLICE
+			*sleep_durn_u8 = BMA253_GET_BITSLICE
 			(data_u8, BMA2x2_SLEEP_DURN);
 		}
 	return com_rslt;
@@ -1766,7 +1766,7 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_set_sleep_durn(u8 sleep_durn_u8)
 			com_rslt = p_bma2x2->BMA2x2_BUS_READ_FUNC
 			(p_bma2x2->dev_addr, BMA2x2_SLEEP_DURN_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			data_u8 = BMA2x2_SET_BITSLICE
+			data_u8 = BMA253_SET_BITSLICE
 			(data_u8, BMA2x2_SLEEP_DURN, data_sleep_durn_u8);
 			com_rslt += bma2x2_write_reg(BMA2x2_SLEEP_DURN_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
@@ -1812,7 +1812,7 @@ u8 *sleep_timer_u8)
 			com_rslt = p_bma2x2->BMA2x2_BUS_READ_FUNC
 			(p_bma2x2->dev_addr, BMA2x2_SLEEP_TIMER_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			*sleep_timer_u8 = BMA2x2_GET_BITSLICE
+			*sleep_timer_u8 = BMA253_GET_BITSLICE
 			(data_u8, BMA2x2_SLEEP_TIMER);
 		}
 	return com_rslt;
@@ -1853,7 +1853,7 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_set_sleep_timer_mode(u8 sleep_timer_u8)
 			com_rslt = p_bma2x2->BMA2x2_BUS_READ_FUNC
 			(p_bma2x2->dev_addr, BMA2x2_SLEEP_TIMER_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			data_u8 = BMA2x2_SET_BITSLICE
+			data_u8 = BMA253_SET_BITSLICE
 			(data_u8, BMA2x2_SLEEP_TIMER, sleep_timer_u8);
 			com_rslt += bma2x2_write_reg(BMA2x2_SLEEP_TIMER_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
@@ -1894,7 +1894,7 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_get_high_bw(u8 *high_bw_u8)
 			com_rslt = p_bma2x2->BMA2x2_BUS_READ_FUNC
 			(p_bma2x2->dev_addr, BMA2x2_ENABLE_DATA_HIGH_BW_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			*high_bw_u8 = BMA2x2_GET_BITSLICE
+			*high_bw_u8 = BMA253_GET_BITSLICE
 			(data_u8, BMA2x2_ENABLE_DATA_HIGH_BW);
 		}
 	return com_rslt;
@@ -1930,7 +1930,7 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_set_high_bw(u8 high_bw_u8)
 			com_rslt = p_bma2x2->BMA2x2_BUS_READ_FUNC
 			(p_bma2x2->dev_addr, BMA2x2_ENABLE_DATA_HIGH_BW_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			data_u8 = BMA2x2_SET_BITSLICE(data_u8,
+			data_u8 = BMA253_SET_BITSLICE(data_u8,
 			BMA2x2_ENABLE_DATA_HIGH_BW, high_bw_u8);
 			com_rslt += bma2x2_write_reg(
 			BMA2x2_ENABLE_DATA_HIGH_BW_REG,
@@ -1969,10 +1969,10 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_get_shadow_dis(u8 *shadow_dis_u8)
 			/*Read the shadow dis*/
 			com_rslt = p_bma2x2->BMA2x2_BUS_READ_FUNC
 			(p_bma2x2->dev_addr,
-			BMA2x2_DIS_SHADOW_PROC_REG,
+			BMA253_ACCD_HBW_SHADOW_DIS_BITS_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			*shadow_dis_u8 = BMA2x2_GET_BITSLICE
-			(data_u8, BMA2x2_DIS_SHADOW_PROC);
+			*shadow_dis_u8 = BMA253_GET_BITSLICE
+			(data_u8, BMA253_ACCD_HBW_SHADOW_DIS_BITS);
 		}
 	return com_rslt;
 }
@@ -2006,11 +2006,11 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_set_shadow_dis(u8 shadow_dis_u8)
 		} else {
 			/* Write the shadow dis*/
 			com_rslt = p_bma2x2->BMA2x2_BUS_READ_FUNC
-			(p_bma2x2->dev_addr, BMA2x2_DIS_SHADOW_PROC_REG,
+			(p_bma2x2->dev_addr, BMA253_ACCD_HBW_SHADOW_DIS_BITS_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			data_u8 = BMA2x2_SET_BITSLICE
-			(data_u8, BMA2x2_DIS_SHADOW_PROC, shadow_dis_u8);
-			com_rslt += bma2x2_write_reg(BMA2x2_DIS_SHADOW_PROC_REG,
+			data_u8 = BMA253_SET_BITSLICE
+			(data_u8, BMA253_ACCD_HBW_SHADOW_DIS_BITS, shadow_dis_u8);
+			com_rslt += bma2x2_write_reg(BMA253_ACCD_HBW_SHADOW_DIS_BITS_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
 		}
 	return com_rslt;
@@ -2078,7 +2078,7 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_update_image(void)
 			com_rslt = p_bma2x2->BMA2x2_BUS_READ_FUNC
 			(p_bma2x2->dev_addr, BMA2x2_UPDATE_IMAGE_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			data_u8 = BMA2x2_SET_BITSLICE
+			data_u8 = BMA253_SET_BITSLICE
 			(data_u8, BMA2x2_UPDATE_IMAGE,
 			BMA253_GEN_READ_WRITE_LENGTH);
 			com_rslt += bma2x2_write_reg(BMA2x2_UPDATE_IMAGE_REG,
@@ -2148,7 +2148,7 @@ u8 *value_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_ENABLE_LOW_G_INTR_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			*value_u8 = BMA2x2_GET_BITSLICE
+			*value_u8 = BMA253_GET_BITSLICE
 			(data_u8, BMA2x2_ENABLE_LOW_G_INTR);
 		break;
 		case BMA2x2_HIGH_G_X_INTR:
@@ -2156,7 +2156,7 @@ u8 *value_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_ENABLE_HIGH_G_X_INTR_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			*value_u8 = BMA2x2_GET_BITSLICE
+			*value_u8 = BMA253_GET_BITSLICE
 			(data_u8, BMA2x2_ENABLE_HIGH_G_X_INTR);
 		break;
 		case BMA2x2_HIGH_G_Y_INTR:
@@ -2164,7 +2164,7 @@ u8 *value_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_ENABLE_HIGH_G_Y_INTR_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			*value_u8 = BMA2x2_GET_BITSLICE
+			*value_u8 = BMA253_GET_BITSLICE
 			(data_u8, BMA2x2_ENABLE_HIGH_G_Y_INTR);
 		break;
 		case BMA2x2_HIGH_G_Z_INTR:
@@ -2172,7 +2172,7 @@ u8 *value_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_ENABLE_HIGH_G_Z_INTR_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			*value_u8 = BMA2x2_GET_BITSLICE
+			*value_u8 = BMA253_GET_BITSLICE
 			(data_u8, BMA2x2_ENABLE_HIGH_G_Z_INTR);
 		break;
 		case BMA2x2_DATA_ENABLE:
@@ -2180,7 +2180,7 @@ u8 *value_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_ENABLE_NEW_DATA_INTR_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			*value_u8 = BMA2x2_GET_BITSLICE
+			*value_u8 = BMA253_GET_BITSLICE
 			(data_u8, BMA2x2_ENABLE_NEW_DATA_INTR);
 		break;
 		case BMA2x2_SLOPE_X_INTR:
@@ -2188,7 +2188,7 @@ u8 *value_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_ENABLE_SLOPE_X_INTR_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			*value_u8 = BMA2x2_GET_BITSLICE
+			*value_u8 = BMA253_GET_BITSLICE
 			(data_u8, BMA2x2_ENABLE_SLOPE_X_INTR);
 		break;
 		case BMA2x2_SLOPE_Y_INTR:
@@ -2196,7 +2196,7 @@ u8 *value_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_ENABLE_SLOPE_Y_INTR_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			*value_u8 = BMA2x2_GET_BITSLICE
+			*value_u8 = BMA253_GET_BITSLICE
 			(data_u8, BMA2x2_ENABLE_SLOPE_Y_INTR);
 		break;
 		case BMA2x2_SLOPE_Z_INTR:
@@ -2204,7 +2204,7 @@ u8 *value_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_ENABLE_SLOPE_Z_INTR_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			*value_u8 = BMA2x2_GET_BITSLICE
+			*value_u8 = BMA253_GET_BITSLICE
 			(data_u8, BMA2x2_ENABLE_SLOPE_Z_INTR);
 		break;
 		case BMA2x2_SINGLE_TAP_INTR:
@@ -2212,7 +2212,7 @@ u8 *value_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_ENABLE_SINGLE_TAP_INTR_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			*value_u8 = BMA2x2_GET_BITSLICE
+			*value_u8 = BMA253_GET_BITSLICE
 			(data_u8, BMA2x2_ENABLE_SINGLE_TAP_INTR);
 		break;
 		case BMA2x2_DOUBLE_TAP_INTR:
@@ -2220,7 +2220,7 @@ u8 *value_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_ENABLE_DOUBLE_TAP_INTR_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			*value_u8 = BMA2x2_GET_BITSLICE
+			*value_u8 = BMA253_GET_BITSLICE
 			(data_u8, BMA2x2_ENABLE_DOUBLE_TAP_INTR);
 		break;
 		case BMA2x2_ORIENT_INTR:
@@ -2228,7 +2228,7 @@ u8 *value_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_ENABLE_ORIENT_INTR_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			*value_u8 = BMA2x2_GET_BITSLICE
+			*value_u8 = BMA253_GET_BITSLICE
 			(data_u8, BMA2x2_ENABLE_ORIENT_INTR);
 		break;
 		case BMA2x2_FLAT_INTR:
@@ -2236,7 +2236,7 @@ u8 *value_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_ENABLE_FLAT_INTR_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			*value_u8 = BMA2x2_GET_BITSLICE
+			*value_u8 = BMA253_GET_BITSLICE
 			(data_u8, BMA2x2_ENABLE_FLAT_INTR);
 		break;
 		default:
@@ -2313,62 +2313,62 @@ u8 value_u8)
 		switch (intr_type_u8) {
 		case BMA2x2_LOW_G_INTR:
 			/* Low G Interrupt  */
-			data2_u8 = BMA2x2_SET_BITSLICE(data2_u8,
+			data2_u8 = BMA253_SET_BITSLICE(data2_u8,
 			BMA2x2_ENABLE_LOW_G_INTR, value_u8);
 		break;
 		case BMA2x2_HIGH_G_X_INTR:
 			/* High G X Interrupt */
-			data2_u8 = BMA2x2_SET_BITSLICE(data2_u8,
+			data2_u8 = BMA253_SET_BITSLICE(data2_u8,
 			BMA2x2_ENABLE_HIGH_G_X_INTR, value_u8);
 		break;
 		case BMA2x2_HIGH_G_Y_INTR:
 			/* High G Y Interrupt */
-			data2_u8 = BMA2x2_SET_BITSLICE(data2_u8,
+			data2_u8 = BMA253_SET_BITSLICE(data2_u8,
 			BMA2x2_ENABLE_HIGH_G_Y_INTR, value_u8);
 		break;
 		case BMA2x2_HIGH_G_Z_INTR:
 			/* High G Z Interrupt */
-			data2_u8 = BMA2x2_SET_BITSLICE(data2_u8,
+			data2_u8 = BMA253_SET_BITSLICE(data2_u8,
 			BMA2x2_ENABLE_HIGH_G_Z_INTR, value_u8);
 		break;
 		case BMA2x2_DATA_ENABLE:
 			/*Data En Interrupt  */
-			data2_u8 = BMA2x2_SET_BITSLICE(data2_u8,
+			data2_u8 = BMA253_SET_BITSLICE(data2_u8,
 			BMA2x2_ENABLE_NEW_DATA_INTR, value_u8);
 		break;
 		case BMA2x2_SLOPE_X_INTR:
 			/* Slope X Interrupt */
-			data_u8 = BMA2x2_SET_BITSLICE(data_u8,
+			data_u8 = BMA253_SET_BITSLICE(data_u8,
 			BMA2x2_ENABLE_SLOPE_X_INTR, value_u8);
 		break;
 		case BMA2x2_SLOPE_Y_INTR:
 			/* Slope Y Interrupt */
-			data_u8 = BMA2x2_SET_BITSLICE(data_u8,
+			data_u8 = BMA253_SET_BITSLICE(data_u8,
 			BMA2x2_ENABLE_SLOPE_Y_INTR, value_u8);
 		break;
 		case BMA2x2_SLOPE_Z_INTR:
 			/* Slope Z Interrupt */
-			data_u8 = BMA2x2_SET_BITSLICE(data_u8,
+			data_u8 = BMA253_SET_BITSLICE(data_u8,
 			BMA2x2_ENABLE_SLOPE_Z_INTR, value_u8);
 		break;
 		case BMA2x2_SINGLE_TAP_INTR:
 			/* Single Tap Interrupt */
-			data_u8 = BMA2x2_SET_BITSLICE(data_u8,
+			data_u8 = BMA253_SET_BITSLICE(data_u8,
 				BMA2x2_ENABLE_SINGLE_TAP_INTR, value_u8);
 		break;
 		case BMA2x2_DOUBLE_TAP_INTR:
 			/* Double Tap Interrupt */
-			data_u8 = BMA2x2_SET_BITSLICE(data_u8,
+			data_u8 = BMA253_SET_BITSLICE(data_u8,
 				BMA2x2_ENABLE_DOUBLE_TAP_INTR, value_u8);
 		break;
 		case BMA2x2_ORIENT_INTR:
 			/* Orient Interrupt  */
-			data_u8 = BMA2x2_SET_BITSLICE(data_u8,
+			data_u8 = BMA253_SET_BITSLICE(data_u8,
 			BMA2x2_ENABLE_ORIENT_INTR, value_u8);
 		break;
 		case BMA2x2_FLAT_INTR:
 			/* Flat Interrupt */
-			data_u8 = BMA2x2_SET_BITSLICE(data_u8,
+			data_u8 = BMA253_SET_BITSLICE(data_u8,
 			BMA2x2_ENABLE_FLAT_INTR, value_u8);
 		break;
 		default:
@@ -2421,7 +2421,7 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_get_intr_fifo_full(u8 *fifo_full_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_INTR_FIFO_FULL_ENABLE_INTR_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			*fifo_full_u8 = BMA2x2_GET_BITSLICE(data_u8,
+			*fifo_full_u8 = BMA253_GET_BITSLICE(data_u8,
 			BMA2x2_INTR_FIFO_FULL_ENABLE_INTR);
 		}
 	return com_rslt;
@@ -2463,7 +2463,7 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_set_intr_fifo_full(u8 fifo_full_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_INTR_FIFO_FULL_ENABLE_INTR_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			data_u8 = BMA2x2_SET_BITSLICE
+			data_u8 = BMA253_SET_BITSLICE
 			(data_u8, BMA2x2_INTR_FIFO_FULL_ENABLE_INTR,
 			fifo_full_u8);
 			com_rslt += bma2x2_write_reg(
@@ -2513,7 +2513,7 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_get_intr_fifo_wm(u8 *fifo_wm_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_INTR_FIFO_WM_ENABLE_INTR_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			*fifo_wm_u8 = BMA2x2_GET_BITSLICE
+			*fifo_wm_u8 = BMA253_GET_BITSLICE
 			(data_u8, BMA2x2_INTR_FIFO_WM_ENABLE_INTR);
 		}
 	return com_rslt;
@@ -2557,7 +2557,7 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_set_intr_fifo_wm(u8 fifo_wm_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_INTR_FIFO_WM_ENABLE_INTR_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			data_u8 = BMA2x2_SET_BITSLICE
+			data_u8 = BMA253_SET_BITSLICE
 			(data_u8, BMA2x2_INTR_FIFO_WM_ENABLE_INTR,
 			fifo_wm_u8);
 			com_rslt += bma2x2_write_reg(
@@ -2615,7 +2615,7 @@ u8 *slow_no_motion_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_INTR_SLOW_NO_MOTION_ENABLE_X_INTR_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			*slow_no_motion_u8 = BMA2x2_GET_BITSLICE
+			*slow_no_motion_u8 = BMA253_GET_BITSLICE
 			(data_u8, BMA2x2_INTR_SLOW_NO_MOTION_ENABLE_X_INTR);
 		break;
 		case BMA2x2_SLOW_NO_MOTION_ENABLE_Y:
@@ -2623,7 +2623,7 @@ u8 *slow_no_motion_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_INTR_SLOW_NO_MOTION_ENABLE_Y_INTR_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			*slow_no_motion_u8 = BMA2x2_GET_BITSLICE
+			*slow_no_motion_u8 = BMA253_GET_BITSLICE
 			(data_u8, BMA2x2_INTR_SLOW_NO_MOTION_ENABLE_Y_INTR);
 		break;
 		case BMA2x2_SLOW_NO_MOTION_ENABLE_Z:
@@ -2631,7 +2631,7 @@ u8 *slow_no_motion_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_INTR_SLOW_NO_MOTION_ENABLE_Z_INTR_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			*slow_no_motion_u8 = BMA2x2_GET_BITSLICE
+			*slow_no_motion_u8 = BMA253_GET_BITSLICE
 			(data_u8, BMA2x2_INTR_SLOW_NO_MOTION_ENABLE_Z_INTR);
 		break;
 		case BMA2x2_SLOW_NO_MOTION_ENABLE_SELECT:
@@ -2639,7 +2639,7 @@ u8 *slow_no_motion_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_INTR_SLOW_NO_MOTION_ENABLE_SELECT_INTR_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			*slow_no_motion_u8 = BMA2x2_GET_BITSLICE
+			*slow_no_motion_u8 = BMA253_GET_BITSLICE
 			(data_u8,
 			BMA2x2_INTR_SLOW_NO_MOTION_ENABLE_SELECT_INTR);
 		break;
@@ -2697,7 +2697,7 @@ u8 slow_no_motion_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_INTR_SLOW_NO_MOTION_ENABLE_X_INTR_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			data_u8 = BMA2x2_SET_BITSLICE
+			data_u8 = BMA253_SET_BITSLICE
 			(data_u8,
 			BMA2x2_INTR_SLOW_NO_MOTION_ENABLE_X_INTR,
 			slow_no_motion_u8);
@@ -2710,7 +2710,7 @@ u8 slow_no_motion_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_INTR_SLOW_NO_MOTION_ENABLE_Y_INTR_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			data_u8 = BMA2x2_SET_BITSLICE
+			data_u8 = BMA253_SET_BITSLICE
 			(data_u8,
 			BMA2x2_INTR_SLOW_NO_MOTION_ENABLE_Y_INTR,
 			slow_no_motion_u8);
@@ -2723,7 +2723,7 @@ u8 slow_no_motion_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_INTR_SLOW_NO_MOTION_ENABLE_Z_INTR_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			data_u8 = BMA2x2_SET_BITSLICE
+			data_u8 = BMA253_SET_BITSLICE
 			(data_u8,
 			BMA2x2_INTR_SLOW_NO_MOTION_ENABLE_Z_INTR,
 			slow_no_motion_u8);
@@ -2736,7 +2736,7 @@ u8 slow_no_motion_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_INTR_SLOW_NO_MOTION_ENABLE_SELECT_INTR_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			data_u8 = BMA2x2_SET_BITSLICE
+			data_u8 = BMA253_SET_BITSLICE
 			(data_u8,
 			BMA2x2_INTR_SLOW_NO_MOTION_ENABLE_SELECT_INTR,
 			slow_no_motion_u8);
@@ -2799,7 +2799,7 @@ u8 *intr_low_g_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_ENABLE_INTR1_PAD_LOW_G_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			*intr_low_g_u8 = BMA2x2_GET_BITSLICE
+			*intr_low_g_u8 = BMA253_GET_BITSLICE
 			(data_u8, BMA2x2_ENABLE_INTR1_PAD_LOW_G);
 		break;
 		case BMA2x2_INTR2_LOW_G:
@@ -2807,7 +2807,7 @@ u8 *intr_low_g_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_ENABLE_INTR2_PAD_LOW_G_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			*intr_low_g_u8 = BMA2x2_GET_BITSLICE
+			*intr_low_g_u8 = BMA253_GET_BITSLICE
 			(data_u8, BMA2x2_ENABLE_INTR2_PAD_LOW_G);
 		break;
 		default:
@@ -2864,7 +2864,7 @@ u8 intr_low_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_ENABLE_INTR1_PAD_LOW_G_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			data_u8 = BMA2x2_SET_BITSLICE(data_u8,
+			data_u8 = BMA253_SET_BITSLICE(data_u8,
 			BMA2x2_ENABLE_INTR1_PAD_LOW_G, intr_low_u8);
 			com_rslt += bma2x2_write_reg(
 			BMA2x2_ENABLE_INTR1_PAD_LOW_G_REG,
@@ -2875,7 +2875,7 @@ u8 intr_low_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_ENABLE_INTR2_PAD_LOW_G_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			data_u8 = BMA2x2_SET_BITSLICE
+			data_u8 = BMA253_SET_BITSLICE
 			(data_u8, BMA2x2_ENABLE_INTR2_PAD_LOW_G,
 			intr_low_u8);
 			com_rslt += bma2x2_write_reg(
@@ -2934,7 +2934,7 @@ u8 *intr_high_g_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_ENABLE_INTR1_PAD_HIGH_G_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			*intr_high_g_u8 = BMA2x2_GET_BITSLICE
+			*intr_high_g_u8 = BMA253_GET_BITSLICE
 			(data_u8, BMA2x2_ENABLE_INTR1_PAD_HIGH_G);
 		break;
 		case BMA2x2_INTR2_HIGH_G:
@@ -2942,7 +2942,7 @@ u8 *intr_high_g_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_ENABLE_INTR2_PAD_HIGH_G_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			*intr_high_g_u8 = BMA2x2_GET_BITSLICE
+			*intr_high_g_u8 = BMA253_GET_BITSLICE
 			(data_u8, BMA2x2_ENABLE_INTR2_PAD_HIGH_G);
 		break;
 		default:
@@ -2997,7 +2997,7 @@ u8 intr_high_g_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_ENABLE_INTR1_PAD_HIGH_G_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			data_u8 = BMA2x2_SET_BITSLICE
+			data_u8 = BMA253_SET_BITSLICE
 			(data_u8, BMA2x2_ENABLE_INTR1_PAD_HIGH_G,
 			intr_high_g_u8);
 			com_rslt += bma2x2_write_reg(
@@ -3009,7 +3009,7 @@ u8 intr_high_g_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_ENABLE_INTR2_PAD_HIGH_G_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			data_u8 = BMA2x2_SET_BITSLICE
+			data_u8 = BMA253_SET_BITSLICE
 			(data_u8, BMA2x2_ENABLE_INTR2_PAD_HIGH_G,
 			intr_high_g_u8);
 			com_rslt += bma2x2_write_reg(
@@ -3070,7 +3070,7 @@ u8 *intr_slope_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_ENABLE_INTR1_PAD_SLOPE_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			*intr_slope_u8 = BMA2x2_GET_BITSLICE
+			*intr_slope_u8 = BMA253_GET_BITSLICE
 			(data_u8, BMA2x2_ENABLE_INTR1_PAD_SLOPE);
 		break;
 		case BMA2x2_INTR2_SLOPE:
@@ -3078,7 +3078,7 @@ u8 *intr_slope_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_ENABLE_INTR2_PAD_SLOPE_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			*intr_slope_u8 = BMA2x2_GET_BITSLICE
+			*intr_slope_u8 = BMA253_GET_BITSLICE
 			(data_u8, BMA2x2_ENABLE_INTR2_PAD_SLOPE);
 		break;
 		default:
@@ -3135,7 +3135,7 @@ u8 intr_slope_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_ENABLE_INTR1_PAD_SLOPE_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			data_u8 = BMA2x2_SET_BITSLICE
+			data_u8 = BMA253_SET_BITSLICE
 			(data_u8, BMA2x2_ENABLE_INTR1_PAD_SLOPE,
 			intr_slope_u8);
 			com_rslt += bma2x2_write_reg(
@@ -3147,7 +3147,7 @@ u8 intr_slope_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_ENABLE_INTR2_PAD_SLOPE_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			data_u8 = BMA2x2_SET_BITSLICE
+			data_u8 = BMA253_SET_BITSLICE
 			(data_u8, BMA2x2_ENABLE_INTR2_PAD_SLOPE,
 			intr_slope_u8);
 			com_rslt += bma2x2_write_reg(
@@ -3209,7 +3209,7 @@ u8 *intr_slow_no_motion_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_ENABLE_INTR1_PAD_SLOW_NO_MOTION_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			*intr_slow_no_motion_u8 = BMA2x2_GET_BITSLICE
+			*intr_slow_no_motion_u8 = BMA253_GET_BITSLICE
 			(data_u8, BMA2x2_ENABLE_INTR1_PAD_SLOW_NO_MOTION);
 		break;
 		case BMA2x2_INTR2_SLOW_NO_MOTION:
@@ -3217,7 +3217,7 @@ u8 *intr_slow_no_motion_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_ENABLE_INTR2_PAD_SLOW_NO_MOTION_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			*intr_slow_no_motion_u8 = BMA2x2_GET_BITSLICE
+			*intr_slow_no_motion_u8 = BMA253_GET_BITSLICE
 			(data_u8, BMA2x2_ENABLE_INTR2_PAD_SLOW_NO_MOTION);
 		break;
 		default:
@@ -3275,7 +3275,7 @@ u8 intr_slow_no_motion_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_ENABLE_INTR1_PAD_SLOW_NO_MOTION_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			data_u8 = BMA2x2_SET_BITSLICE
+			data_u8 = BMA253_SET_BITSLICE
 			(data_u8,
 			BMA2x2_ENABLE_INTR1_PAD_SLOW_NO_MOTION,
 			intr_slow_no_motion_u8);
@@ -3288,7 +3288,7 @@ u8 intr_slow_no_motion_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_ENABLE_INTR2_PAD_SLOW_NO_MOTION_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			data_u8 = BMA2x2_SET_BITSLICE
+			data_u8 = BMA253_SET_BITSLICE
 			(data_u8,
 			BMA2x2_ENABLE_INTR2_PAD_SLOW_NO_MOTION,
 			intr_slow_no_motion_u8);
@@ -3350,7 +3350,7 @@ u8 *intr_double_tap_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_ENABLE_INTR1_PAD_DOUBLE_TAP_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			*intr_double_tap_u8 = BMA2x2_GET_BITSLICE
+			*intr_double_tap_u8 = BMA253_GET_BITSLICE
 			(data_u8, BMA2x2_ENABLE_INTR1_PAD_DOUBLE_TAP);
 		break;
 		case BMA2x2_INTR2_DOUBLE_TAP:
@@ -3358,7 +3358,7 @@ u8 *intr_double_tap_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_ENABLE_INTR2_PAD_DOUBLE_TAP_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			*intr_double_tap_u8 = BMA2x2_GET_BITSLICE
+			*intr_double_tap_u8 = BMA253_GET_BITSLICE
 			(data_u8, BMA2x2_ENABLE_INTR2_PAD_DOUBLE_TAP);
 		break;
 		default:
@@ -3415,7 +3415,7 @@ u8 intr_double_tap_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_ENABLE_INTR1_PAD_DOUBLE_TAP_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			data_u8 = BMA2x2_SET_BITSLICE
+			data_u8 = BMA253_SET_BITSLICE
 			(data_u8,
 			BMA2x2_ENABLE_INTR1_PAD_DOUBLE_TAP,
 			intr_double_tap_u8);
@@ -3428,7 +3428,7 @@ u8 intr_double_tap_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_ENABLE_INTR2_PAD_DOUBLE_TAP_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			data_u8 = BMA2x2_SET_BITSLICE
+			data_u8 = BMA253_SET_BITSLICE
 			(data_u8,
 			BMA2x2_ENABLE_INTR2_PAD_DOUBLE_TAP,
 			intr_double_tap_u8);
@@ -3489,7 +3489,7 @@ u8 *intr_single_tap_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_ENABLE_INTR1_PAD_SINGLE_TAP_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			*intr_single_tap_u8 = BMA2x2_GET_BITSLICE
+			*intr_single_tap_u8 = BMA253_GET_BITSLICE
 			(data_u8, BMA2x2_ENABLE_INTR1_PAD_SINGLE_TAP);
 		break;
 		case BMA2x2_INTR2_SINGLE_TAP:
@@ -3497,7 +3497,7 @@ u8 *intr_single_tap_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_ENABLE_INTR2_PAD_SINGLE_TAP_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			*intr_single_tap_u8 = BMA2x2_GET_BITSLICE
+			*intr_single_tap_u8 = BMA253_GET_BITSLICE
 			(data_u8, BMA2x2_ENABLE_INTR2_PAD_SINGLE_TAP);
 		break;
 		default:
@@ -3553,7 +3553,7 @@ u8 intr_single_tap_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_ENABLE_INTR1_PAD_SINGLE_TAP_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			data_u8 = BMA2x2_SET_BITSLICE(data_u8,
+			data_u8 = BMA253_SET_BITSLICE(data_u8,
 			BMA2x2_ENABLE_INTR1_PAD_SINGLE_TAP,
 			intr_single_tap_u8);
 			com_rslt += bma2x2_write_reg(
@@ -3565,7 +3565,7 @@ u8 intr_single_tap_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_ENABLE_INTR2_PAD_SINGLE_TAP_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			data_u8 = BMA2x2_SET_BITSLICE
+			data_u8 = BMA253_SET_BITSLICE
 			(data_u8,
 			BMA2x2_ENABLE_INTR2_PAD_SINGLE_TAP,
 			intr_single_tap_u8);
@@ -3625,7 +3625,7 @@ u8 *intr_orient_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_ENABLE_INTR1_PAD_ORIENT_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			*intr_orient_u8 = BMA2x2_GET_BITSLICE
+			*intr_orient_u8 = BMA253_GET_BITSLICE
 			(data_u8, BMA2x2_ENABLE_INTR1_PAD_ORIENT);
 		break;
 		case BMA2x2_INTR2_ORIENT:
@@ -3633,7 +3633,7 @@ u8 *intr_orient_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_ENABLE_INTR2_PAD_ORIENT_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			*intr_orient_u8 = BMA2x2_GET_BITSLICE
+			*intr_orient_u8 = BMA253_GET_BITSLICE
 			(data_u8, BMA2x2_ENABLE_INTR2_PAD_ORIENT);
 		break;
 		default:
@@ -3688,7 +3688,7 @@ u8 intr_orient_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_ENABLE_INTR1_PAD_ORIENT_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			data_u8 = BMA2x2_SET_BITSLICE
+			data_u8 = BMA253_SET_BITSLICE
 			(data_u8,
 			BMA2x2_ENABLE_INTR1_PAD_ORIENT, intr_orient_u8);
 			com_rslt += bma2x2_write_reg(
@@ -3700,7 +3700,7 @@ u8 intr_orient_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_ENABLE_INTR2_PAD_ORIENT_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			data_u8 = BMA2x2_SET_BITSLICE
+			data_u8 = BMA253_SET_BITSLICE
 			(data_u8,
 			BMA2x2_ENABLE_INTR2_PAD_ORIENT, intr_orient_u8);
 			com_rslt += bma2x2_write_reg(
@@ -3761,7 +3761,7 @@ u8 *intr_flat_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_ENABLE_INTR1_PAD_FLAT_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			*intr_flat_u8 = BMA2x2_GET_BITSLICE
+			*intr_flat_u8 = BMA253_GET_BITSLICE
 			(data_u8, BMA2x2_ENABLE_INTR1_PAD_FLAT);
 		break;
 		case BMA2x2_INTR2_FLAT:
@@ -3769,7 +3769,7 @@ u8 *intr_flat_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_ENABLE_INTR2_PAD_FLAT_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			*intr_flat_u8 = BMA2x2_GET_BITSLICE
+			*intr_flat_u8 = BMA253_GET_BITSLICE
 			(data_u8, BMA2x2_ENABLE_INTR2_PAD_FLAT);
 		break;
 		default:
@@ -3826,7 +3826,7 @@ u8 intr_flat_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_ENABLE_INTR1_PAD_FLAT_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			data_u8 = BMA2x2_SET_BITSLICE
+			data_u8 = BMA253_SET_BITSLICE
 			(data_u8,
 			BMA2x2_ENABLE_INTR1_PAD_FLAT, intr_flat_u8);
 			com_rslt += bma2x2_write_reg(
@@ -3838,7 +3838,7 @@ u8 intr_flat_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_ENABLE_INTR2_PAD_FLAT_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			data_u8 = BMA2x2_SET_BITSLICE
+			data_u8 = BMA253_SET_BITSLICE
 			(data_u8,
 			BMA2x2_ENABLE_INTR2_PAD_FLAT, intr_flat_u8);
 			com_rslt += bma2x2_write_reg(
@@ -3898,7 +3898,7 @@ u8 *intr_newdata_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_ENABLE_INTR1_PAD_NEWDATA_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			*intr_newdata_u8 = BMA2x2_GET_BITSLICE
+			*intr_newdata_u8 = BMA253_GET_BITSLICE
 			(data_u8, BMA2x2_ENABLE_INTR1_PAD_NEWDATA);
 		break;
 		case BMA2x2_INTR2_NEWDATA:
@@ -3906,7 +3906,7 @@ u8 *intr_newdata_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_ENABLE_INTR2_PAD_NEWDATA_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			*intr_newdata_u8 = BMA2x2_GET_BITSLICE
+			*intr_newdata_u8 = BMA253_GET_BITSLICE
 			(data_u8, BMA2x2_ENABLE_INTR2_PAD_NEWDATA);
 		break;
 		default:
@@ -3962,7 +3962,7 @@ u8 intr_newdata_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_ENABLE_INTR1_PAD_NEWDATA_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			data_u8 = BMA2x2_SET_BITSLICE
+			data_u8 = BMA253_SET_BITSLICE
 			(data_u8,
 			BMA2x2_ENABLE_INTR1_PAD_NEWDATA, intr_newdata_u8);
 			com_rslt += bma2x2_write_reg(
@@ -3974,7 +3974,7 @@ u8 intr_newdata_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_ENABLE_INTR2_PAD_NEWDATA_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			data_u8 = BMA2x2_SET_BITSLICE
+			data_u8 = BMA253_SET_BITSLICE
 			(data_u8,
 			BMA2x2_ENABLE_INTR2_PAD_NEWDATA, intr_newdata_u8);
 			com_rslt += bma2x2_write_reg(
@@ -4022,7 +4022,7 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_get_intr1_fifo_wm(u8 *intr1_fifo_wm_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_ENABLE_INTR1_PAD_FIFO_WM_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			*intr1_fifo_wm_u8 = BMA2x2_GET_BITSLICE
+			*intr1_fifo_wm_u8 = BMA253_GET_BITSLICE
 			(data_u8, BMA2x2_ENABLE_INTR1_PAD_FIFO_WM);
 		}
 	return com_rslt;
@@ -4063,7 +4063,7 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_set_intr1_fifo_wm(u8 intr1_fifo_wm_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_ENABLE_INTR1_PAD_FIFO_WM_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			data_u8 = BMA2x2_SET_BITSLICE
+			data_u8 = BMA253_SET_BITSLICE
 			(data_u8,
 			BMA2x2_ENABLE_INTR1_PAD_FIFO_WM, intr1_fifo_wm_u8);
 			com_rslt += bma2x2_write_reg(
@@ -4109,7 +4109,7 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_get_intr2_fifo_wm(u8 *intr2_fifo_wm_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_ENABLE_INTR2_PAD_FIFO_WM_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			*intr2_fifo_wm_u8 = BMA2x2_GET_BITSLICE
+			*intr2_fifo_wm_u8 = BMA253_GET_BITSLICE
 			(data_u8, BMA2x2_ENABLE_INTR2_PAD_FIFO_WM);
 		}
 	return com_rslt;
@@ -4150,7 +4150,7 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_set_intr2_fifo_wm(u8 intr2_fifo_wm_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_ENABLE_INTR2_PAD_FIFO_WM_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			data_u8 = BMA2x2_SET_BITSLICE
+			data_u8 = BMA253_SET_BITSLICE
 			(data_u8,
 			BMA2x2_ENABLE_INTR2_PAD_FIFO_WM, intr2_fifo_wm_u8);
 			com_rslt += bma2x2_write_reg(
@@ -4198,7 +4198,7 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_get_intr1_fifo_full(u8 *intr1_fifo_full_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_ENABLE_INTR1_PAD_FIFO_FULL_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			*intr1_fifo_full_u8 = BMA2x2_GET_BITSLICE
+			*intr1_fifo_full_u8 = BMA253_GET_BITSLICE
 			(data_u8, BMA2x2_ENABLE_INTR1_PAD_FIFO_FULL);
 		}
 	return com_rslt;
@@ -4241,7 +4241,7 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_set_intr1_fifo_full(u8 intr1_fifo_full_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_ENABLE_INTR1_PAD_FIFO_FULL_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			data_u8 = BMA2x2_SET_BITSLICE
+			data_u8 = BMA253_SET_BITSLICE
 			(data_u8, BMA2x2_ENABLE_INTR1_PAD_FIFO_FULL,
 			intr1_fifo_full_u8);
 			com_rslt += bma2x2_write_reg(
@@ -4290,7 +4290,7 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_get_intr2_fifo_full(u8 *intr2_fifo_full_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_ENABLE_INTR2_PAD_FIFO_FULL_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			*intr2_fifo_full_u8 = BMA2x2_GET_BITSLICE
+			*intr2_fifo_full_u8 = BMA253_GET_BITSLICE
 			(data_u8, BMA2x2_ENABLE_INTR2_PAD_FIFO_FULL);
 		}
 	return com_rslt;
@@ -4334,7 +4334,7 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_set_intr2_fifo_full(u8 intr2_fifo_full_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_ENABLE_INTR2_PAD_FIFO_FULL_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			data_u8 = BMA2x2_SET_BITSLICE
+			data_u8 = BMA253_SET_BITSLICE
 			(data_u8,
 			BMA2x2_ENABLE_INTR2_PAD_FIFO_FULL,
 			intr2_fifo_full_u8);
@@ -4394,7 +4394,7 @@ u8 *intr_source_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_UNFILT_INTR_SOURCE_LOW_G_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			*intr_source_u8 = BMA2x2_GET_BITSLICE
+			*intr_source_u8 = BMA253_GET_BITSLICE
 			(data_u8, BMA2x2_UNFILT_INTR_SOURCE_LOW_G);
 		break;
 		case BMA2x2_SOURCE_HIGH_G:
@@ -4402,7 +4402,7 @@ u8 *intr_source_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_UNFILT_INTR_SOURCE_HIGH_G_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			*intr_source_u8 = BMA2x2_GET_BITSLICE
+			*intr_source_u8 = BMA253_GET_BITSLICE
 			(data_u8, BMA2x2_UNFILT_INTR_SOURCE_HIGH_G);
 		break;
 		case BMA2x2_SOURCE_SLOPE:
@@ -4410,7 +4410,7 @@ u8 *intr_source_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_UNFILT_INTR_SOURCE_SLOPE_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			*intr_source_u8 = BMA2x2_GET_BITSLICE
+			*intr_source_u8 = BMA253_GET_BITSLICE
 			(data_u8, BMA2x2_UNFILT_INTR_SOURCE_SLOPE);
 		break;
 		case BMA2x2_SOURCE_SLOW_NO_MOTION:
@@ -4418,7 +4418,7 @@ u8 *intr_source_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_UNFILT_INTR_SOURCE_SLOW_NO_MOTION_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			*intr_source_u8 = BMA2x2_GET_BITSLICE
+			*intr_source_u8 = BMA253_GET_BITSLICE
 			(data_u8, BMA2x2_UNFILT_INTR_SOURCE_SLOW_NO_MOTION);
 		break;
 		case BMA2x2_SOURCE_TAP:
@@ -4426,7 +4426,7 @@ u8 *intr_source_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_UNFILT_INTR_SOURCE_TAP_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			*intr_source_u8 = BMA2x2_GET_BITSLICE
+			*intr_source_u8 = BMA253_GET_BITSLICE
 			(data_u8, BMA2x2_UNFILT_INTR_SOURCE_TAP);
 		break;
 		case BMA2x2_SOURCE_DATA:
@@ -4434,7 +4434,7 @@ u8 *intr_source_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_UNFILT_INTR_SOURCE_DATA_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			*intr_source_u8 = BMA2x2_GET_BITSLICE
+			*intr_source_u8 = BMA253_GET_BITSLICE
 			(data_u8, BMA2x2_UNFILT_INTR_SOURCE_DATA);
 		break;
 		default:
@@ -4490,7 +4490,7 @@ u8 intr_source_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_UNFILT_INTR_SOURCE_LOW_G_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			data_u8 = BMA2x2_SET_BITSLICE
+			data_u8 = BMA253_SET_BITSLICE
 			(data_u8,
 			BMA2x2_UNFILT_INTR_SOURCE_LOW_G, intr_source_u8);
 			com_rslt += bma2x2_write_reg(
@@ -4502,7 +4502,7 @@ u8 intr_source_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_UNFILT_INTR_SOURCE_HIGH_G_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			data_u8 = BMA2x2_SET_BITSLICE
+			data_u8 = BMA253_SET_BITSLICE
 			(data_u8,
 			BMA2x2_UNFILT_INTR_SOURCE_HIGH_G, intr_source_u8);
 			com_rslt += bma2x2_write_reg(
@@ -4514,7 +4514,7 @@ u8 intr_source_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_UNFILT_INTR_SOURCE_SLOPE_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			data_u8 = BMA2x2_SET_BITSLICE
+			data_u8 = BMA253_SET_BITSLICE
 			(data_u8,
 			BMA2x2_UNFILT_INTR_SOURCE_SLOPE, intr_source_u8);
 			com_rslt += bma2x2_write_reg(
@@ -4526,7 +4526,7 @@ u8 intr_source_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_UNFILT_INTR_SOURCE_SLOW_NO_MOTION_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			data_u8 = BMA2x2_SET_BITSLICE
+			data_u8 = BMA253_SET_BITSLICE
 			(data_u8,
 			BMA2x2_UNFILT_INTR_SOURCE_SLOW_NO_MOTION,
 			intr_source_u8);
@@ -4539,7 +4539,7 @@ u8 intr_source_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_UNFILT_INTR_SOURCE_TAP_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			data_u8 = BMA2x2_SET_BITSLICE
+			data_u8 = BMA253_SET_BITSLICE
 			(data_u8, BMA2x2_UNFILT_INTR_SOURCE_TAP,
 			intr_source_u8);
 			com_rslt += bma2x2_write_reg(
@@ -4551,7 +4551,7 @@ u8 intr_source_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_UNFILT_INTR_SOURCE_DATA_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			data_u8 = BMA2x2_SET_BITSLICE
+			data_u8 = BMA253_SET_BITSLICE
 			(data_u8, BMA2x2_UNFILT_INTR_SOURCE_DATA,
 			intr_source_u8);
 			com_rslt += bma2x2_write_reg(
@@ -4609,7 +4609,7 @@ u8 *intr_output_type_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_INTR1_PAD_OUTPUT_TYPE_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			*intr_output_type_u8 = BMA2x2_GET_BITSLICE
+			*intr_output_type_u8 = BMA253_GET_BITSLICE
 			(data_u8, BMA2x2_INTR1_PAD_OUTPUT_TYPE);
 		break;
 		case BMA2x2_INTR2_OUTPUT:
@@ -4617,7 +4617,7 @@ u8 *intr_output_type_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_INTR2_PAD_OUTPUT_TYPE_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			*intr_output_type_u8 = BMA2x2_GET_BITSLICE
+			*intr_output_type_u8 = BMA253_GET_BITSLICE
 			(data_u8, BMA2x2_INTR2_PAD_OUTPUT_TYPE);
 		break;
 		default:
@@ -4671,7 +4671,7 @@ u8 intr_output_type_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_INTR1_PAD_OUTPUT_TYPE_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			data_u8 = BMA2x2_SET_BITSLICE
+			data_u8 = BMA253_SET_BITSLICE
 			(data_u8,
 			BMA2x2_INTR1_PAD_OUTPUT_TYPE, intr_output_type_u8);
 			com_rslt += bma2x2_write_reg(
@@ -4683,7 +4683,7 @@ u8 intr_output_type_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_INTR2_PAD_OUTPUT_TYPE_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			data_u8 = BMA2x2_SET_BITSLICE
+			data_u8 = BMA253_SET_BITSLICE
 			(data_u8,
 			BMA2x2_INTR2_PAD_OUTPUT_TYPE, intr_output_type_u8);
 			com_rslt += bma2x2_write_reg(
@@ -4740,7 +4740,7 @@ u8 *intr_level_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_INTR1_PAD_ACTIVE_LEVEL_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			*intr_level_u8 = BMA2x2_GET_BITSLICE
+			*intr_level_u8 = BMA253_GET_BITSLICE
 			(data_u8, BMA2x2_INTR1_PAD_ACTIVE_LEVEL);
 		break;
 		case BMA2x2_INTR2_LEVEL:
@@ -4748,7 +4748,7 @@ u8 *intr_level_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_INTR2_PAD_ACTIVE_LEVEL_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			*intr_level_u8 = BMA2x2_GET_BITSLICE
+			*intr_level_u8 = BMA253_GET_BITSLICE
 			(data_u8, BMA2x2_INTR2_PAD_ACTIVE_LEVEL);
 		break;
 		default:
@@ -4801,7 +4801,7 @@ u8 intr_level_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_INTR1_PAD_ACTIVE_LEVEL_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			data_u8 = BMA2x2_SET_BITSLICE
+			data_u8 = BMA253_SET_BITSLICE
 			(data_u8,
 			BMA2x2_INTR1_PAD_ACTIVE_LEVEL, intr_level_u8);
 			com_rslt += bma2x2_write_reg(
@@ -4813,7 +4813,7 @@ u8 intr_level_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_INTR2_PAD_ACTIVE_LEVEL_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			data_u8 = BMA2x2_SET_BITSLICE
+			data_u8 = BMA253_SET_BITSLICE
 			(data_u8,
 			BMA2x2_INTR2_PAD_ACTIVE_LEVEL, intr_level_u8);
 			com_rslt += bma2x2_write_reg(
@@ -4860,7 +4860,7 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_rst_intr(u8 rst_intr_u8)
 			com_rslt = p_bma2x2->BMA2x2_BUS_READ_FUNC
 			(p_bma2x2->dev_addr, BMA2x2_RESET_INTR_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			data_u8 = BMA2x2_SET_BITSLICE
+			data_u8 = BMA253_SET_BITSLICE
 			(data_u8, BMA2x2_RESET_INTR, rst_intr_u8);
 			com_rslt += bma2x2_write_reg(BMA2x2_RESET_INTR_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
@@ -4914,7 +4914,7 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_get_latch_intr(u8 *latch_intr_u8)
 			com_rslt = p_bma2x2->BMA2x2_BUS_READ_FUNC
 			(p_bma2x2->dev_addr, BMA2x2_LATCH_INTR_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			*latch_intr_u8 = BMA2x2_GET_BITSLICE
+			*latch_intr_u8 = BMA253_GET_BITSLICE
 			(data_u8, BMA2x2_LATCH_INTR);
 		}
 	return com_rslt;
@@ -5051,7 +5051,7 @@ if (p_bma2x2 == BMA2x2_NULL)  {
 			com_rslt = p_bma2x2->BMA2x2_BUS_READ_FUNC
 			(p_bma2x2->dev_addr, BMA2x2_LATCH_INTR_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			data_u8 = BMA2x2_SET_BITSLICE
+			data_u8 = BMA253_SET_BITSLICE
 			(data_u8, BMA2x2_LATCH_INTR, latch_durn_u8);
 			com_rslt += bma2x2_write_reg(BMA2x2_LATCH_INTR_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
@@ -5133,7 +5133,7 @@ u8 *durn_u8)
 			com_rslt = p_bma2x2->BMA2x2_BUS_READ_FUNC
 			(p_bma2x2->dev_addr, BMA2x2_SLOPE_DURN_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			*durn_u8 = BMA2x2_GET_BITSLICE
+			*durn_u8 = BMA253_GET_BITSLICE
 			(data_u8, BMA2x2_SLOPE_DURN);
 		break;
 		case BMA2x2_SLOW_NO_MOTION_DURN:
@@ -5142,7 +5142,7 @@ u8 *durn_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_SLOW_NO_MOTION_DURN_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			*durn_u8 = BMA2x2_GET_BITSLICE
+			*durn_u8 = BMA253_GET_BITSLICE
 			(data_u8, BMA2x2_SLOW_NO_MOTION_DURN);
 		break;
 		default:
@@ -5224,7 +5224,7 @@ u8 durn_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_SLOPE_DURN_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			data_u8 = BMA2x2_SET_BITSLICE
+			data_u8 = BMA253_SET_BITSLICE
 			(data_u8, BMA2x2_SLOPE_DURN, durn_u8);
 			com_rslt += bma2x2_write_reg(
 			BMA2x2_SLOPE_DURN_REG,
@@ -5236,7 +5236,7 @@ u8 durn_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_SLOW_NO_MOTION_DURN_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			data_u8 = BMA2x2_SET_BITSLICE
+			data_u8 = BMA253_SET_BITSLICE
 			(data_u8, BMA2x2_SLOW_NO_MOTION_DURN, durn_u8);
 			com_rslt += bma2x2_write_reg(
 			BMA2x2_SLOW_NO_MOTION_DURN_REG,
@@ -5521,7 +5521,7 @@ u8 *hyst_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_LOW_G_HYST_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			*hyst_u8 = BMA2x2_GET_BITSLICE
+			*hyst_u8 = BMA253_GET_BITSLICE
 			(data_u8, BMA2x2_LOW_G_HYST);
 		break;
 		case BMA2x2_HIGH_G_HYST:
@@ -5529,7 +5529,7 @@ u8 *hyst_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_HIGH_G_HYST_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			*hyst_u8 = BMA2x2_GET_BITSLICE
+			*hyst_u8 = BMA253_GET_BITSLICE
 			(data_u8, BMA2x2_HIGH_G_HYST);
 		break;
 		default:
@@ -5589,7 +5589,7 @@ u8 hyst_u8)
 			com_rslt = p_bma2x2->BMA2x2_BUS_READ_FUNC
 			(p_bma2x2->dev_addr, BMA2x2_LOW_G_HYST_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			data_u8 = BMA2x2_SET_BITSLICE
+			data_u8 = BMA253_SET_BITSLICE
 			(data_u8, BMA2x2_LOW_G_HYST, hyst_u8);
 			com_rslt += bma2x2_write_reg(
 			BMA2x2_LOW_G_HYST_REG,
@@ -5600,7 +5600,7 @@ u8 hyst_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_HIGH_G_HYST_REG, &data_u8,
 			BMA253_GEN_READ_WRITE_LENGTH);
-			data_u8 = BMA2x2_SET_BITSLICE
+			data_u8 = BMA253_SET_BITSLICE
 			(data_u8, BMA2x2_HIGH_G_HYST, hyst_u8);
 			com_rslt += bma2x2_write_reg(
 			BMA2x2_HIGH_G_HYST_REG,
@@ -5646,7 +5646,7 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_get_low_g_mode(u8 *low_g_mode_u8)
 			com_rslt = p_bma2x2->BMA2x2_BUS_READ_FUNC
 			(p_bma2x2->dev_addr, BMA2x2_LOW_G_INTR_MODE_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			*low_g_mode_u8 = BMA2x2_GET_BITSLICE(data_u8,
+			*low_g_mode_u8 = BMA253_GET_BITSLICE(data_u8,
 			BMA2x2_LOW_G_INTR_MODE);
 		}
 	return com_rslt;
@@ -5685,7 +5685,7 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_set_low_g_mode(u8 low_g_mode_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_LOW_G_INTR_MODE_REG, &data_u8,
 			BMA253_GEN_READ_WRITE_LENGTH);
-			data_u8 = BMA2x2_SET_BITSLICE
+			data_u8 = BMA253_SET_BITSLICE
 			(data_u8, BMA2x2_LOW_G_INTR_MODE, low_g_mode_u8);
 			com_rslt += bma2x2_write_reg(
 			BMA2x2_LOW_G_INTR_MODE_REG,
@@ -5734,7 +5734,7 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_get_tap_durn(u8 *tap_durn_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_TAP_DURN_REG, &data_u8,
 			BMA253_GEN_READ_WRITE_LENGTH);
-			*tap_durn_u8 = BMA2x2_GET_BITSLICE
+			*tap_durn_u8 = BMA253_GET_BITSLICE
 			(data_u8, BMA2x2_TAP_DURN);
 		}
 	return com_rslt;
@@ -5780,7 +5780,7 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_set_tap_durn(u8 tap_durn_u8)
 			p_bma2x2->dev_addr,
 			BMA2x2_TAP_DURN_REG, &data_u8,
 			BMA253_GEN_READ_WRITE_LENGTH);
-			data_u8 = BMA2x2_SET_BITSLICE
+			data_u8 = BMA253_SET_BITSLICE
 			(data_u8, BMA2x2_TAP_DURN, tap_durn_u8);
 			com_rslt += bma2x2_write_reg(
 			BMA2x2_TAP_DURN_REG, &data_u8,
@@ -5823,7 +5823,7 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_get_tap_shock(u8 *tap_shock_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_TAP_SHOCK_DURN_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			*tap_shock_u8 = BMA2x2_GET_BITSLICE(data_u8,
+			*tap_shock_u8 = BMA253_GET_BITSLICE(data_u8,
 			BMA2x2_TAP_SHOCK_DURN);
 		}
 	return com_rslt;
@@ -5863,7 +5863,7 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_set_tap_shock(u8 tap_shock_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_TAP_SHOCK_DURN_REG, &data_u8,
 			BMA253_GEN_READ_WRITE_LENGTH);
-			data_u8 = BMA2x2_SET_BITSLICE(data_u8,
+			data_u8 = BMA253_SET_BITSLICE(data_u8,
 			BMA2x2_TAP_SHOCK_DURN, tap_shock_u8);
 			com_rslt += bma2x2_write_reg(
 			BMA2x2_TAP_SHOCK_DURN_REG, &data_u8,
@@ -5905,7 +5905,7 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_get_tap_quiet(u8 *tap_quiet_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_TAP_QUIET_DURN_REG, &data_u8,
 			BMA253_GEN_READ_WRITE_LENGTH);
-			*tap_quiet_u8 = BMA2x2_GET_BITSLICE
+			*tap_quiet_u8 = BMA253_GET_BITSLICE
 			(data_u8, BMA2x2_TAP_QUIET_DURN);
 		}
 	return com_rslt;
@@ -5944,7 +5944,7 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_set_tap_quiet(u8 tap_quiet_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_TAP_QUIET_DURN_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			data_u8 = BMA2x2_SET_BITSLICE(data_u8,
+			data_u8 = BMA253_SET_BITSLICE(data_u8,
 			BMA2x2_TAP_QUIET_DURN, tap_quiet_u8);
 			com_rslt += bma2x2_write_reg(
 			BMA2x2_TAP_QUIET_DURN_REG,
@@ -5991,7 +5991,7 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_get_tap_thres(u8 *tap_thres_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_TAP_THRES_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			*tap_thres_u8 = BMA2x2_GET_BITSLICE
+			*tap_thres_u8 = BMA253_GET_BITSLICE
 			(data_u8, BMA2x2_TAP_THRES);
 		}
 	return com_rslt;
@@ -6033,7 +6033,7 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_set_tap_thres(u8 tap_thres_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_TAP_THRES_REG, &data_u8,
 			BMA253_GEN_READ_WRITE_LENGTH);
-			data_u8 = BMA2x2_SET_BITSLICE
+			data_u8 = BMA253_SET_BITSLICE
 			(data_u8, BMA2x2_TAP_THRES, tap_thres_u8);
 			com_rslt += bma2x2_write_reg(
 			BMA2x2_TAP_THRES_REG, &data_u8,
@@ -6078,7 +6078,7 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_get_tap_sample(u8 *tap_sample_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_TAP_SAMPLES_REG, &data_u8,
 			BMA253_GEN_READ_WRITE_LENGTH);
-			*tap_sample_u8 = BMA2x2_GET_BITSLICE
+			*tap_sample_u8 = BMA253_GET_BITSLICE
 			(data_u8, BMA2x2_TAP_SAMPLES);
 		}
 	return com_rslt;
@@ -6119,7 +6119,7 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_set_tap_sample(u8 tap_sample_u8)
 			com_rslt = p_bma2x2->BMA2x2_BUS_READ_FUNC
 			(p_bma2x2->dev_addr, BMA2x2_TAP_SAMPLES_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			data_u8 = BMA2x2_SET_BITSLICE
+			data_u8 = BMA253_SET_BITSLICE
 			(data_u8, BMA2x2_TAP_SAMPLES, tap_sample_u8);
 			com_rslt += bma2x2_write_reg(
 			BMA2x2_TAP_SAMPLES_REG, &data_u8,
@@ -6164,7 +6164,7 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_get_orient_mode(u8 *orient_mode_u8)
 			p_bma2x2->dev_addr,
 			BMA2x2_ORIENT_MODE_REG, &data_u8,
 			BMA253_GEN_READ_WRITE_LENGTH);
-			*orient_mode_u8 = BMA2x2_GET_BITSLICE(
+			*orient_mode_u8 = BMA253_GET_BITSLICE(
 			data_u8, BMA2x2_ORIENT_MODE);
 		}
 	return com_rslt;
@@ -6206,7 +6206,7 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_set_orient_mode(u8 orient_mode_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_ORIENT_MODE_REG, &data_u8,
 			BMA253_GEN_READ_WRITE_LENGTH);
-			data_u8 = BMA2x2_SET_BITSLICE(data_u8,
+			data_u8 = BMA253_SET_BITSLICE(data_u8,
 			BMA2x2_ORIENT_MODE, orient_mode_u8);
 			com_rslt += bma2x2_write_reg(
 			BMA2x2_ORIENT_MODE_REG, &data_u8,
@@ -6258,7 +6258,7 @@ u8 *orient_block_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_ORIENT_BLOCK_REG, &data_u8,
 			BMA253_GEN_READ_WRITE_LENGTH);
-			*orient_block_u8 = BMA2x2_GET_BITSLICE
+			*orient_block_u8 = BMA253_GET_BITSLICE
 			(data_u8, BMA2x2_ORIENT_BLOCK);
 		}
 	return com_rslt;
@@ -6306,7 +6306,7 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_set_orient_block(u8 orient_block_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_ORIENT_BLOCK_REG, &data_u8,
 			BMA253_GEN_READ_WRITE_LENGTH);
-			data_u8 = BMA2x2_SET_BITSLICE
+			data_u8 = BMA253_SET_BITSLICE
 			(data_u8, BMA2x2_ORIENT_BLOCK, orient_block_u8);
 			com_rslt += bma2x2_write_reg(
 			BMA2x2_ORIENT_BLOCK_REG, &data_u8,
@@ -6346,7 +6346,7 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_get_orient_hyst(u8 *orient_hyst_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_ORIENT_HYST_REG, &data_u8,
 			BMA253_GEN_READ_WRITE_LENGTH);
-			*orient_hyst_u8 = BMA2x2_GET_BITSLICE
+			*orient_hyst_u8 = BMA253_GET_BITSLICE
 			(data_u8, BMA2x2_ORIENT_HYST);
 		}
 	return com_rslt;
@@ -6383,7 +6383,7 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_set_orient_hyst(u8 orient_hyst_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_ORIENT_HYST_REG, &data_u8,
 			BMA253_GEN_READ_WRITE_LENGTH);
-			data_u8 = BMA2x2_SET_BITSLICE(data_u8,
+			data_u8 = BMA253_SET_BITSLICE(data_u8,
 			BMA2x2_ORIENT_HYST, orient_hyst_u8);
 			com_rslt += bma2x2_write_reg(
 			BMA2x2_ORIENT_HYST_REG,
@@ -6435,7 +6435,7 @@ u8 *theta_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_THETA_BLOCK_REG, &data_u8,
 			BMA253_GEN_READ_WRITE_LENGTH);
-			*theta_u8 = BMA2x2_GET_BITSLICE
+			*theta_u8 = BMA253_GET_BITSLICE
 			(data_u8, BMA2x2_THETA_BLOCK);
 		break;
 		case BMA2x2_FLAT_THETA:
@@ -6497,7 +6497,7 @@ u8 theta_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_THETA_BLOCK_REG, &data_u8,
 			BMA253_GEN_READ_WRITE_LENGTH);
-			data_u8 = BMA2x2_SET_BITSLICE(data_u8,
+			data_u8 = BMA253_SET_BITSLICE(data_u8,
 			BMA2x2_THETA_BLOCK, theta_u8);
 			com_rslt += bma2x2_write_reg(
 			BMA2x2_THETA_BLOCK_REG,
@@ -6551,7 +6551,7 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_get_orient_enable(u8 *orient_enable_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_ORIENT_UD_ENABLE_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			*orient_enable_u8 = BMA2x2_GET_BITSLICE
+			*orient_enable_u8 = BMA253_GET_BITSLICE
 			(data_u8, BMA2x2_ORIENT_UD_ENABLE);
 		}
 	return com_rslt;
@@ -6590,7 +6590,7 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_set_orient_enable(u8 orient_enable_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_ORIENT_UD_ENABLE_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			data_u8 = BMA2x2_SET_BITSLICE(data_u8,
+			data_u8 = BMA253_SET_BITSLICE(data_u8,
 			BMA2x2_ORIENT_UD_ENABLE, orient_enable_u8);
 			com_rslt += bma2x2_write_reg(
 			BMA2x2_ORIENT_UD_ENABLE_REG,
@@ -6631,7 +6631,7 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_get_flat_hyst(u8 *flat_hyst_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_FLAT_HYST_REG, &data_u8,
 			BMA253_GEN_READ_WRITE_LENGTH);
-			*flat_hyst_u8 = BMA2x2_GET_BITSLICE
+			*flat_hyst_u8 = BMA253_GET_BITSLICE
 			(data_u8, BMA2x2_FLAT_HYST);
 		}
 	return com_rslt;
@@ -6669,7 +6669,7 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_set_flat_hyst(u8 flat_hyst_u8)
 			p_bma2x2->dev_addr,
 			BMA2x2_FLAT_HYST_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			data_u8 = BMA2x2_SET_BITSLICE
+			data_u8 = BMA253_SET_BITSLICE
 			(data_u8, BMA2x2_FLAT_HYST, flat_hyst_u8);
 			com_rslt += bma2x2_write_reg(
 			BMA2x2_FLAT_HYST_REG, &data_u8,
@@ -6716,7 +6716,7 @@ u8 *flat_hold_time_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_FLAT_HOLD_TIME_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			*flat_hold_time_u8 = BMA2x2_GET_BITSLICE
+			*flat_hold_time_u8 = BMA253_GET_BITSLICE
 			(data_u8, BMA2x2_FLAT_HOLD_TIME);
 		}
 	return com_rslt;
@@ -6760,7 +6760,7 @@ u8 flat_hold_time_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_FLAT_HOLD_TIME_REG, &data_u8,
 			BMA253_GEN_READ_WRITE_LENGTH);
-			data_u8 = BMA2x2_SET_BITSLICE
+			data_u8 = BMA253_SET_BITSLICE
 			(data_u8, BMA2x2_FLAT_HOLD_TIME, flat_hold_time_u8);
 			com_rslt += bma2x2_write_reg(
 			BMA2x2_FLAT_HOLD_TIME_REG, &data_u8,
@@ -6802,7 +6802,7 @@ u8 *fifo_wml_trig)
 			(p_bma2x2->dev_addr,
 			BMA2x2_FIFO_WML_TRIG_RETAIN_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			*fifo_wml_trig = BMA2x2_GET_BITSLICE
+			*fifo_wml_trig = BMA253_GET_BITSLICE
 			(data_u8, BMA2x2_FIFO_WML_TRIG_RETAIN);
 		}
 	return com_rslt;
@@ -6843,7 +6843,7 @@ u8 fifo_wml_trig)
 			(p_bma2x2->dev_addr,
 			BMA2x2_FIFO_WML_TRIG_RETAIN_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			data_u8 = BMA2x2_SET_BITSLICE
+			data_u8 = BMA253_SET_BITSLICE
 			(data_u8, BMA2x2_FIFO_WML_TRIG_RETAIN,
 			fifo_wml_trig);
 			com_rslt += bma2x2_get_power_mode(&power_mode);
@@ -6896,7 +6896,7 @@ u8 *selftest_axis_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_ENABLE_SELFTEST_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			*selftest_axis_u8 = BMA2x2_GET_BITSLICE
+			*selftest_axis_u8 = BMA253_GET_BITSLICE
 			(data_u8, BMA2x2_ENABLE_SELFTEST);
 		}
 	return com_rslt;
@@ -6940,7 +6940,7 @@ u8 selftest_axis_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_ENABLE_SELFTEST_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			data_u8 = BMA2x2_SET_BITSLICE
+			data_u8 = BMA253_SET_BITSLICE
 			(data_u8, BMA2x2_ENABLE_SELFTEST, selftest_axis_u8);
 			com_rslt += bma2x2_write_reg(
 			BMA2x2_ENABLE_SELFTEST_REG,
@@ -6987,7 +6987,7 @@ u8 *selftest_sign_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_NEG_SELFTEST_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			*selftest_sign_u8 = BMA2x2_GET_BITSLICE
+			*selftest_sign_u8 = BMA253_GET_BITSLICE
 			(data_u8, BMA2x2_NEG_SELFTEST);
 		}
 	return com_rslt;
@@ -7030,7 +7030,7 @@ u8 selftest_sign_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_NEG_SELFTEST_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			data_u8 = BMA2x2_SET_BITSLICE
+			data_u8 = BMA253_SET_BITSLICE
 			(data_u8, BMA2x2_NEG_SELFTEST, selftest_sign_u8);
 			com_rslt += bma2x2_write_reg(
 			BMA2x2_NEG_SELFTEST_REG,
@@ -7074,7 +7074,7 @@ u8 *nvmprog_mode_u8)
 		(p_bma2x2->dev_addr,
 		BMA2x2_UNLOCK_EE_PROG_MODE_REG,
 		&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-		*nvmprog_mode_u8 = BMA2x2_GET_BITSLICE
+		*nvmprog_mode_u8 = BMA253_GET_BITSLICE
 		(data_u8, BMA2x2_UNLOCK_EE_PROG_MODE);
 	}
 	return com_rslt;
@@ -7112,7 +7112,7 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_set_nvmprog_mode(u8 nvmprog_mode_u8)
 		(p_bma2x2->dev_addr,
 		BMA2x2_UNLOCK_EE_PROG_MODE_REG,
 		&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-		data_u8 = BMA2x2_SET_BITSLICE
+		data_u8 = BMA253_SET_BITSLICE
 		(data_u8, BMA2x2_UNLOCK_EE_PROG_MODE, nvmprog_mode_u8);
 		com_rslt += bma2x2_write_reg
 		(BMA2x2_UNLOCK_EE_PROG_MODE_REG,
@@ -7156,7 +7156,7 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_set_nvprog_trig(u8 nvprog_trig_u8)
 		(p_bma2x2->dev_addr,
 		BMA2x2_START_EE_PROG_TRIG_REG,
 		&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-		data_u8 = BMA2x2_SET_BITSLICE
+		data_u8 = BMA253_SET_BITSLICE
 		(data_u8, BMA2x2_START_EE_PROG_TRIG, nvprog_trig_u8);
 		com_rslt += bma2x2_write_reg
 		(BMA2x2_START_EE_PROG_TRIG_REG,
@@ -7199,7 +7199,7 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_get_nvmprog_ready(u8 *nvprog_ready_u8)
 		(p_bma2x2->dev_addr,
 		BMA2x2_EE_PROG_READY_REG,
 		&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-		*nvprog_ready_u8 = BMA2x2_GET_BITSLICE
+		*nvprog_ready_u8 = BMA253_GET_BITSLICE
 		(data_u8, BMA2x2_EE_PROG_READY);
 	}
 	return com_rslt;
@@ -7238,7 +7238,7 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_get_nvmprog_remain(u8 *nvprog_remain_u8)
 		(p_bma2x2->dev_addr,
 		BMA2x2_EE_REMAIN_REG, &data_u8,
 		BMA253_GEN_READ_WRITE_LENGTH);
-		*nvprog_remain_u8 = BMA2x2_GET_BITSLICE
+		*nvprog_remain_u8 = BMA253_GET_BITSLICE
 		(data_u8, BMA2x2_EE_REMAIN);
 	}
 	return com_rslt;
@@ -7279,7 +7279,7 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_get_spi3(u8 *spi3_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_ENABLE_SPI_MODE_3_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			*spi3_u8 = BMA2x2_GET_BITSLICE
+			*spi3_u8 = BMA253_GET_BITSLICE
 			(data_u8, BMA2x2_ENABLE_SPI_MODE_3);
 		}
 	return com_rslt;
@@ -7320,7 +7320,7 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_set_spi3(u8 spi3_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_ENABLE_SPI_MODE_3_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			data_u8 = BMA2x2_SET_BITSLICE
+			data_u8 = BMA253_SET_BITSLICE
 			(data_u8, BMA2x2_ENABLE_SPI_MODE_3, spi3_u8);
 			com_rslt += bma2x2_write_reg(
 			BMA2x2_ENABLE_SPI_MODE_3_REG,
@@ -7377,7 +7377,7 @@ u8 *i2c_wdt_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_I2C_WDT_PERIOD_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			*i2c_wdt_u8 = BMA2x2_GET_BITSLICE(data_u8,
+			*i2c_wdt_u8 = BMA253_GET_BITSLICE(data_u8,
 			BMA2x2_I2C_WDT_PERIOD);
 		break;
 		case BMA2x2_I2C_ENABLE:
@@ -7385,7 +7385,7 @@ u8 *i2c_wdt_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_ENABLE_I2C_WDT_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			*i2c_wdt_u8 = BMA2x2_GET_BITSLICE
+			*i2c_wdt_u8 = BMA253_GET_BITSLICE
 			(data_u8, BMA2x2_ENABLE_I2C_WDT);
 		break;
 		default:
@@ -7444,7 +7444,7 @@ u8 i2c_wdt_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_I2C_WDT_PERIOD_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			data_u8 = BMA2x2_SET_BITSLICE
+			data_u8 = BMA253_SET_BITSLICE
 			(data_u8,
 			BMA2x2_I2C_WDT_PERIOD, i2c_wdt_u8);
 			com_rslt += bma2x2_write_reg(
@@ -7456,7 +7456,7 @@ u8 i2c_wdt_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_ENABLE_I2C_WDT_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			data_u8 = BMA2x2_SET_BITSLICE
+			data_u8 = BMA253_SET_BITSLICE
 			(data_u8,
 			BMA2x2_ENABLE_I2C_WDT, i2c_wdt_u8);
 			com_rslt += bma2x2_write_reg(
@@ -7518,7 +7518,7 @@ u8 *slow_comp_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_ENABLE_SLOW_COMP_X_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			*slow_comp_u8 = BMA2x2_GET_BITSLICE
+			*slow_comp_u8 = BMA253_GET_BITSLICE
 			(data_u8, BMA2x2_ENABLE_SLOW_COMP_X);
 		break;
 		case BMA2x2_SLOW_COMP_Y:
@@ -7527,7 +7527,7 @@ u8 *slow_comp_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_ENABLE_SLOW_COMP_Y_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			*slow_comp_u8 = BMA2x2_GET_BITSLICE
+			*slow_comp_u8 = BMA253_GET_BITSLICE
 			(data_u8, BMA2x2_ENABLE_SLOW_COMP_Y);
 		break;
 		case BMA2x2_SLOW_COMP_Z:
@@ -7536,7 +7536,7 @@ u8 *slow_comp_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_ENABLE_SLOW_COMP_Z_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			*slow_comp_u8 = BMA2x2_GET_BITSLICE
+			*slow_comp_u8 = BMA253_GET_BITSLICE
 			(data_u8, BMA2x2_ENABLE_SLOW_COMP_Z);
 		break;
 		default:
@@ -7594,7 +7594,7 @@ u8 slow_comp_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_ENABLE_SLOW_COMP_X_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			data_u8 = BMA2x2_SET_BITSLICE
+			data_u8 = BMA253_SET_BITSLICE
 			(data_u8,
 			BMA2x2_ENABLE_SLOW_COMP_X, slow_comp_u8);
 			com_rslt += bma2x2_write_reg(
@@ -7607,7 +7607,7 @@ u8 slow_comp_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_ENABLE_SLOW_COMP_Y_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			data_u8 = BMA2x2_SET_BITSLICE
+			data_u8 = BMA253_SET_BITSLICE
 			(data_u8,
 			BMA2x2_ENABLE_SLOW_COMP_Y, slow_comp_u8);
 			com_rslt += bma2x2_write_reg(
@@ -7620,7 +7620,7 @@ u8 slow_comp_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_ENABLE_SLOW_COMP_Z_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			data_u8 = BMA2x2_SET_BITSLICE
+			data_u8 = BMA253_SET_BITSLICE
 			(data_u8,
 			BMA2x2_ENABLE_SLOW_COMP_Z, slow_comp_u8);
 			com_rslt += bma2x2_write_reg(
@@ -7667,7 +7667,7 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_get_cal_rdy(u8 *cal_rdy_u8)
 		(p_bma2x2->dev_addr,
 		BMA2x2_FAST_CAL_RDY_STAT_REG,
 		&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-		*cal_rdy_u8 = BMA2x2_GET_BITSLICE(data_u8,
+		*cal_rdy_u8 = BMA253_GET_BITSLICE(data_u8,
 		BMA2x2_FAST_CAL_RDY_STAT);
 	}
 	return com_rslt;
@@ -7705,7 +7705,7 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_set_cal_trigger(u8 cal_trigger_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_CAL_TRIGGER_REG, &data_u8,
 			BMA253_GEN_READ_WRITE_LENGTH);
-			data_u8 = BMA2x2_SET_BITSLICE(data_u8,
+			data_u8 = BMA253_SET_BITSLICE(data_u8,
 			BMA2x2_CAL_TRIGGER, cal_trigger_u8);
 			com_rslt += bma2x2_write_reg(
 			BMA2x2_CAL_TRIGGER_REG,
@@ -7745,7 +7745,7 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_set_offset_rst(u8 offset_rst_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_RST_OFFSET_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			data_u8 = BMA2x2_SET_BITSLICE
+			data_u8 = BMA253_SET_BITSLICE
 			(data_u8, BMA2x2_RST_OFFSET,
 			offset_rst_u8);
 			com_rslt += bma2x2_write_reg(
@@ -7811,7 +7811,7 @@ u8 *offset_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_COMP_CUTOFF_REG, &data_u8,
 			BMA253_GEN_READ_WRITE_LENGTH);
-			*offset_u8 = BMA2x2_GET_BITSLICE(data_u8,
+			*offset_u8 = BMA253_GET_BITSLICE(data_u8,
 			BMA2x2_COMP_CUTOFF);
 		break;
 		case BMA2x2_OFFSET_TRIGGER_X:
@@ -7820,7 +7820,7 @@ u8 *offset_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_COMP_TARGET_OFFSET_X_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			*offset_u8 = BMA2x2_GET_BITSLICE(data_u8,
+			*offset_u8 = BMA253_GET_BITSLICE(data_u8,
 			BMA2x2_COMP_TARGET_OFFSET_X);
 		break;
 		case BMA2x2_OFFSET_TRIGGER_Y:
@@ -7829,7 +7829,7 @@ u8 *offset_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_COMP_TARGET_OFFSET_Y_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			*offset_u8 = BMA2x2_GET_BITSLICE(data_u8,
+			*offset_u8 = BMA253_GET_BITSLICE(data_u8,
 			BMA2x2_COMP_TARGET_OFFSET_Y);
 		break;
 		case BMA2x2_OFFSET_TRIGGER_Z:
@@ -7838,7 +7838,7 @@ u8 *offset_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_COMP_TARGET_OFFSET_Z_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			*offset_u8 = BMA2x2_GET_BITSLICE
+			*offset_u8 = BMA253_GET_BITSLICE
 			(data_u8, BMA2x2_COMP_TARGET_OFFSET_Z);
 		break;
 		default:
@@ -7905,7 +7905,7 @@ u8 offset_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_COMP_CUTOFF_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			data_u8 = BMA2x2_SET_BITSLICE
+			data_u8 = BMA253_SET_BITSLICE
 			(data_u8, BMA2x2_COMP_CUTOFF, offset_u8);
 			com_rslt += bma2x2_write_reg(
 			BMA2x2_COMP_CUTOFF_REG,
@@ -7917,7 +7917,7 @@ u8 offset_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_COMP_TARGET_OFFSET_X_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			data_u8 = BMA2x2_SET_BITSLICE
+			data_u8 = BMA253_SET_BITSLICE
 			(data_u8, BMA2x2_COMP_TARGET_OFFSET_X, offset_u8);
 			com_rslt += bma2x2_write_reg(
 			BMA2x2_COMP_TARGET_OFFSET_X_REG,
@@ -7929,7 +7929,7 @@ u8 offset_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_COMP_TARGET_OFFSET_Y_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			data_u8 = BMA2x2_SET_BITSLICE
+			data_u8 = BMA253_SET_BITSLICE
 			(data_u8, BMA2x2_COMP_TARGET_OFFSET_Y, offset_u8);
 			com_rslt += bma2x2_write_reg(
 			BMA2x2_COMP_TARGET_OFFSET_Y_REG,
@@ -7941,7 +7941,7 @@ u8 offset_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_COMP_TARGET_OFFSET_Z_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			data_u8 = BMA2x2_SET_BITSLICE
+			data_u8 = BMA253_SET_BITSLICE
 			(data_u8, BMA2x2_COMP_TARGET_OFFSET_Z, offset_u8);
 			com_rslt += bma2x2_write_reg(
 			BMA2x2_COMP_TARGET_OFFSET_Z_REG,
@@ -8119,7 +8119,7 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_get_fifo_mode(u8 *fifo_mode_u8)
 			p_bma2x2->dev_addr,
 			BMA253_FIFO_CONFIG_1_REG, &data_u8,
 			BMA253_GEN_READ_WRITE_LENGTH);
-			*fifo_mode_u8 = BMA2x2_GET_BITSLICE(data_u8,
+			*fifo_mode_u8 = BMA253_GET_BITSLICE(data_u8,
 			BMA253_FIFO_CONFIG_1);
 		}
 	return com_rslt;
@@ -8162,7 +8162,7 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_set_fifo_mode(u8 fifo_mode_u8)
 			(p_bma2x2->dev_addr,
 			BMA253_FIFO_CONFIG_1_REG, &data_u8,
 			BMA253_GEN_READ_WRITE_LENGTH);
-			data_u8 = BMA2x2_SET_BITSLICE(data_u8,
+			data_u8 = BMA253_SET_BITSLICE(data_u8,
 			BMA253_FIFO_CONFIG_1, fifo_mode_u8);
 			data_u8 |= 0x0C;
 			/*Power mode is switched to Standby power mode*/
@@ -8222,7 +8222,7 @@ u8 *fifo_data_select_u8)
 			p_bma2x2->dev_addr,
 			BMA2x2_FIFO_DATA_SELECT_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
-			*fifo_data_select_u8 = BMA2x2_GET_BITSLICE(data_u8,
+			*fifo_data_select_u8 = BMA253_GET_BITSLICE(data_u8,
 			BMA2x2_FIFO_DATA_SELECT);
 		}
 	return com_rslt;
@@ -8266,7 +8266,7 @@ u8 fifo_data_select_u8)
 			(p_bma2x2->dev_addr,
 			BMA2x2_FIFO_DATA_SELECT_REG, &data_u8,
 			BMA253_GEN_READ_WRITE_LENGTH);
-			data_u8 = BMA2x2_SET_BITSLICE
+			data_u8 = BMA253_SET_BITSLICE
 			(data_u8,
 			BMA2x2_FIFO_DATA_SELECT, fifo_data_select_u8);
 			data_u8 |= 0x0C;
@@ -8787,21 +8787,21 @@ struct BMA253_ACCEL_eight_resolution_temp *accel)
 			(p_bma2x2->dev_addr,
 			BMA2x2_X_AXIS_MSB_ADDR, &data_u8,
 			BMA253_GEN_READ_WRITE_LENGTH);
-			accel->x = BMA2x2_GET_BITSLICE(data_u8,
+			accel->x = BMA253_GET_BITSLICE(data_u8,
 			BMA253_ACCEL_X_MSB);
 
 			com_rslt = p_bma2x2->BMA2x2_BUS_READ_FUNC
 			(p_bma2x2->dev_addr,
 			BMA2x2_Y_AXIS_MSB_ADDR, &data_u8,
 			BMA253_GEN_READ_WRITE_LENGTH);
-			accel->y = BMA2x2_GET_BITSLICE(data_u8,
+			accel->y = BMA253_GET_BITSLICE(data_u8,
 			BMA253_ACCEL_Y_MSB);
 
 			com_rslt = p_bma2x2->BMA2x2_BUS_READ_FUNC
 			(p_bma2x2->dev_addr,
 			BMA2x2_Z_AXIS_MSB_ADDR, &data_u8,
 			BMA253_GEN_READ_WRITE_LENGTH);
-			accel->z = BMA2x2_GET_BITSLICE(data_u8,
+			accel->z = BMA253_GET_BITSLICE(data_u8,
 			BMA253_ACCEL_Z_MSB);
 
 			com_rslt = p_bma2x2->BMA2x2_BUS_READ_FUNC(
