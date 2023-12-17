@@ -5,6 +5,9 @@
 #include "../HCL/i2c/i2c_hcl.h"
 #include <stdint.h>
 
+#define BMA253_ACCD_HBW_SHADOW_DIS_BITS_VAL     ((uint8_t) 1)
+#define BMA253_ACCD_HBW_DATA_HIGH_BW_BITS_VAL	((uint8_t) 1)
+
 /**** ADAPTER STRUCT AND FUNCTIONS FOR SPECIFIC IMPLEMENTATION *****/
 /*
 	Please rewrite these to adapt your implementation, according to the instruction:
@@ -54,8 +57,23 @@ void HCL_BMA253_Init(bma253_t* bma253,
 void HCL_BMA253_Read_Reg(bma253_t* bma253, uint8_t reg_addr, uint8_t* p_data, uint16_t read_length);
 void HCL_BMA253_Write_Reg(bma253_t* bma253, uint8_t reg_addr, uint8_t* p_data, uint16_t write_length);
 
+uint8_t HCL_BMA253_get_bits(bma253_t* bma253, uint8_t reg_addr, uint8_t bits_pos, uint8_t bits_msk, uint16_t length);
+void HCL_BMA253_set_bits(bma253_t* bma253, uint8_t reg_addr, uint8_t bits_pos, uint8_t bits_msk, uint8_t val);
+
 uint8_t HCL_BMA253_get_shadow_dis(bma253_t* bma253);
 void HCL_BMA253_set_shadow_dis(bma253_t* bma253, uint8_t shadow_dis_u8);
 
+uint8_t HCL_BMA253_get_data_high_bw(bma253_t* bma253);
+void HCL_BMA253_set_data_high_bw(bma253_t* bma253, uint8_t data_high_bw_u8);
 
+/*
+Value range of BMA253_ACCEL_AXIS_LSB_REG:
+    BMA253_ACCEL_X12_LSB_REG
+    BMA253_ACCEL_Y12_LSB_REG
+    BMA253_ACCEL_Z12_LSB_REG
+*/
+int16_t HCL_BMA253_get_accel(bma253_t* bma253, uint8_t BMA253_ACCEL_AXIS_LSB_REG);
+int16_t HCL_BMA253_get_accel_x(bma253_t* bma253);
+int16_t HCL_BMA253_get_accel_y(bma253_t* bma253);
+int16_t HCL_BMA253_get_accel_z(bma253_t* bma253);
 #endif
