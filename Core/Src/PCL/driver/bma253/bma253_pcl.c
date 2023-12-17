@@ -23,12 +23,10 @@ void __PCL_BMA253_Write_Reg(uint8_t dev_addr, uint8_t reg_addr, uint8_t* p_data,
 void PCL_BMA253_Init(BMA253_TypeDef* pcl_bma253, I2C_HandleTypeDef* hi2c) {
     pcl_bma253->hi2c = hi2c;
     pcl_bma253->bma253.dev_addr = BMA2x2_I2C_ADDR1;
-    pcl_bma253->bma253.read = __PCL_BMA253_Read_Reg;
-    pcl_bma253->bma253.write = __PCL_BMA253_Write_Reg;
 
     I2C_HandleTypeDef* pcl_i2c_old = pcl_i2c;
     pcl_i2c = pcl_bma253->hi2c;
-    HCL_BMA253_Init(&pcl_bma253->bma253);
+    HCL_BMA253_Init(&pcl_bma253->bma253, __PCL_BMA253_Read_Reg, __PCL_BMA253_Write_Reg);
     pcl_i2c = pcl_i2c_old;
 }
 
