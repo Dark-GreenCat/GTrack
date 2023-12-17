@@ -6,10 +6,7 @@
 #define PCL_BMA253_TIMEOUT                      1000
 
 
-typedef struct {
-    bma253_t bma253;
-    I2C_HandleTypeDef* hi2c;
-} BMA253_TypeDef;
+typedef bma253_t BMA253_TypeDef;
 
 typedef struct {
     int16_t x;
@@ -17,8 +14,8 @@ typedef struct {
     int16_t z;
 } BMA253_Accel_Data_t;
 
-static void __PCL_BMA253_Read_Reg(uint8_t dev_addr, uint8_t reg_addr, uint8_t* p_data, uint16_t read_length);
-static void __PCL_BMA253_Write_Reg(uint8_t dev_addr, uint8_t reg_addr, uint8_t* p_data, uint16_t write_length);
+static void __PCL_BMA253_Read_Reg(I2C_HandleTypeDef* hi2c, uint8_t dev_addr, uint8_t reg_addr, uint8_t* p_data, uint16_t read_length);
+static void __PCL_BMA253_Write_Reg(I2C_HandleTypeDef* hi2c, uint8_t dev_addr, uint8_t reg_addr, uint8_t* p_data, uint16_t write_length);
 
 void PCL_BMA253_Init(BMA253_TypeDef* pcl_bma253, I2C_HandleTypeDef* hcl_i2c);
 

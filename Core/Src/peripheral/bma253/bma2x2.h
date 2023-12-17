@@ -392,8 +392,8 @@ burst_read(device_addr, register_addr, register_data, rd_len)
 * BMA250E
 * BMA222E
 */
-#define BMA2x2_I2C_ADDR1                (0x18)
-#define BMA2x2_I2C_ADDR2                (0x19)
+#define BMA253_I2C_ADDR1                (0x18)
+#define BMA253_I2C_ADDR2                (0x19)
 
 /**< The following definition of I2C address is used for the following sensors
 * BMC150
@@ -992,10 +992,10 @@ struct fifo_configuration {
 /*******************************************/
 /**\name DISABLE MSB SHADOWING PROCEDURE  */
 /*******************************************/
-#define BMA2x2_DIS_SHADOW_PROC_POS       (6)
-#define BMA2x2_DIS_SHADOW_PROC_LEN       (1)
-#define BMA2x2_DIS_SHADOW_PROC_MSK       (0x40)
-#define BMA2x2_DIS_SHADOW_PROC_REG       BMA2x2_DATA_CTRL_ADDR
+#define BMA253_ACCD_HBW_SHADOW_DIS_BITS_POS       (6)
+#define BMA253_ACCD_HBW_SHADOW_DIS_BITS_LEN       (1)
+#define BMA253_ACCD_HBW_SHADOW_DIS_BITS_MSK       (0x40)
+#define BMA253_ACCD_HBW_SHADOW_DIS_BITS_REG       BMA2x2_DATA_CTRL_ADDR
 /***************************************************/
 /**\name FILTERED OR UNFILTERED ACCELERATION DATA   */
 /***************************************************/
@@ -1658,11 +1658,11 @@ BMA2x2_INTR_SOURCE_ADDR
 /****************************************************/
 /**\name  BITSLICE FUNCTIONS      */
 /***************************************************/
-#define BMA2x2_GET_BITSLICE(regvar, bitname)\
+#define BMA253_GET_BITSLICE(regvar, bitname)\
 ((regvar & bitname##_MSK) >> bitname##_POS)
 
 
-#define BMA2x2_SET_BITSLICE(regvar, bitname, val)\
+#define BMA253_SET_BITSLICE(regvar, bitname, val)\
 ((regvar & ~bitname##_MSK) | ((val<<bitname##_POS)&bitname##_MSK))
 
 /****************************************************/
