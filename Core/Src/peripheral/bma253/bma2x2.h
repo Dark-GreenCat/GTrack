@@ -406,20 +406,20 @@ burst_read(device_addr, register_addr, register_data, rd_len)
 /**************************************************************/
 /**\name	CONSTANTS DEFINITION    */
 /**************************************************************/
-#define         BMA2x2_INIT_VALUE                       ((u8)0)
-#define         BMA2x2_GEN_READ_WRITE_LENGTH            ((u8)1)
+#define         BMA253_INIT_VALUE                       ((u8)0)
+#define         BMA253_GEN_READ_WRITE_LENGTH            ((u8)1)
 #define		BMA2x2_INTERFACE_IDLE_TIME_DELAY	((u8)1)
 #define         BMA2x2_LSB_MSB_READ_LENGTH		((u8)2)
 	/**	BIT SHIFT DEFINITIONS    */
-#define         BMA2x2_SHIFT_TWO_BITS                   ((u8)2)
-#define         BMA2x2_SHIFT_FOUR_BITS                  ((u8)4)
-#define         BMA2x2_SHIFT_FIVE_BITS                  ((u8)5)
-#define         BMA2x2_SHIFT_SIX_BITS                   ((u8)6)
-#define         BMA2x2_SHIFT_EIGHT_BITS                 ((u8)8)
+#define         BMA253_SHIFT_TWO_BITS                   ((u8)2)
+#define         BMA253_SHIFT_FOUR_BITS                  ((u8)4)
+#define         BMA253_SHIFT_FIVE_BITS                  ((u8)5)
+#define         BMA253_SHIFT_SIX_BITS                   ((u8)6)
+#define         BMA253_SHIFT_EIGHT_BITS                 ((u8)8)
 	/**	FIFO DEFINITIONS    */
-#define		BMA2x2_FIFO_MODE_STATUS_RANGE		((u8)2)
+#define		BMA253_FIFO_CONFIG_1_STATUS_RANGE		((u8)2)
 #define		BMA2x2_FIFO_DATA_SELECT_RANGE		((u8)4)
-#define		BMA2x2_FIFO_MODE_RANGE			((u8)4)
+#define		BMA253_FIFO_CONFIG_1_RANGE			((u8)4)
 #define         BMA2x2_FIFO_WML_RANGE                   ((u8)32)
 
 #define         BMA2x2_FIFO_XYZ_DATA_ENABLED          (0x00)
@@ -430,9 +430,9 @@ burst_read(device_addr, register_addr, register_data, rd_len)
 #define         BMA2x2_FIFO_XYZ_AXES_FRAME_SIZE       ((u8)6)
 #define         BMA2x2_FIFO_SINGLE_AXIS_FRAME_SIZE    ((u8)2)
 	/**	MODE RANGES    */
-#define         BMA2x2_ACCEL_BW_MIN_RANGE               ((u8)7)
-#define         BMA2x2_ACCEL_BW_1000HZ_RANGE            ((u8)15)
-#define         BMA2x2_ACCEL_BW_MAX_RANGE               ((u8)16)
+#define         BMA253_ACCEL_BW_MIN_RANGE               ((u8)7)
+#define         BMA253_ACCEL_BW_1000HZ_RANGE            ((u8)15)
+#define         BMA253_ACCEL_BW_MAX_RANGE               ((u8)16)
 #define		BMA2x2_SLEEP_DURN_MIN_RANGE		((u8)4)
 #define		BMA2x2_SLEEP_TIMER_MODE_RANGE		((u8)2)
 #define		BMA2x2_SLEEP_DURN_MAX_RANGE		((u8)16)
@@ -460,7 +460,7 @@ burst_read(device_addr, register_addr, register_data, rd_len)
 #define BMA2x2_EEP_OFFSET                       (0x16)
 #define BMA2x2_IMAGE_BASE                       (0x38)
 #define BMA2x2_IMAGE_LEN                        (22)
-#define BMA2x2_CHIP_ID_ADDR			(0x00)
+#define BMA253_BGW_CHIPID_ADDR			(0x00)
 /** DATA ADDRESS DEFINITIONS */
 #define BMA2x2_X_AXIS_LSB_ADDR                  (0x02)
 #define BMA2x2_X_AXIS_MSB_ADDR                  (0x03)
@@ -520,7 +520,7 @@ burst_read(device_addr, register_addr, register_data, rd_len)
 #define BMA2x2_GP0_ADDR                          (0x3B)
 #define BMA2x2_GP1_ADDR                          (0x3C)
 /**FIFO ADDRESS DEFINITIONS */
-#define BMA2x2_FIFO_MODE_ADDR                    (0x3E)
+#define BMA253_FIFO_CONFIG_1_ADDR                    (0x3E)
 #define BMA2x2_FIFO_DATA_OUTPUT_ADDR             (0x3F)
 #define BMA2x2_FIFO_WML_TRIG                     (0x30)
 
@@ -544,7 +544,7 @@ burst_read(device_addr, register_addr, register_data, rd_len)
 /*!
 *	@brief read accel xyz data for 10,14 and 12 bit resolution
 */
-struct bma2x2_accel_data {
+struct BMA253_ACCEL_data {
 s16 x,/**< accel x data 10,14 and 12 resolution*/
 y,/**< accel y data 10,14 and 12 resolution*/
 z;/**< accel z data 10,14 and 12 resolution*/
@@ -553,7 +553,7 @@ z;/**< accel z data 10,14 and 12 resolution*/
 *	@brief read accel xyz data for 10,14 and 12 bit resolution
 *	and temperature output
 */
-struct bma2x2_accel_data_temp {
+struct BMA253_ACCEL_data_temp {
 s16 x,/**< accel x data 10,14 and 12 resolution*/
 y,/**< accel y data 10,14 and 12 resolution*/
 z;/**< accel z data 10,14 and 12 resolution*/
@@ -563,7 +563,7 @@ s8 temp;/**< accel temperature data*/
 /*!
 *	@brief read accel xyz data for 8 bit resolution
 */
-struct  bma2x2_accel_eight_resolution {
+struct  BMA253_ACCEL_eight_resolution {
 s8 x,/**< accel x data with eight bit resolution*/
 y,/**< accel y data with eight bit resolution*/
 z;/**< accel z data with eight bit resolution*/
@@ -571,7 +571,7 @@ z;/**< accel z data with eight bit resolution*/
 /*!
 *	@brief read accel xyz data for 8 bit resolution and temperature
 */
-struct bma2x2_accel_eight_resolution_temp {
+struct BMA253_ACCEL_eight_resolution_temp {
 s8 x,/**< accel x data with eight bit resolution*/
 y,/**< accel y data with eight bit resolution*/
 z;/**< accel z data with eight bit resolution*/
@@ -587,7 +587,7 @@ s8 temp;/**< accel temperature data*/
  *
  *  data enabled for FIFO storage | Data field to be read from the below union
  *  ------------------------------|-------------------------------------------
- *          XYZ axes enabled      |         struct bma2x2_accel_data
+ *          XYZ axes enabled      |         struct BMA253_ACCEL_data
  *          X axis data enabled   |         x data
  *          Y axis data enabled   |         y data
  *          Z axis data enabled   |         z data
@@ -595,7 +595,7 @@ s8 temp;/**< accel temperature data*/
 union fifo_frame {
 	/*! FIFO data stored here when XYZ data enabled in
 	fifo_data_select bits of register 0x3E*/
-	struct bma2x2_accel_data accel_data;
+	struct BMA253_ACCEL_data accel_data;
 	/*! FIFO data stored here when accel X data enabled in
 	fifo_data_select bits of register 0x3E*/
 	s16 x;
@@ -665,10 +665,10 @@ struct fifo_configuration {
 /******************************/
 /**\name CHIP ID  */
 /******************************/
-#define BMA2x2_CHIP_ID_POS             (0)
-#define BMA2x2_CHIP_ID_MSK             (0xFF)
-#define BMA2x2_CHIP_ID_LEN             (8)
-#define BMA2x2_CHIP_ID_REG             BMA2x2_CHIP_ID_ADDR
+#define BMA253_BGW_CHIPID_POS             (0)
+#define BMA253_BGW_CHIPID_MSK             (0xFF)
+#define BMA253_BGW_CHIPID_LEN             (8)
+#define BMA253_BGW_CHIPID_REG             BMA253_BGW_CHIPID_ADDR
 
 /******************************/
 /**\name DATA REGISTER-X  */
@@ -678,30 +678,30 @@ struct fifo_configuration {
 #define BMA2x2_NEW_DATA_X_MSK          (0x01)
 #define BMA2x2_NEW_DATA_X_REG          BMA2x2_X_AXIS_LSB_ADDR
 
-#define BMA2x2_ACCEL_X14_LSB_POS          (2)
-#define BMA2x2_ACCEL_X14_LSB_LEN          (6)
-#define BMA2x2_ACCEL_X14_LSB_MSK          (0xFC)
-#define BMA2x2_ACCEL_X14_LSB_REG           BMA2x2_X_AXIS_LSB_ADDR
+#define BMA253_ACCEL_X14_LSB_POS          (2)
+#define BMA253_ACCEL_X14_LSB_LEN          (6)
+#define BMA253_ACCEL_X14_LSB_MSK          (0xFC)
+#define BMA253_ACCEL_X14_LSB_REG           BMA2x2_X_AXIS_LSB_ADDR
 
-#define BMA2x2_ACCEL_X12_LSB_POS           (4)
-#define BMA2x2_ACCEL_X12_LSB_LEN           (4)
-#define BMA2x2_ACCEL_X12_LSB_MSK           (0xF0)
-#define BMA2x2_ACCEL_X12_LSB_REG           BMA2x2_X_AXIS_LSB_ADDR
+#define BMA253_ACCEL_X12_LSB_POS           (4)
+#define BMA253_ACCEL_X12_LSB_LEN           (4)
+#define BMA253_ACCEL_X12_LSB_MSK           (0xF0)
+#define BMA253_ACCEL_X12_LSB_REG           BMA2x2_X_AXIS_LSB_ADDR
 
-#define BMA2x2_ACCEL_X10_LSB_POS           (6)
-#define BMA2x2_ACCEL_X10_LSB_LEN           (2)
-#define BMA2x2_ACCEL_X10_LSB_MSK           (0xC0)
-#define BMA2x2_ACCEL_X10_LSB_REG           BMA2x2_X_AXIS_LSB_ADDR
+#define BMA253_ACCEL_X10_LSB_POS           (6)
+#define BMA253_ACCEL_X10_LSB_LEN           (2)
+#define BMA253_ACCEL_X10_LSB_MSK           (0xC0)
+#define BMA253_ACCEL_X10_LSB_REG           BMA2x2_X_AXIS_LSB_ADDR
 
-#define BMA2x2_ACCEL_X8_LSB_POS           (0)
-#define BMA2x2_ACCEL_X8_LSB_LEN           (0)
-#define BMA2x2_ACCEL_X8_LSB_MSK           (0x00)
-#define BMA2x2_ACCEL_X8_LSB_REG           BMA2x2_X_AXIS_LSB_ADDR
+#define BMA253_ACCEL_X8_LSB_POS           (0)
+#define BMA253_ACCEL_X8_LSB_LEN           (0)
+#define BMA253_ACCEL_X8_LSB_MSK           (0x00)
+#define BMA253_ACCEL_X8_LSB_REG           BMA2x2_X_AXIS_LSB_ADDR
 
-#define BMA2x2_ACCEL_X_MSB_POS           (0)
-#define BMA2x2_ACCEL_X_MSB_LEN           (8)
-#define BMA2x2_ACCEL_X_MSB_MSK           (0xFF)
-#define BMA2x2_ACCEL_X_MSB_REG           BMA2x2_X_AXIS_MSB_ADDR
+#define BMA253_ACCEL_X_MSB_POS           (0)
+#define BMA253_ACCEL_X_MSB_LEN           (8)
+#define BMA253_ACCEL_X_MSB_MSK           (0xFF)
+#define BMA253_ACCEL_X_MSB_REG           BMA2x2_X_AXIS_MSB_ADDR
 /******************************/
 /**\name DATA REGISTER-Y  */
 /******************************/
@@ -710,30 +710,30 @@ struct fifo_configuration {
 #define BMA2x2_NEW_DATA_Y_MSK          (0x01)
 #define BMA2x2_NEW_DATA_Y_REG          BMA2x2_Y_AXIS_LSB_ADDR
 
-#define BMA2x2_ACCEL_Y14_LSB_POS           (2)
-#define BMA2x2_ACCEL_Y14_LSB_LEN           (6)
-#define BMA2x2_ACCEL_Y14_LSB_MSK           (0xFC)
-#define BMA2x2_ACCEL_Y14_LSB_REG           BMA2x2_Y_AXIS_LSB_ADDR
+#define BMA253_ACCEL_Y14_LSB_POS           (2)
+#define BMA253_ACCEL_Y14_LSB_LEN           (6)
+#define BMA253_ACCEL_Y14_LSB_MSK           (0xFC)
+#define BMA253_ACCEL_Y14_LSB_REG           BMA2x2_Y_AXIS_LSB_ADDR
 
-#define BMA2x2_ACCEL_Y12_LSB_POS           (4)
-#define BMA2x2_ACCEL_Y12_LSB_LEN           (4)
-#define BMA2x2_ACCEL_Y12_LSB_MSK           (0xF0)
-#define BMA2x2_ACCEL_Y12_LSB_REG           BMA2x2_Y_AXIS_LSB_ADDR
+#define BMA253_ACCEL_Y12_LSB_POS           (4)
+#define BMA253_ACCEL_Y12_LSB_LEN           (4)
+#define BMA253_ACCEL_Y12_LSB_MSK           (0xF0)
+#define BMA253_ACCEL_Y12_LSB_REG           BMA2x2_Y_AXIS_LSB_ADDR
 
-#define BMA2x2_ACCEL_Y10_LSB_POS           (6)
-#define BMA2x2_ACCEL_Y10_LSB_LEN           (2)
-#define BMA2x2_ACCEL_Y10_LSB_MSK           (0xC0)
-#define BMA2x2_ACCEL_Y10_LSB_REG           BMA2x2_Y_AXIS_LSB_ADDR
+#define BMA253_ACCEL_Y10_LSB_POS           (6)
+#define BMA253_ACCEL_Y10_LSB_LEN           (2)
+#define BMA253_ACCEL_Y10_LSB_MSK           (0xC0)
+#define BMA253_ACCEL_Y10_LSB_REG           BMA2x2_Y_AXIS_LSB_ADDR
 
-#define BMA2x2_ACCEL_Y8_LSB_POS           (0)
-#define BMA2x2_ACCEL_Y8_LSB_LEN           (0)
-#define BMA2x2_ACCEL_Y8_LSB_MSK           (0x00)
-#define BMA2x2_ACCEL_Y8_LSB_REG           BMA2x2_Y_AXIS_LSB_ADDR
+#define BMA253_ACCEL_Y8_LSB_POS           (0)
+#define BMA253_ACCEL_Y8_LSB_LEN           (0)
+#define BMA253_ACCEL_Y8_LSB_MSK           (0x00)
+#define BMA253_ACCEL_Y8_LSB_REG           BMA2x2_Y_AXIS_LSB_ADDR
 
-#define BMA2x2_ACCEL_Y_MSB_POS           (0)
-#define BMA2x2_ACCEL_Y_MSB_LEN           (8)
-#define BMA2x2_ACCEL_Y_MSB_MSK           (0xFF)
-#define BMA2x2_ACCEL_Y_MSB_REG           BMA2x2_Y_AXIS_MSB_ADDR
+#define BMA253_ACCEL_Y_MSB_POS           (0)
+#define BMA253_ACCEL_Y_MSB_LEN           (8)
+#define BMA253_ACCEL_Y_MSB_MSK           (0xFF)
+#define BMA253_ACCEL_Y_MSB_REG           BMA2x2_Y_AXIS_MSB_ADDR
 /******************************/
 /**\name DATA REGISTER-Z  */
 /******************************/
@@ -742,38 +742,38 @@ struct fifo_configuration {
 #define BMA2x2_NEW_DATA_Z_MSK          (0x01)
 #define BMA2x2_NEW_DATA_Z_REG          BMA2x2_Z_AXIS_LSB_ADDR
 
-#define BMA2x2_ACCEL_Z14_LSB_POS           (2)
-#define BMA2x2_ACCEL_Z14_LSB_LEN           (6)
-#define BMA2x2_ACCEL_Z14_LSB_MSK           (0xFC)
-#define BMA2x2_ACCEL_Z14_LSB_REG           BMA2x2_Z_AXIS_LSB_ADDR
+#define BMA253_ACCEL_Z14_LSB_POS           (2)
+#define BMA253_ACCEL_Z14_LSB_LEN           (6)
+#define BMA253_ACCEL_Z14_LSB_MSK           (0xFC)
+#define BMA253_ACCEL_Z14_LSB_REG           BMA2x2_Z_AXIS_LSB_ADDR
 
-#define BMA2x2_ACCEL_Z12_LSB_POS           (4)
-#define BMA2x2_ACCEL_Z12_LSB_LEN           (4)
-#define BMA2x2_ACCEL_Z12_LSB_MSK           (0xF0)
-#define BMA2x2_ACCEL_Z12_LSB_REG           BMA2x2_Z_AXIS_LSB_ADDR
+#define BMA253_ACCEL_Z12_LSB_POS           (4)
+#define BMA253_ACCEL_Z12_LSB_LEN           (4)
+#define BMA253_ACCEL_Z12_LSB_MSK           (0xF0)
+#define BMA253_ACCEL_Z12_LSB_REG           BMA2x2_Z_AXIS_LSB_ADDR
 
-#define BMA2x2_ACCEL_Z10_LSB_POS           (6)
-#define BMA2x2_ACCEL_Z10_LSB_LEN           (2)
-#define BMA2x2_ACCEL_Z10_LSB_MSK           (0xC0)
-#define BMA2x2_ACCEL_Z10_LSB_REG           BMA2x2_Z_AXIS_LSB_ADDR
+#define BMA253_ACCEL_Z10_LSB_POS           (6)
+#define BMA253_ACCEL_Z10_LSB_LEN           (2)
+#define BMA253_ACCEL_Z10_LSB_MSK           (0xC0)
+#define BMA253_ACCEL_Z10_LSB_REG           BMA2x2_Z_AXIS_LSB_ADDR
 
-#define BMA2x2_ACCEL_Z8_LSB_POS           (0)
-#define BMA2x2_ACCEL_Z8_LSB_LEN           (0)
-#define BMA2x2_ACCEL_Z8_LSB_MSK           (0x00)
-#define BMA2x2_ACCEL_Z8_LSB_REG           BMA2x2_Z_AXIS_LSB_ADDR
+#define BMA253_ACCEL_Z8_LSB_POS           (0)
+#define BMA253_ACCEL_Z8_LSB_LEN           (0)
+#define BMA253_ACCEL_Z8_LSB_MSK           (0x00)
+#define BMA253_ACCEL_Z8_LSB_REG           BMA2x2_Z_AXIS_LSB_ADDR
 
-#define BMA2x2_ACCEL_Z_MSB_POS           (0)
-#define BMA2x2_ACCEL_Z_MSB_LEN           (8)
-#define BMA2x2_ACCEL_Z_MSB_MSK           (0xFF)
-#define BMA2x2_ACCEL_Z_MSB_REG           BMA2x2_Z_AXIS_MSB_ADDR
+#define BMA253_ACCEL_Z_MSB_POS           (0)
+#define BMA253_ACCEL_Z_MSB_LEN           (8)
+#define BMA253_ACCEL_Z_MSB_MSK           (0xFF)
+#define BMA253_ACCEL_Z_MSB_REG           BMA2x2_Z_AXIS_MSB_ADDR
 
 /******************************/
 /**\name TEMPERATURE */
 /******************************/
-#define BMA2x2_ACCEL_TEMP_MSB_POS           (0)
-#define BMA2x2_ACCEL_TEMP_MSB_LEN           (8)
-#define BMA2x2_ACCEL_TEMP_MSB_MSK           (0xFF)
-#define BMA2x2_ACCEL_TEMP_MSB_REG           BMA2x2_TEMPERATURE_REG
+#define BMA253_ACCEL_TEMP_MSB_POS           (0)
+#define BMA253_ACCEL_TEMP_MSB_LEN           (8)
+#define BMA253_ACCEL_TEMP_MSB_MSK           (0xFF)
+#define BMA253_ACCEL_TEMP_MSB_REG           BMA2x2_TEMPERATURE_REG
 
 /***************************************/
 /**\name INTERRUPT STATUS OF LOW-G */
@@ -1646,14 +1646,14 @@ BMA2x2_INTR_SOURCE_ADDR
 #define BMA2x2_FIFO_DATA_SELECT_POS                 (0)
 #define BMA2x2_FIFO_DATA_SELECT_LEN                 (2)
 #define BMA2x2_FIFO_DATA_SELECT_MSK                 (0x03)
-#define BMA2x2_FIFO_DATA_SELECT_REG                 BMA2x2_FIFO_MODE_ADDR
+#define BMA2x2_FIFO_DATA_SELECT_REG                 BMA253_FIFO_CONFIG_1_ADDR
 /****************************************************/
 /**\name   FIFO MODE      */
 /***************************************************/
-#define BMA2x2_FIFO_MODE_POS                 (6)
-#define BMA2x2_FIFO_MODE_LEN                 (2)
-#define BMA2x2_FIFO_MODE_MSK                 (0xC0)
-#define BMA2x2_FIFO_MODE_REG                 BMA2x2_FIFO_MODE_ADDR
+#define BMA253_FIFO_CONFIG_1_POS                 (6)
+#define BMA253_FIFO_CONFIG_1_LEN                 (2)
+#define BMA253_FIFO_CONFIG_1_MSK                 (0xC0)
+#define BMA253_FIFO_CONFIG_1_REG                 BMA253_FIFO_CONFIG_1_ADDR
 
 /****************************************************/
 /**\name  BITSLICE FUNCTIONS      */
@@ -2036,9 +2036,9 @@ BMA2x2_INTR_SOURCE_ADDR
 /****************************************************/
 /**\name	ARRAY SIZE DEFINITIONS      */
 /***************************************************/
-#define BMA2x2_ACCEL_DATA_SIZE			(2)
-#define BMA2x2_ACCEL_XYZ_DATA_SIZE		(6)
-#define BMA2x2_ACCEL_XYZ_TEMP_DATA_SIZE		(7)
+#define BMA253_ACCEL_DATA_SIZE			(2)
+#define BMA253_ACCEL_XYZ_DATA_SIZE		(6)
+#define BMA253_ACCEL_XYZ_TEMP_DATA_SIZE		(7)
 /****************************************************/
 /**\name	ARRAY PARAMETERS      */
 /***************************************************/
@@ -2336,7 +2336,7 @@ s8 *accel_z_s8);
  *
 */
 BMA2x2_RETURN_FUNCTION_TYPE bma2x2_read_accel_xyz(
-struct bma2x2_accel_data *accel);
+struct BMA253_ACCEL_data *accel);
 /*!
  * @brief This API reads acceleration of 8 bit resolution
  * data of X,Y,Z values
@@ -2356,7 +2356,7 @@ struct bma2x2_accel_data *accel);
  *
 */
 BMA2x2_RETURN_FUNCTION_TYPE bma2x2_read_accel_eight_resolution_xyz(
-struct bma2x2_accel_eight_resolution *accel);
+struct BMA253_ACCEL_eight_resolution *accel);
 /******************************************/
 /**\name FUNCTION FOR INTERRUPT STATUS*/
 /******************************************/
@@ -3059,10 +3059,10 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_set_intr_fifo_wm(u8 fifo_wm_u8);
  *  @param  channel_u8 : The value of slow/no motion select
  *        channel_u8     |   result
  *       ----------------- | ------------------
- *              0          | BMA2x2_ACCEL_SLOW_NO_MOTION_ENABLE_X
- *              1          | BMA2x2_ACCEL_SLOW_NO_MOTION_ENABLE_Y
- *              2          | BMA2x2_ACCEL_SLOW_NO_MOTION_ENABLE_Z
- *              3          | BMA2x2_ACCEL_SLOW_NO_MOTION_ENABLE_SEL
+ *              0          | BMA253_ACCEL_SLOW_NO_MOTION_ENABLE_X
+ *              1          | BMA253_ACCEL_SLOW_NO_MOTION_ENABLE_Y
+ *              2          | BMA253_ACCEL_SLOW_NO_MOTION_ENABLE_Z
+ *              3          | BMA253_ACCEL_SLOW_NO_MOTION_ENABLE_SEL
  *
  *	@param slow_no_motion_u8 : The value of slow no motion interrupt
  *      enable
@@ -3089,10 +3089,10 @@ u8 *slow_no_motion_u8);
  *  @param  channel_u8 : The value of slow/no motion select
  *        channel_u8     |   result
  *       ----------------- | ------------------
- *              0          | BMA2x2_ACCEL_SLOW_NO_MOTION_ENABLE_X
- *              1          | BMA2x2_ACCEL_SLOW_NO_MOTION_ENABLE_Y
- *              2          | BMA2x2_ACCEL_SLOW_NO_MOTION_ENABLE_Z
- *              3          | BMA2x2_ACCEL_SLOW_NO_MOTION_ENABLE_SEL
+ *              0          | BMA253_ACCEL_SLOW_NO_MOTION_ENABLE_X
+ *              1          | BMA253_ACCEL_SLOW_NO_MOTION_ENABLE_Y
+ *              2          | BMA253_ACCEL_SLOW_NO_MOTION_ENABLE_Z
+ *              3          | BMA253_ACCEL_SLOW_NO_MOTION_ENABLE_SEL
  *
  *	@param slow_no_motion_u8 : The value of slow no motion interrupt enable
  *        slow_no_motion_u8     |   result
@@ -3121,8 +3121,8 @@ u8 slow_no_motion_u8);
  * @param channel_u8 : The value of low interrupt selection channel
  *        channel_u8     |   result
  *       ----------------- | ------------------
- *              0          | BMA2x2_ACCEL_INTR1_LOW_G
- *              1          | BMA2x2_ACCEL_INTR2_LOW_G
+ *              0          | BMA253_ACCEL_INTR1_LOW_G
+ *              1          | BMA253_ACCEL_INTR2_LOW_G
  *
  * @param intr_low_g_u8 : the value of low_g interrupt
  *        intr_low_u8           |   result
@@ -3152,8 +3152,8 @@ u8 *intr_low_g_u8);
  * @param channel_u8 : The value of low interrupt selection channel
  *        channel_u8     |   result
  *       ----------------- | ------------------
- *              0          | BMA2x2_ACCEL_INTR1_LOW_G
- *              1          | BMA2x2_ACCEL_INTR2_LOW_G
+ *              0          | BMA253_ACCEL_INTR1_LOW_G
+ *              1          | BMA253_ACCEL_INTR2_LOW_G
  *
  * @param intr_low_u8 : the value of low_g interrupt
  *        intr_low_u8           |   result
@@ -3181,8 +3181,8 @@ u8 intr_low_u8);
  *  @param  channel_u8: The value of high_g interrupt selection
  *        channel_u8     |   result
  *       ----------------- | ------------------
- *              0          | BMA2x2_ACCEL_INTR1_HIGH_G
- *              1          | BMA2x2_ACCEL_INTR2_HIGH_G
+ *              0          | BMA253_ACCEL_INTR1_HIGH_G
+ *              1          | BMA253_ACCEL_INTR2_HIGH_G
  *
  * @param intr_high_g_u8 : the value of high_g interrupt
  *        intr_high_g_u8        |   result
@@ -3209,8 +3209,8 @@ u8 *intr_high_g_u8);
  *  @param  channel_u8: The value of high_g interrupt selection
  *        channel_u8     |   result
  *       ----------------- | ------------------
- *              0          | BMA2x2_ACCEL_INTR1_HIGH_G
- *              1          | BMA2x2_ACCEL_INTR2_HIGH_G
+ *              0          | BMA253_ACCEL_INTR1_HIGH_G
+ *              1          | BMA253_ACCEL_INTR2_HIGH_G
  *
  * @param intr_high_g_u8 : the value of high_g interrupt
  *        intr_high_g_u8        |   result
@@ -3238,8 +3238,8 @@ u8 intr_high_g_u8);
  * @param channel_u8: the value of slope channel select
  *        channel_u8     |   result
  *       ----------------- | ------------------
- *              0          | BMA2x2_ACCEL_INTR1_SLOPE
- *              1          | BMA2x2_ACCEL_INTR2_SLOPE
+ *              0          | BMA253_ACCEL_INTR1_SLOPE
+ *              1          | BMA253_ACCEL_INTR2_SLOPE
  *
  * @param intr_slope_u8 : The slope value enable value
  *        intr_slope_u8         |   result
@@ -3268,8 +3268,8 @@ u8 *intr_slope_u8);
  * @param channel_u8: the value of slope channel select
  *        channel_u8     |   result
  *       ----------------- | ------------------
- *              0          | BMA2x2_ACCEL_INTR1_SLOPE
- *              1          | BMA2x2_ACCEL_INTR2_SLOPE
+ *              0          | BMA253_ACCEL_INTR1_SLOPE
+ *              1          | BMA253_ACCEL_INTR2_SLOPE
  *
  * @param intr_slope_u8 : The slope value enable value
  *        intr_slope_u8         |   result
@@ -3362,8 +3362,8 @@ u8 intr_slow_no_motion_u8);
  *  @param channel_u8: The value of double tap selection
  *        channel_u8     |   result
  *       ----------------- | ------------------
- *              0          | BMA2x2_ACCEL_INTR1_DOUBLE_TAP
- *              1          | BMA2x2_ACCEL_INTR2_DOUBLE_TAP
+ *              0          | BMA253_ACCEL_INTR1_DOUBLE_TAP
+ *              1          | BMA253_ACCEL_INTR2_DOUBLE_TAP
  *
  *	@param intr_double_tap_u8: The double tap interrupt enable value
  *       intr_double_tap_u8     |   result
@@ -3392,8 +3392,8 @@ u8 *intr_double_tap_u8);
  *  @param channel_u8: The value of double tap selection
  *        channel_u8     |   result
  *       ----------------- | ------------------
- *              0          | BMA2x2_ACCEL_INTR1_DOUBLE_TAP
- *              1          | BMA2x2_ACCEL_INTR2_DOUBLE_TAP
+ *              0          | BMA253_ACCEL_INTR1_DOUBLE_TAP
+ *              1          | BMA253_ACCEL_INTR2_DOUBLE_TAP
  *
  *	@param intr_double_tap_u8: The double tap interrupt enable value
  *       intr_double_tap_u8     |   result
@@ -3420,8 +3420,8 @@ u8 intr_double_tap_u8);
  *  @param channel_u8: The value of single tap interrupt select
  *        channel_u8     |   result
  *       ----------------- | ------------------
- *              0          | BMA2x2_ACCEL_INTR1_SINGLE_TAP
- *              1          | BMA2x2_ACCEL_INTR2_SINGLE_TAP
+ *              0          | BMA253_ACCEL_INTR1_SINGLE_TAP
+ *              1          | BMA253_ACCEL_INTR2_SINGLE_TAP
  *
  *  @param intr_single_tap_u8: The single tap interrupt enable value
  *       intr_single_tap_u8     |   result
@@ -3449,8 +3449,8 @@ u8 *intr_single_tap_u8);
  *  @param channel_u8: The value of single tap interrupt select
  *        channel_u8     |   result
  *       ----------------- | ------------------
- *              0          | BMA2x2_ACCEL_INTR1_SINGLE_TAP
- *              1          | BMA2x2_ACCEL_INTR2_SINGLE_TAP
+ *              0          | BMA253_ACCEL_INTR1_SINGLE_TAP
+ *              1          | BMA253_ACCEL_INTR2_SINGLE_TAP
  *
  *  @param intr_single_tap_u8: The single tap interrupt enable value
  *       intr_single_tap_u8     |   result
@@ -3477,8 +3477,8 @@ u8 intr_single_tap_u8);
  * @param channel_u8: The value of orient interrupt select
  *        channel_u8     |   result
  *       ----------------- | ------------------
- *              0          | BMA2x2_ACCEL_INTR1_ORIENT
- *              1          | BMA2x2_ACCEL_INTR2_ORIENT
+ *              0          | BMA253_ACCEL_INTR1_ORIENT
+ *              1          | BMA253_ACCEL_INTR2_ORIENT
  *
  *  @param intr_orient_u8: The value of orient interrupt enable
  *       intr_orient_u8         |   result
@@ -3505,8 +3505,8 @@ u8 *intr_orient_u8);
  * @param channel_u8: The value of orient interrupt select
  *        channel_u8     |   result
  *       ----------------- | ------------------
- *              0          | BMA2x2_ACCEL_INTR1_ORIENT
- *              1          | BMA2x2_ACCEL_INTR2_ORIENT
+ *              0          | BMA253_ACCEL_INTR1_ORIENT
+ *              1          | BMA253_ACCEL_INTR2_ORIENT
  *
  *  @param intr_orient_u8: The value of orient interrupt enable
  *       intr_orient_u8         |   result
@@ -3535,8 +3535,8 @@ u8 intr_orient_u8);
  * @param channel_u8: The value of flat interrupt select
  *        channel_u8     |   result
  *       ----------------- | ------------------
- *              0          | BMA2x2_ACCEL_INTR1_FLAT
- *              1          | BMA2x2_ACCEL_INTR2_FLAT
+ *              0          | BMA253_ACCEL_INTR1_FLAT
+ *              1          | BMA253_ACCEL_INTR2_FLAT
  *
  * @param intr_flat_u8: The flat interrupt enable value
  *       intr_flat_u8           |   result
@@ -3565,8 +3565,8 @@ u8 *intr_flat_u8);
  * @param channel_u8: The value of flat interrupt select
  *        channel_u8     |   result
  *       ----------------- | ------------------
- *              0          | BMA2x2_ACCEL_INTR1_FLAT
- *              1          | BMA2x2_ACCEL_INTR2_FLAT
+ *              0          | BMA253_ACCEL_INTR1_FLAT
+ *              1          | BMA253_ACCEL_INTR2_FLAT
  *
  * @param intr_flat_u8: The flat interrupt enable value
  *       intr_flat_u8           |   result
@@ -3594,8 +3594,8 @@ u8 intr_flat_u8);
  *  @param channel_u8: The value of new data interrupt select
  *        channel_u8     |   result
  *       ----------------- | ------------------
- *              0          | BMA2x2_ACCEL_INTR1_NEWDATA
- *              1          | BMA2x2_ACCEL_INTR2_NEWDATA
+ *              0          | BMA253_ACCEL_INTR1_NEWDATA
+ *              1          | BMA253_ACCEL_INTR2_NEWDATA
  *
  *	@param intr_newdata_u8: The new data interrupt enable value
  *       intr_newdata_u8          |    result
@@ -3623,8 +3623,8 @@ u8 *intr_newdata_u8);
  *  @param channel_u8: The value of new data interrupt select
  *        channel_u8     |   result
  *       ----------------- | ------------------
- *              0          | BMA2x2_ACCEL_INTR1_NEWDATA
- *              1          | BMA2x2_ACCEL_INTR2_NEWDATA
+ *              0          | BMA253_ACCEL_INTR1_NEWDATA
+ *              1          | BMA253_ACCEL_INTR2_NEWDATA
  *
  *	@param intr_newdata_u8: The new data interrupt enable value
  *       intr_newdata_u8          |    result
@@ -3822,12 +3822,12 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_set_intr2_fifo_full(u8 intr2_fifo_full_u8);
  *  @param channel_u8 : The value of source select
  *       channel_u8     |    result
  *       -----------------| ------------------
- *               0        | BMA2x2_ACCEL_SOURCE_LOW_G
- *               1        | BMA2x2_ACCEL_SOURCE_HIGH_G
- *               2        | BMA2x2_ACCEL_SOURCE_SLOPE
- *               3        | BMA2x2_ACCEL_SOURCE_SLOW_NO_MOTION
- *               4        | BMA2x2_ACCEL_SOURCE_TAP
- *               5        | BMA2x2_ACCEL_SOURCE_DATA
+ *               0        | BMA253_ACCEL_SOURCE_LOW_G
+ *               1        | BMA253_ACCEL_SOURCE_HIGH_G
+ *               2        | BMA253_ACCEL_SOURCE_SLOPE
+ *               3        | BMA253_ACCEL_SOURCE_SLOW_NO_MOTION
+ *               4        | BMA253_ACCEL_SOURCE_TAP
+ *               5        | BMA253_ACCEL_SOURCE_DATA
  *
  *	@param intr_source_u8: The source status enable value
  *       intr_source_u8         |    result
@@ -3853,12 +3853,12 @@ u8 *intr_source_u8);
  *  @param channel_u8 : The value of source select
  *       channel_u8     |    result
  *       -----------------| ------------------
- *               0        | BMA2x2_ACCEL_SOURCE_LOW_G
- *               1        | BMA2x2_ACCEL_SOURCE_HIGH_G
- *               2        | BMA2x2_ACCEL_SOURCE_SLOPE
- *               3        | BMA2x2_ACCEL_SOURCE_SLOW_NO_MOTION
- *               4        | BMA2x2_ACCEL_SOURCE_TAP
- *               5        | BMA2x2_ACCEL_SOURCE_DATA
+ *               0        | BMA253_ACCEL_SOURCE_LOW_G
+ *               1        | BMA253_ACCEL_SOURCE_HIGH_G
+ *               2        | BMA253_ACCEL_SOURCE_SLOPE
+ *               3        | BMA253_ACCEL_SOURCE_SLOW_NO_MOTION
+ *               4        | BMA253_ACCEL_SOURCE_TAP
+ *               5        | BMA253_ACCEL_SOURCE_DATA
  *
  *	@param intr_source_u8: The source status enable value
  *       intr_source_u8         |    result
@@ -3885,8 +3885,8 @@ u8 intr_source_u8);
  *  @param channel_u8: The value of output type select
  *       channel_u8     |    result
  *       -----------------| ------------------
- *               0        | BMA2x2_ACCEL_INTR1_OUTPUT
- *               1        | BMA2x2_ACCEL_INTR2_OUTPUT
+ *               0        | BMA253_ACCEL_INTR1_OUTPUT
+ *               1        | BMA253_ACCEL_INTR2_OUTPUT
  *
  *	@param intr_output_type_u8: The value of output type select
  *       intr_source_u8         |    result
@@ -3913,8 +3913,8 @@ u8 *intr_output_type_u8);
  *  @param channel_u8: The value of output type select
  *         channel_u8   |    result
  *       -----------------| ------------------
- *               0        | BMA2x2_ACCEL_INTR1_OUTPUT
- *               1        | BMA2x2_ACCEL_INTR2_OUTPUT
+ *               0        | BMA253_ACCEL_INTR1_OUTPUT
+ *               1        | BMA253_ACCEL_INTR2_OUTPUT
  *
  *	@param intr_output_type_u8: The value of output type select
  *       intr_source_u8         |    result
@@ -3941,8 +3941,8 @@ u8 intr_output_type_u8);
  *  @param channel_u8: The value of Active Level select
  *       channel_u8     |    result
  *       -----------------| ------------------
- *               0        | BMA2x2_ACCEL_INTR1_LEVEL
- *               1        | BMA2x2_ACCEL_INTR2_LEVEL
+ *               0        | BMA253_ACCEL_INTR1_LEVEL
+ *               1        | BMA253_ACCEL_INTR2_LEVEL
  *
  *  @param intr_level_u8: The Active Level status enable value
  *       intr_level_u8          |    result
@@ -3968,8 +3968,8 @@ u8 *intr_level_u8);
  *  @param channel_u8: The value of Active Level select
  *       channel_u8     |    result
  *       -----------------| ------------------
- *               0        | BMA2x2_ACCEL_INTR1_LEVEL
- *               1        | BMA2x2_ACCEL_INTR2_LEVEL
+ *               0        | BMA253_ACCEL_INTR1_LEVEL
+ *               1        | BMA253_ACCEL_INTR2_LEVEL
  *
  *  @param intr_level_u8: The Active Level status enable value
  *       intr_level_u8          |    result
@@ -4092,23 +4092,23 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_set_latch_intr(u8 latch_intr_u8);
  *  @param channel_u8: The value of duration select
  *     channel_u8   | result
  *   -----------------| ------------------
- *               0    | BMA2x2_ACCEL_LOW_DURN
- *               1    | BMA2x2_ACCEL_HIGH_DURN
- *               2    | BMA2x2_ACCEL_SLOPE_DURN
- *               3    | BMA2x2_ACCEL_SLOW_NO_MOTION_DURN
+ *               0    | BMA253_ACCEL_LOW_DURN
+ *               1    | BMA253_ACCEL_HIGH_DURN
+ *               2    | BMA253_ACCEL_SLOPE_DURN
+ *               3    | BMA253_ACCEL_SLOW_NO_MOTION_DURN
  *
  *	@param durn_u8: The value of duration
  *
  *	@note :
  *     Duration           |    result
  * -----------------------| ------------------
- * BMA2x2_ACCEL_LOW_DURN  | Low-g interrupt trigger
+ * BMA253_ACCEL_LOW_DURN  | Low-g interrupt trigger
  *         -              | delay according to([durn_u8 +1]*2)ms
  *         -              | range from 2ms to 512ms. default is 20ms
- * BMA2x2_ACCEL_HIGH_DURN | high-g interrupt trigger
+ * BMA253_ACCEL_HIGH_DURN | high-g interrupt trigger
  *         -              | delay according to([durn_u8 +1]*2)ms
  *         -              | range from 2ms to 512ms. default is 32ms
- * BMA2x2_ACCEL_SLOPE_DURN| slope interrupt trigger
+ * BMA253_ACCEL_SLOPE_DURN| slope interrupt trigger
  *         -              | if[durn_u8<1:0>+1] consecutive data points
  *         -              | are above the slope interrupt threshold
  * SLO_NO_MOT_DURN        | Refer data sheet for clear information
@@ -4133,23 +4133,23 @@ u8 *durn_u8);
  *  @param channel_u8: The value of duration select
  *     channel_u8   | result
  *   -----------------| ------------------
- *               0    | BMA2x2_ACCEL_LOW_DURN
- *               1    | BMA2x2_ACCEL_HIGH_DURN
- *               2    | BMA2x2_ACCEL_SLOPE_DURN
- *               3    | BMA2x2_ACCEL_SLOW_NO_MOTION_DURN
+ *               0    | BMA253_ACCEL_LOW_DURN
+ *               1    | BMA253_ACCEL_HIGH_DURN
+ *               2    | BMA253_ACCEL_SLOPE_DURN
+ *               3    | BMA253_ACCEL_SLOW_NO_MOTION_DURN
  *
  *	@param durn_u8: The value of duration
  *
  *	@note :
  *     Duration           |    result
  * -----------------------| ------------------
- * BMA2x2_ACCEL_LOW_DURN  | Low-g interrupt trigger
+ * BMA253_ACCEL_LOW_DURN  | Low-g interrupt trigger
  *         -              | delay according to([durn_u8 +1]*2)ms
  *         -              | range from 2ms to 512ms. default is 20ms
- * BMA2x2_ACCEL_HIGH_DURN | high-g interrupt trigger
+ * BMA253_ACCEL_HIGH_DURN | high-g interrupt trigger
  *         -              | delay according to([durn_u8 +1]*2)ms
  *         -              | range from 2ms to 512ms. default is 32ms
- * BMA2x2_ACCEL_SLOPE_DURN| slope interrupt trigger
+ * BMA253_ACCEL_SLOPE_DURN| slope interrupt trigger
  *         -              | if[durn_u8<1:0>+1] consecutive data points
  *         -              | are above the slope interrupt threshold
  * SLO_NO_MOT_DURN        | Refer data sheet for clear information
@@ -4177,17 +4177,17 @@ u8 durn_u8);
  *  @param channel_u8: The value of threshold selection
  *     channel_u8   | result
  *   -----------------| ------------------
- *               0    | BMA2x2_ACCEL_LOW_THRES
- *               1    | BMA2x2_ACCEL_HIGH_THRES
- *               2    | BMA2x2_ACCEL_SLOPE_THRES
- *               3    | BMA2x2_ACCEL_SLOW_NO_MOTION_THRES
+ *               0    | BMA253_ACCEL_LOW_THRES
+ *               1    | BMA253_ACCEL_HIGH_THRES
+ *               2    | BMA253_ACCEL_SLOPE_THRES
+ *               3    | BMA253_ACCEL_SLOW_NO_MOTION_THRES
  *
  *  @param thres_u8: The threshold value of selected interrupts
  *
  *	@note : LOW-G THRESHOLD
  *     Threshold                    |    result
  * ---------------------------------| ------------------
- * BMA2x2_ACCEL_LOW_THRES           | Low-threshold interrupt trigger
+ * BMA253_ACCEL_LOW_THRES           | Low-threshold interrupt trigger
  *                                  | according to(thres_u8 * 7.81) mg
  *                                  | range from 0g to 1.992g
  *                                  | default is 375mg
@@ -4239,17 +4239,17 @@ u8 *thres_u8);
  *  @param channel_u8: The value of threshold selection
  *     channel_u8   | result
  *   -----------------| ------------------
- *               0    | BMA2x2_ACCEL_LOW_THRES
- *               1    | BMA2x2_ACCEL_HIGH_THRES
- *               2    | BMA2x2_ACCEL_SLOPE_THRES
- *               3    | BMA2x2_ACCEL_SLOW_NO_MOTION_THRES
+ *               0    | BMA253_ACCEL_LOW_THRES
+ *               1    | BMA253_ACCEL_HIGH_THRES
+ *               2    | BMA253_ACCEL_SLOPE_THRES
+ *               3    | BMA253_ACCEL_SLOW_NO_MOTION_THRES
  *
  *  @param thres_u8: The threshold value of selected interrupts
  *
  *	@note : LOW-G THRESHOLD
  *     Threshold                    |    result
  * ---------------------------------| ------------------
- * BMA2x2_ACCEL_LOW_THRES           | Low-threshold interrupt trigger
+ * BMA253_ACCEL_LOW_THRES           | Low-threshold interrupt trigger
  *                                  | according to(thres_u8 * 7.81) mg
  *                                  | range from 0g to 1.992g
  *                                  | default is 375mg
@@ -4302,8 +4302,8 @@ u8 thres_u8);
  *  @param channel_u8: The value of hysteresis selection
  *     channel_u8   | result
  *   -----------------| ------------------
- *           0        | BMA2x2_ACCEL_LOW_G_HYST
- *           1        | BMA2x2_ACCEL_HIGH_G_HYST
+ *           0        | BMA253_ACCEL_LOW_G_HYST
+ *           1        | BMA253_ACCEL_HIGH_G_HYST
  *
  *  @param hyst_u8: The hysteresis data
  *
@@ -4336,8 +4336,8 @@ u8 *hyst_u8);
  *  @param channel_u8: The value of hysteresis selection
  *     channel_u8   | result
  *   -----------------| ------------------
- *           0        | BMA2x2_ACCEL_LOW_G_HYST
- *           1        | BMA2x2_ACCEL_HIGH_G_HYST
+ *           0        | BMA253_ACCEL_LOW_G_HYST
+ *           1        | BMA253_ACCEL_HIGH_G_HYST
  *
  *  @param hyst_u8: The hysteresis data
  *
@@ -4797,8 +4797,8 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_set_orient_hyst(u8 orient_hyst_u8);
  *  @param channel_u8: The value of theta selection
  *     channel_u8     |    result
  *  --------------------|------------------
- *     0x00             | BMA2x2_ACCEL_ORIENT_THETA
- *     0x01             | BMA2x2_ACCEL_FLAT_THETA
+ *     0x00             | BMA253_ACCEL_ORIENT_THETA
+ *     0x01             | BMA253_ACCEL_FLAT_THETA
  * @note
  * @note FLAT_THETA : Defines a blocking angle between 0 deg to 44.8 deg
  * @note ORIENT_THETA : Defines threshold for detection of flat position
@@ -4823,8 +4823,8 @@ u8 *theta_u8);
  *  @param channel_u8: The value of theta selection
  *     channel_u8     |    result
  *  --------------------|------------------
- *     0x00             | BMA2x2_ACCEL_ORIENT_THETA
- *     0x01             | BMA2x2_ACCEL_FLAT_THETA
+ *     0x00             | BMA253_ACCEL_ORIENT_THETA
+ *     0x01             | BMA253_ACCEL_FLAT_THETA
  * @note
  * @note FLAT_THETA : Defines a blocking angle between 0 deg to 44.8 deg
  * @note ORIENT_THETA : Defines threshold for detection of flat position
@@ -5263,12 +5263,12 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_set_spi3(u8 spi3_u8);
  *  @param channel_u8: The i2c option selection
  *     channel_u8           |    result
  *  ------------------------- |------------------
- *        0                   |   BMA2x2_ACCEL_I2C_SELECT
- *        1                   |   BMA2x2_ACCEL_I2C_ENABLE
+ *        0                   |   BMA253_ACCEL_I2C_SELECT
+ *        1                   |   BMA253_ACCEL_I2C_ENABLE
  *
  *  @param i2c_wdt_u8: watch dog timer period
  *	and I2C interface mode is selected
- *     BMA2x2_ACCEL_I2C_SELECT|    result
+ *     BMA253_ACCEL_I2C_SELECT|    result
  *  ------------------------- |------------------
  *     0x00                   | Disable the watchdog at SDI pin
  *     0x01                   | Enable watchdog
@@ -5296,12 +5296,12 @@ u8 *i2c_wdt_u8);
  *  @param channel_u8: The i2c option selection
  *     channel_u8           |    result
  *  ------------------------- |------------------
- *        0                   |   BMA2x2_ACCEL_I2C_SELECT
- *        1                   |   BMA2x2_ACCEL_I2C_ENABLE
+ *        0                   |   BMA253_ACCEL_I2C_SELECT
+ *        1                   |   BMA253_ACCEL_I2C_ENABLE
  *
  *  @param i2c_wdt_u8: watch dog timer period
  *	and I2C interface mode is selected
- *     BMA2x2_ACCEL_I2C_SELECT|    result
+ *     BMA253_ACCEL_I2C_SELECT|    result
  *  ------------------------- |------------------
  *     0x00                   | Disable the watchdog at SDI pin
  *     0x01                   | Enable watchdog
@@ -5335,9 +5335,9 @@ u8 i2c_wdt_u8);
  *	@param channel_u8: The value of slow compensation selection
  *     channel_u8           |    result
  *  ------------------------- |------------------
- *        0                   |   BMA2x2_ACCEL_SLOW_COMP_X
- *        1                   |   BMA2x2_ACCEL_SLOW_COMP_Y
- *        2                   |   BMA2x2_ACCEL_SLOW_COMP_Z
+ *        0                   |   BMA253_ACCEL_SLOW_COMP_X
+ *        1                   |   BMA253_ACCEL_SLOW_COMP_Y
+ *        2                   |   BMA253_ACCEL_SLOW_COMP_Z
  *
  *  @param slow_comp_u8: The value of slow compensation enable
  *     slow_comp_u8         |    result
@@ -5366,9 +5366,9 @@ u8 *slow_comp_u8);
  *	@param channel_u8: The value of slow compensation selection
  *     channel_u8           |    result
  *  ------------------------- |------------------
- *        0                   |   BMA2x2_ACCEL_SLOW_COMP_X
- *        1                   |   BMA2x2_ACCEL_SLOW_COMP_Y
- *        2                   |   BMA2x2_ACCEL_SLOW_COMP_Z
+ *        0                   |   BMA253_ACCEL_SLOW_COMP_X
+ *        1                   |   BMA253_ACCEL_SLOW_COMP_Y
+ *        2                   |   BMA253_ACCEL_SLOW_COMP_Z
  *
  *  @param slow_comp_u8: The value of slow compensation enable
  *     slow_comp_u8         |    result
@@ -5454,10 +5454,10 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_set_offset_rst(u8 offset_rst_u8);
  *  @param channel_u8: The value of offset axis selection
  *     channel_u8           |    result
  *  ------------------------- |------------------
- *        0                   |   BMA2x2_ACCEL_CUT_OFF
- *        1                   |   BMA2x2_ACCEL_OFFSET_TRIGGER_X
- *        2                   |   BMA2x2_ACCEL_OFFSET_TRIGGER_Y
- *        2                   |   BMA2x2_ACCEL_OFFSET_TRIGGER_Z
+ *        0                   |   BMA253_ACCEL_CUT_OFF
+ *        1                   |   BMA253_ACCEL_OFFSET_TRIGGER_X
+ *        2                   |   BMA253_ACCEL_OFFSET_TRIGGER_Y
+ *        2                   |   BMA253_ACCEL_OFFSET_TRIGGER_Z
  *
  *  @param  offset_u8: The offset target value
  *     CUT_OFF                |    result
@@ -5494,10 +5494,10 @@ u8 *offset_u8);
  *  @param channel_u8: The value of offset axis selection
  *     channel_u8           |    result
  *  ------------------------- |------------------
- *        0                   |   BMA2x2_ACCEL_CUT_OFF
- *        1                   |   BMA2x2_ACCEL_OFFSET_TRIGGER_X
- *        2                   |   BMA2x2_ACCEL_OFFSET_TRIGGER_Y
- *        2                   |   BMA2x2_ACCEL_OFFSET_TRIGGER_Z
+ *        0                   |   BMA253_ACCEL_CUT_OFF
+ *        1                   |   BMA253_ACCEL_OFFSET_TRIGGER_X
+ *        2                   |   BMA253_ACCEL_OFFSET_TRIGGER_Y
+ *        2                   |   BMA253_ACCEL_OFFSET_TRIGGER_Z
  *
  *  @param  offset_u8: The offset target value
  *     CUT_OFF                |    result
@@ -5532,9 +5532,9 @@ u8 offset_u8);
  *  @param channel_u8: The value of offset selection
  *     channel_u8           |    result
  *  ------------------------- |------------------
- *        0                   |   BMA2x2_ACCEL_X_AXIS
- *        1                   |   BMA2x2_ACCEL_Y_AXIS
- *        2                   |   BMA2x2_ACCEL_Z_AXIS
+ *        0                   |   BMA253_ACCEL_X_AXIS
+ *        1                   |   BMA253_ACCEL_Y_AXIS
+ *        2                   |   BMA253_ACCEL_Z_AXIS
  *
  *  @param offset_u8: The value of offset
  *
@@ -5559,9 +5559,9 @@ s8 *offset_u8);
  *  @param channel_u8: The value of offset selection
  *     channel_u8           |    result
  *  ------------------------- |------------------
- *        0                   |   BMA2x2_ACCEL_X_AXIS
- *        1                   |   BMA2x2_ACCEL_Y_AXIS
- *        2                   |   BMA2x2_ACCEL_Z_AXIS
+ *        0                   |   BMA253_ACCEL_X_AXIS
+ *        1                   |   BMA253_ACCEL_Y_AXIS
+ *        2                   |   BMA253_ACCEL_Z_AXIS
  *
  *  @param offset_u8: The value of offset
  *
@@ -5762,7 +5762,7 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_read_temp(s8 *temp_s8);
  *
 */
 BMA2x2_RETURN_FUNCTION_TYPE bma2x2_read_accel_xyzt(
-struct bma2x2_accel_data_temp *accel);
+struct BMA253_ACCEL_data_temp *accel);
 /*!
  * @brief This API reads accelerometer data X,Y,Z values and
  * temperature data from location 0x02 to 0x08
@@ -5779,7 +5779,7 @@ struct bma2x2_accel_data_temp *accel);
  *
 */
 BMA2x2_RETURN_FUNCTION_TYPE bma2x2_read_accel_eight_resolution_xyzt(
-struct bma2x2_accel_eight_resolution_temp *accel);
+struct BMA253_ACCEL_eight_resolution_temp *accel);
 /*Depreciated Functions*/
 /*!
  *	@brief This API is used to get
