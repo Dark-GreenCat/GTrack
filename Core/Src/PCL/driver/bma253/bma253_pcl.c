@@ -44,29 +44,29 @@ void PCL_BMA253_Mem_Write(BMA253_TypeDef* pcl_bma253, uint8_t reg_addr, uint8_t*
     pcl_i2c = pcl_i2c_old;
 }
 
-int16_t PCL_BMA253_Get_Accel(BMA253_TypeDef* pcl_bma253, uint8_t BMA2x2_ACCEL_12BIT_LSB_REG) {
-    uint8_t data_u8[BMA2x2_ACCEL_DATA_SIZE] = {
-        BMA2x2_INIT_VALUE, BMA2x2_INIT_VALUE
+int16_t PCL_BMA253_Get_Accel(BMA253_TypeDef* pcl_bma253, uint8_t BMA253_ACCEL_12BIT_LSB_REG) {
+    uint8_t data_u8[BMA253_ACCEL_DATA_SIZE] = {
+        BMA253_INIT_VALUE, BMA253_INIT_VALUE
     };
 
-    PCL_BMA253_Mem_Read(pcl_bma253, BMA2x2_ACCEL_12BIT_LSB_REG, data_u8, BMA2x2_LSB_MSB_READ_LENGTH);
+    PCL_BMA253_Mem_Read(pcl_bma253, BMA253_ACCEL_12BIT_LSB_REG, data_u8, BMA2x2_LSB_MSB_READ_LENGTH);
 
-    int16_t accel_value = ((((int16_t) data_u8[BMA2x2_SENSOR_DATA_ACCEL_MSB]) << BMA2x2_SHIFT_EIGHT_BITS) | data_u8[BMA2x2_SENSOR_DATA_ACCEL_LSB]);
-    accel_value >>= BMA2x2_SHIFT_FOUR_BITS;
+    int16_t accel_value = ((((int16_t) data_u8[BMA2x2_SENSOR_DATA_ACCEL_MSB]) << BMA253_SHIFT_EIGHT_BITS) | data_u8[BMA2x2_SENSOR_DATA_ACCEL_LSB]);
+    accel_value >>= BMA253_SHIFT_FOUR_BITS;
 
     return accel_value;
 }
 
 int16_t PCL_BMA253_Get_Accel_X(BMA253_TypeDef* pcl_bma253) {
-    return PCL_BMA253_Get_Accel(pcl_bma253, BMA2x2_ACCEL_X12_LSB_REG);
+    return PCL_BMA253_Get_Accel(pcl_bma253, BMA253_ACCEL_X12_LSB_REG);
 }
 
 int16_t PCL_BMA253_Get_Accel_Y(BMA253_TypeDef* pcl_bma253) {
-    return PCL_BMA253_Get_Accel(pcl_bma253, BMA2x2_ACCEL_Y12_LSB_REG);
+    return PCL_BMA253_Get_Accel(pcl_bma253, BMA253_ACCEL_Y12_LSB_REG);
 }
 
 int16_t PCL_BMA253_Get_Accel_Z(BMA253_TypeDef* pcl_bma253) {
-    return PCL_BMA253_Get_Accel(pcl_bma253, BMA2x2_ACCEL_Z12_LSB_REG);
+    return PCL_BMA253_Get_Accel(pcl_bma253, BMA253_ACCEL_Z12_LSB_REG);
 }
 
 void PCL_BMA253_Get_Accel_XYZ(BMA253_TypeDef* pcl_bma253, BMA253_Accel_Data_t* pcl_bma253_accel_data) {

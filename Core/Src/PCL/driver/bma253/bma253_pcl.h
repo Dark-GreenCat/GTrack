@@ -27,12 +27,12 @@ void PCL_BMA253_Mem_Write(BMA253_TypeDef* pcl_bma253, uint8_t reg_addr, uint8_t*
 
 
 /*
-Value range of BMA2x2_ACCEL_12BIT_LSB_REG:
-    BMA2x2_ACCEL_X12_LSB_REG
-    BMA2x2_ACCEL_Y12_LSB_REG
-    BMA2x2_ACCEL_Z12_LSB_REG
+Value range of BMA253_ACCEL_12BIT_LSB_REG:
+    BMA253_ACCEL_X12_LSB_REG
+    BMA253_ACCEL_Y12_LSB_REG
+    BMA253_ACCEL_Z12_LSB_REG
 */
-int16_t PCL_BMA253_Get_Accel(BMA253_TypeDef* pcl_bma253, uint8_t BMA2x2_ACCEL_12BIT_LSB_REG);
+int16_t PCL_BMA253_Get_Accel(BMA253_TypeDef* pcl_bma253, uint8_t BMA253_ACCEL_12BIT_LSB_REG);
 int16_t PCL_BMA253_Get_Accel_X(BMA253_TypeDef* pcl_bma253);
 int16_t PCL_BMA253_Get_Accel_Y(BMA253_TypeDef* pcl_bma253);
 int16_t PCL_BMA253_Get_Accel_Z(BMA253_TypeDef* pcl_bma253);
