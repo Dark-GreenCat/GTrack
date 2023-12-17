@@ -298,9 +298,9 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_read_accel_x(s16 *accel_x_s16)
 			BMA253_ACCEL_X12_LSB_REG, data_u8,
 			BMA2x2_LSB_MSB_READ_LENGTH);
 			*accel_x_s16 = (s16)((((s32)((s8)
-			data_u8[BMA2x2_SENSOR_DATA_ACCEL_MSB]))
+			data_u8[BMA253_SENSOR_DATA_ACCEL_MSB]))
 			<< BMA253_SHIFT_EIGHT_BITS) |
-			(data_u8[BMA2x2_SENSOR_DATA_ACCEL_LSB] &
+			(data_u8[BMA253_SENSOR_DATA_ACCEL_LSB] &
 			BMA2x2_RESOLUTION_12_MASK));
 			*accel_x_s16 = *accel_x_s16 >>
 			BMA253_SHIFT_FOUR_BITS;
@@ -312,9 +312,9 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_read_accel_x(s16 *accel_x_s16)
 			BMA253_ACCEL_X10_LSB_REG, data_u8,
 			BMA2x2_LSB_MSB_READ_LENGTH);
 			*accel_x_s16 = (s16)((((s32)((s8)
-			data_u8[BMA2x2_SENSOR_DATA_ACCEL_MSB]))
+			data_u8[BMA253_SENSOR_DATA_ACCEL_MSB]))
 			<< BMA253_SHIFT_EIGHT_BITS) |
-			(data_u8[BMA2x2_SENSOR_DATA_ACCEL_LSB] &
+			(data_u8[BMA253_SENSOR_DATA_ACCEL_LSB] &
 			BMA2x2_RESOLUTION_10_MASK));
 			*accel_x_s16 = *accel_x_s16 >>
 			BMA253_SHIFT_SIX_BITS;
@@ -326,9 +326,9 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_read_accel_x(s16 *accel_x_s16)
 			BMA253_ACCEL_X14_LSB_REG, data_u8,
 			BMA2x2_LSB_MSB_READ_LENGTH);
 			*accel_x_s16 = (s16)((((s32)((s8)
-			data_u8[BMA2x2_SENSOR_DATA_ACCEL_MSB]))
+			data_u8[BMA253_SENSOR_DATA_ACCEL_MSB]))
 			<< BMA253_SHIFT_EIGHT_BITS) |
-			(data_u8[BMA2x2_SENSOR_DATA_ACCEL_LSB] &
+			(data_u8[BMA253_SENSOR_DATA_ACCEL_LSB] &
 			BMA2x2_RESOLUTION_14_MASK));
 			*accel_x_s16 = *accel_x_s16 >>
 			BMA253_SHIFT_TWO_BITS;
@@ -420,9 +420,9 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_read_accel_y(s16 *accel_y_s16)
 			BMA253_ACCEL_Y12_LSB_REG, data_u8,
 			BMA2x2_LSB_MSB_READ_LENGTH);
 			*accel_y_s16 = (s16)((((s32)((s8)
-			data_u8[BMA2x2_SENSOR_DATA_ACCEL_MSB]))
+			data_u8[BMA253_SENSOR_DATA_ACCEL_MSB]))
 			<< BMA253_SHIFT_EIGHT_BITS) |
-			(data_u8[BMA2x2_SENSOR_DATA_ACCEL_LSB] &
+			(data_u8[BMA253_SENSOR_DATA_ACCEL_LSB] &
 			BMA2x2_12_BIT_SHIFT));
 			*accel_y_s16 = *accel_y_s16 >>
 			BMA253_SHIFT_FOUR_BITS;
@@ -434,9 +434,9 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_read_accel_y(s16 *accel_y_s16)
 			BMA253_ACCEL_Y10_LSB_REG, data_u8,
 			BMA2x2_LSB_MSB_READ_LENGTH);
 			*accel_y_s16 = (s16)((((s32)((s8)
-			data_u8[BMA2x2_SENSOR_DATA_ACCEL_MSB]))
+			data_u8[BMA253_SENSOR_DATA_ACCEL_MSB]))
 			<< BMA253_SHIFT_EIGHT_BITS) |
-			(data_u8[BMA2x2_SENSOR_DATA_ACCEL_LSB] &
+			(data_u8[BMA253_SENSOR_DATA_ACCEL_LSB] &
 			BMA2x2_10_BIT_SHIFT));
 			*accel_y_s16 = *accel_y_s16 >>
 			BMA253_SHIFT_SIX_BITS;
@@ -448,9 +448,9 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_read_accel_y(s16 *accel_y_s16)
 			BMA253_ACCEL_Y14_LSB_REG, data_u8,
 			BMA2x2_LSB_MSB_READ_LENGTH);
 			*accel_y_s16 = (s16)((((s32)((s8)
-			data_u8[BMA2x2_SENSOR_DATA_ACCEL_MSB]))
+			data_u8[BMA253_SENSOR_DATA_ACCEL_MSB]))
 			<< BMA253_SHIFT_EIGHT_BITS) |
-			(data_u8[BMA2x2_SENSOR_DATA_ACCEL_LSB] &
+			(data_u8[BMA253_SENSOR_DATA_ACCEL_LSB] &
 			BMA2x2_14_BIT_SHIFT));
 			*accel_y_s16 = *accel_y_s16 >>
 			BMA253_SHIFT_TWO_BITS;
@@ -542,9 +542,9 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_read_accel_z(s16 *accel_z_s16)
 			BMA253_ACCEL_Z12_LSB_REG, data_u8,
 			BMA2x2_LSB_MSB_READ_LENGTH);
 			*accel_z_s16 = (s16)((((s32)((s8)
-			data_u8[BMA2x2_SENSOR_DATA_ACCEL_MSB]))
+			data_u8[BMA253_SENSOR_DATA_ACCEL_MSB]))
 			<< BMA253_SHIFT_EIGHT_BITS) |
-			(data_u8[BMA2x2_SENSOR_DATA_ACCEL_LSB]
+			(data_u8[BMA253_SENSOR_DATA_ACCEL_LSB]
 			& BMA2x2_12_BIT_SHIFT));
 			*accel_z_s16 = *accel_z_s16 >>
 			BMA253_SHIFT_FOUR_BITS;
@@ -556,9 +556,9 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_read_accel_z(s16 *accel_z_s16)
 			BMA253_ACCEL_Z10_LSB_REG, data_u8,
 			BMA2x2_LSB_MSB_READ_LENGTH);
 			*accel_z_s16 = (s16)((((s32)((s8)
-			data_u8[BMA2x2_SENSOR_DATA_ACCEL_MSB]))
+			data_u8[BMA253_SENSOR_DATA_ACCEL_MSB]))
 			<< BMA253_SHIFT_EIGHT_BITS) |
-			(data_u8[BMA2x2_SENSOR_DATA_ACCEL_LSB]
+			(data_u8[BMA253_SENSOR_DATA_ACCEL_LSB]
 			& BMA2x2_10_BIT_SHIFT));
 			*accel_z_s16 = *accel_z_s16 >>
 			BMA253_SHIFT_SIX_BITS;
@@ -570,9 +570,9 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_read_accel_z(s16 *accel_z_s16)
 			BMA253_ACCEL_Z14_LSB_REG, data_u8,
 			BMA2x2_LSB_MSB_READ_LENGTH);
 			*accel_z_s16 = (s16)((((s32)((s8)
-			data_u8[BMA2x2_SENSOR_DATA_ACCEL_MSB]))
+			data_u8[BMA253_SENSOR_DATA_ACCEL_MSB]))
 			<< BMA253_SHIFT_EIGHT_BITS) |
-			(data_u8[BMA2x2_SENSOR_DATA_ACCEL_LSB]
+			(data_u8[BMA253_SENSOR_DATA_ACCEL_LSB]
 			& BMA2x2_14_BIT_SHIFT));
 			*accel_z_s16 = *accel_z_s16 >>
 			BMA253_SHIFT_TWO_BITS;
@@ -1892,10 +1892,10 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_get_high_bw(u8 *high_bw_u8)
 		} else {
 			/* Read the high bandwidth*/
 			com_rslt = p_bma2x2->BMA2x2_BUS_READ_FUNC
-			(p_bma2x2->dev_addr, BMA2x2_ENABLE_DATA_HIGH_BW_REG,
+			(p_bma2x2->dev_addr, BMA253_ACCD_HBW_DATA_HIGH_BW_BITS_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
 			*high_bw_u8 = BMA253_GET_BITSLICE
-			(data_u8, BMA2x2_ENABLE_DATA_HIGH_BW);
+			(data_u8, BMA253_ACCD_HBW_DATA_HIGH_BW_BITS);
 		}
 	return com_rslt;
 }
@@ -1928,12 +1928,12 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_set_high_bw(u8 high_bw_u8)
 		}  else {
 			/* Write the high bandwidth*/
 			com_rslt = p_bma2x2->BMA2x2_BUS_READ_FUNC
-			(p_bma2x2->dev_addr, BMA2x2_ENABLE_DATA_HIGH_BW_REG,
+			(p_bma2x2->dev_addr, BMA253_ACCD_HBW_DATA_HIGH_BW_BITS_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
 			data_u8 = BMA253_SET_BITSLICE(data_u8,
-			BMA2x2_ENABLE_DATA_HIGH_BW, high_bw_u8);
+			BMA253_ACCD_HBW_DATA_HIGH_BW_BITS, high_bw_u8);
 			com_rslt += bma2x2_write_reg(
-			BMA2x2_ENABLE_DATA_HIGH_BW_REG,
+			BMA253_ACCD_HBW_DATA_HIGH_BW_BITS_REG,
 			&data_u8, BMA253_GEN_READ_WRITE_LENGTH);
 		}
 	return com_rslt;

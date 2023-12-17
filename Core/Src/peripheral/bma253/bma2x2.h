@@ -999,10 +999,10 @@ struct fifo_configuration {
 /***************************************************/
 /**\name FILTERED OR UNFILTERED ACCELERATION DATA   */
 /***************************************************/
-#define BMA2x2_ENABLE_DATA_HIGH_BW_POS         (7)
-#define BMA2x2_ENABLE_DATA_HIGH_BW_LEN         (1)
-#define BMA2x2_ENABLE_DATA_HIGH_BW_MSK         (0x80)
-#define BMA2x2_ENABLE_DATA_HIGH_BW_REG         BMA2x2_DATA_CTRL_ADDR
+#define BMA253_ACCD_HBW_DATA_HIGH_BW_BITS_POS         (7)
+#define BMA253_ACCD_HBW_DATA_HIGH_BW_BITS_LEN         (1)
+#define BMA253_ACCD_HBW_DATA_HIGH_BW_BITS_MSK         (0x80)
+#define BMA253_ACCD_HBW_DATA_HIGH_BW_BITS_REG         BMA2x2_DATA_CTRL_ADDR
 /***************************************************/
 /**\name SOFT RESET VALUE   */
 /***************************************************/
@@ -2043,8 +2043,8 @@ BMA2x2_INTR_SOURCE_ADDR
 /**\name	ARRAY PARAMETERS      */
 /***************************************************/
 
-#define BMA2x2_SENSOR_DATA_ACCEL_LSB	(0)
-#define BMA2x2_SENSOR_DATA_ACCEL_MSB	(1)
+#define BMA253_SENSOR_DATA_ACCEL_LSB	(0)
+#define BMA253_SENSOR_DATA_ACCEL_MSB	(1)
 
 #define BMA2x2_SENSOR_DATA_XYZ_X_LSB	(0)
 #define BMA2x2_SENSOR_DATA_XYZ_X_MSB	(1)
