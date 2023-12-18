@@ -477,7 +477,7 @@ burst_read(device_addr, register_addr, register_data, rd_len)
 #define BMA2x2_STAT_FIFO_ADDR			(0x0E)
 /**STATUS ADDRESS DEFINITIONS */
 #define BMA2x2_RANGE_SELECT_ADDR		(0x0F)
-#define BMA2x2_BW_SELECT_ADDR                   (0x10)
+#define BMA253_PMU_BW_BW_BITS_SELECT_ADDR                   (0x10)
 #define BMA2x2_MODE_CTRL_ADDR                   (0x11)
 #define BMA2x2_LOW_NOISE_CTRL_ADDR              (0x12)
 #define BMA2x2_DATA_CTRL_ADDR                   (0x13)
@@ -957,10 +957,10 @@ struct fifo_configuration {
 /****************************/
 /**\name BANDWIDTH */
 /****************************/
-#define BMA2x2_BW_POS             (0)
-#define BMA2x2_BW_LEN             (5)
-#define BMA2x2_BW_MSK             (0x1F)
-#define BMA2x2_BW_REG             BMA2x2_BW_SELECT_ADDR
+#define BMA253_PMU_BW_BW_BITS_POS             (0)
+#define BMA253_PMU_BW_BW_BITS_LEN             (5)
+#define BMA253_PMU_BW_BW_BITS_MSK             (0x1F)
+#define BMA253_PMU_BW_BW_BITS_REG             BMA253_PMU_BW_BW_BITS_SELECT_ADDR
 /****************************/
 /**\name SLEEP DURATION */
 /****************************/
@@ -1732,21 +1732,21 @@ BMA2x2_INTR_SOURCE_ADDR
 /**< sets range to +/- 16G mode */
 
 
-#define BMA2x2_BW_7_81HZ        (0x08)
+#define BMA253_PMU_BW_BW_BITS_7_81HZ        (0x08)
  /**< sets bandwidth to LowPass 7.81HZ  */
-#define BMA2x2_BW_15_63HZ       (0x09)
+#define BMA253_PMU_BW_BW_BITS_15_63HZ       (0x09)
 /**< sets bandwidth to LowPass 15.63HZ  */
-#define BMA2x2_BW_31_25HZ       (0x0A)
+#define BMA253_PMU_BW_BW_BITS_31_25HZ       (0x0A)
 /**< sets bandwidth to LowPass 31.25HZ  */
-#define BMA2x2_BW_62_50HZ       (0x0B)
+#define BMA253_PMU_BW_BW_BITS_62_50HZ       (0x0B)
  /**< sets bandwidth to LowPass 62.50HZ  */
-#define BMA2x2_BW_125HZ         (0x0C)
+#define BMA253_PMU_BW_BW_BITS_125HZ         (0x0C)
  /**< sets bandwidth to LowPass 125HZ  */
-#define BMA2x2_BW_250HZ         (0x0D)
+#define BMA253_PMU_BW_BW_BITS_250HZ         (0x0D)
 /**< sets bandwidth to LowPass 250HZ  */
-#define BMA2x2_BW_500HZ         (0x0E)
+#define BMA253_PMU_BW_BW_BITS_500HZ         (0x0E)
 /**< sets bandwidth to LowPass 500HZ  */
-#define BMA2x2_BW_1000HZ        (0x0F)
+#define BMA253_PMU_BW_BW_BITS_1000HZ        (0x0F)
  /**< sets bandwidth to LowPass 1000HZ  */
 
 /******************************************/
@@ -2520,14 +2520,14 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_set_range(u8 range_u8);
  *  @param bw_u8 : The value of bandwidth
  *		  bw_u8          |   result
  *       ----------------- | --------------
- *              0x08       | BMA2x2_BW_7_81HZ
- *              0x09       | BMA2x2_BW_15_63HZ
- *              0x0A       | BMA2x2_BW_31_25HZ
- *              0x0B       | BMA2x2_BW_62_50HZ
- *              0x0C       | BMA2x2_BW_125HZ
- *              0x0D       | BMA2x2_BW_250HZ
- *              0x0E       | BMA2x2_BW_500HZ
- *              0x0F       | BMA2x2_BW_1000HZ
+ *              0x08       | BMA253_PMU_BW_BW_BITS_7_81HZ
+ *              0x09       | BMA253_PMU_BW_BW_BITS_15_63HZ
+ *              0x0A       | BMA253_PMU_BW_BW_BITS_31_25HZ
+ *              0x0B       | BMA253_PMU_BW_BW_BITS_62_50HZ
+ *              0x0C       | BMA253_PMU_BW_BW_BITS_125HZ
+ *              0x0D       | BMA253_PMU_BW_BW_BITS_250HZ
+ *              0x0E       | BMA253_PMU_BW_BW_BITS_500HZ
+ *              0x0F       | BMA253_PMU_BW_BW_BITS_1000HZ
  *
  *
  *
@@ -2546,14 +2546,14 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_get_bw(u8 *bw_u8);
  *  @param bw_u8 : The value of bandwidth
  *		  bw_u8          |   result
  *       ----------------- | --------------
- *              0x08       | BMA2x2_BW_7_81HZ
- *              0x09       | BMA2x2_BW_15_63HZ
- *              0x0A       | BMA2x2_BW_31_25HZ
- *              0x0B       | BMA2x2_BW_62_50HZ
- *              0x0C       | BMA2x2_BW_125HZ
- *              0x0D       | BMA2x2_BW_250HZ
- *              0x0E       | BMA2x2_BW_500HZ
- *              0x0F       | BMA2x2_BW_1000HZ
+ *              0x08       | BMA253_PMU_BW_BW_BITS_7_81HZ
+ *              0x09       | BMA253_PMU_BW_BW_BITS_15_63HZ
+ *              0x0A       | BMA253_PMU_BW_BW_BITS_31_25HZ
+ *              0x0B       | BMA253_PMU_BW_BW_BITS_62_50HZ
+ *              0x0C       | BMA253_PMU_BW_BW_BITS_125HZ
+ *              0x0D       | BMA253_PMU_BW_BW_BITS_250HZ
+ *              0x0E       | BMA253_PMU_BW_BW_BITS_500HZ
+ *              0x0F       | BMA253_PMU_BW_BW_BITS_1000HZ
  *
  *
  *

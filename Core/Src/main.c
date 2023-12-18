@@ -112,15 +112,15 @@ int main(void)
   BMA253_Accel_Data_t accel_data;
   uint8_t data_high_bw = 0;
   uint8_t data = 4;
-  uint8_t data_high_bw_u8 = 123;
+  uint8_t data_high_bw_u8 = BMA253_PMU_BW_BW_BITS_125HZ;
   
   while(1) {
     HAL_Delay(1000);
     APP_UART_OutChar(huart_terminal, '\n');
-    data_high_bw_u8 = HCL_BMA253_get_shadow_dis(&pcl_bma253);
-    APP_UART_OutNumber(huart_terminal, data_high_bw_u8);
-    HCL_BMA253_set_shadow_dis(&pcl_bma253, data_high_bw);
-    data_high_bw = data_high_bw? 0 : 1;
+    data_high_bw_u8 = HCL_BMA253_get_bw(&pcl_bma253);
+    APP_UART_OutBinary_8BIT(huart_terminal, data_high_bw_u8);
+    HCL_BMA253_set_bw(&pcl_bma253, data_high_bw);
+    data_high_bw = data_high_bw == BMA253_PMU_BW_BW_BITS_125HZ? BMA253_PMU_BW_BW_BITS_31_25HZ : BMA253_PMU_BW_BW_BITS_125HZ;
   }
   while (1) {
     /* USER CODE END WHILE */

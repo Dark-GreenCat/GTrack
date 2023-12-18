@@ -1,3 +1,6 @@
+#ifndef __BMA253_PCL_H
+#define __BMA253_PCL_H
+
 #include "../peripheral/bma253/bma253_hcl.h"
 #include "../Src/HCL/i2c/i2c_hcl.h"
 
@@ -29,3 +32,5 @@ int16_t PCL_BMA253_Get_Accel_X(BMA253_TypeDef* pcl_bma253);
 int16_t PCL_BMA253_Get_Accel_Y(BMA253_TypeDef* pcl_bma253);
 int16_t PCL_BMA253_Get_Accel_Z(BMA253_TypeDef* pcl_bma253);
 void PCL_BMA253_Get_Accel_XYZ(BMA253_TypeDef* pcl_bma253, BMA253_Accel_Data_t* pcl_bma253_accel_data);
+
+#endif
