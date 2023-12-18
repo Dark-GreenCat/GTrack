@@ -1,4 +1,9 @@
-MDK-ARM/
+MDK-ARM/*/
+MDK-ARM/*.txt
+MDK-ARM/*.scvd
+MDK-ARM/*.MintCat
+MDK-ARM/*.uvoptx
+
 clean_log.txt
 build_log.txt
 flash_log.txt

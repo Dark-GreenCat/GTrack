@@ -1,7 +1,7 @@
 #ifndef __BMA253_PCL_H
 #define __BMA253_PCL_H
 
-#include "../peripheral/bma253/bma253_hcl.h"
+#include "../../../peripheral/bma253/bma253_hcl.h"
 #include "../Src/HCL/i2c/i2c_hcl.h"
 
 

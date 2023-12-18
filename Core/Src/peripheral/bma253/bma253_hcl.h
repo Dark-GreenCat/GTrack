@@ -2,7 +2,7 @@
 #define __BMA253_HCL_H
 
 #include "bma2x2.h"
-#include "../HCL/i2c/i2c_hcl.h"
+#include "../../HCL/i2c/i2c_hcl.h"
 #include <stdint.h>
 
 #define BMA253_ACCD_HBW_SHADOW_DIS_BITS_VAL     ((uint8_t) 1)
