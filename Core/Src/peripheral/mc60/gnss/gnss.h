@@ -3,7 +3,7 @@
 
 #include <stdbool.h>
 #include "../mc60_core/mc60_core.h"
-#include "../Ultilities/string_util.h"
+#include "../../Ultilities/string_util.h"
 
 #define MC60_GNSS_TIMEOUT   5000
 
