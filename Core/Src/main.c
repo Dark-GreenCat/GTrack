@@ -30,7 +30,6 @@
 #include "application/timer/timer_app.h"
 #include "application/usart/usart_app.h"
 #include "peripheral/mc60/gnss/gnss.h"
-#include "PCL/driver/bma253/bma253_pcl.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -51,7 +50,7 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-BMA253_TypeDef pcl_bma253;
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -85,6 +84,8 @@ int main(void)
   APP_UART_Init(huart_mc60, 512);
   APP_TIMER_Init(&htim3);
 
+  MC60_Init(huart_mc60);
+
   /* USER CODE END Init */
 
   /* Configure the system clock */
@@ -101,42 +102,41 @@ int main(void)
   MX_TIM3_Init();
   MX_I2C1_Init();
   /* USER CODE BEGIN 2 */
-  MC60_Init(huart_mc60);
-  PCL_BMA253_Init(&pcl_bma253, &hi2c1);
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
 
   APP_UART_StartReceive(huart_terminal);
-  BMA253_Accel_Data_t accel_data;
-  uint8_t data_high_bw = 0;
-  uint8_t data = 4;
-  uint8_t data_high_bw_u8 = BMA253_PMU_BW_BW_BITS_125HZ;
-  
-  while(1) {
-    HAL_Delay(1000);
-    APP_UART_OutChar(huart_terminal, '\n');
-    data_high_bw_u8 = HCL_BMA253_get_bw(&pcl_bma253);
-    APP_UART_OutBinary_8BIT(huart_terminal, data_high_bw_u8);
-    HCL_BMA253_set_bw(&pcl_bma253, data_high_bw);
-    data_high_bw = data_high_bw == BMA253_PMU_BW_BW_BITS_125HZ? BMA253_PMU_BW_BW_BITS_31_25HZ : BMA253_PMU_BW_BW_BITS_125HZ;
-  }
+  APP_UART_StartReceive(huart_mc60);
+
+  APP_UART_OutString(huart_terminal, "\n-------- Power on MC60 --------\n");
+  MC60_PowerOn();
+  APP_UART_OutString(huart_terminal, "\n------ Check MC60 status ------");
+  APP_UART_OutString(huart_terminal, "\n\t>> Running command: AT\n");
+  MC60_ATCommand_Execute("AT");
+  HAL_Delay(6000);
+  APP_UART_FlushToUART_String(huart_mc60, huart_terminal);
+
+  APP_UART_OutString(huart_terminal, "\n-------- Power on GNSS --------\n");
+  MC60_GNSS_Power_On(1);
+  HAL_Delay(3000);
+  APP_UART_FlushToUART_String(huart_mc60, huart_terminal);
+
+  // APP_TIMER_Start();
+  uint32_t pre = HAL_GetTick();
+  uint32_t cur = pre;
   while (1) {
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-    HAL_Delay(1000);
-    APP_UART_FlushToUART_String(huart_terminal, huart_terminal);
-    PCL_BMA253_Get_Accel_XYZ(&pcl_bma253, &accel_data);
-
-    APP_UART_OutString(huart_terminal, "\n\n------ START READ ------");
-    APP_UART_OutString(huart_terminal, "\nx = ");
-    APP_UART_OutNumber_Signed(huart_terminal, accel_data.x);
-    APP_UART_OutString(huart_terminal, "\ny = ");
-    APP_UART_OutNumber_Signed(huart_terminal, accel_data.y);
-    APP_UART_OutString(huart_terminal, "\nz = ");
-    APP_UART_OutNumber_Signed(huart_terminal, accel_data.z);
+    cur = HAL_GetTick();
+    APP_UART_FlushToUART_Char(huart_terminal, huart_mc60);
+    if (cur - pre >= 5000) {
+      MC60_GNSS_Get_NavigationInfo();
+      pre = cur;
+    }
   }
   /* USER CODE END 3 */
 }
