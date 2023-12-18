@@ -67,6 +67,22 @@ uint8_t HCL_BMA253_get_data_high_bw(bma253_t* bma253);
 void HCL_BMA253_set_data_high_bw(bma253_t* bma253, uint8_t data_high_bw_u8);
 
 /*
+ * 		  Value of bw_u8
+ *		  bw_u8            |   result
+ *       ----------------- | --------------
+ *              0x08       | BMA253_PMU_BW_BW_BITS_7_81HZ
+ *              0x09       | BMA253_PMU_BW_BW_BITS_15_63HZ
+ *              0x0A       | BMA253_PMU_BW_BW_BITS_31_25HZ
+ *              0x0B       | BMA253_PMU_BW_BW_BITS_62_50HZ
+ *              0x0C       | BMA253_PMU_BW_BW_BITS_125HZ
+ *              0x0D       | BMA253_PMU_BW_BW_BITS_250HZ
+ *              0x0E       | BMA253_PMU_BW_BW_BITS_500HZ
+ *              0x0F       | BMA253_PMU_BW_BW_BITS_1000HZ
+*/
+uint8_t HCL_BMA253_get_bw(bma253_t* bma253);
+void HCL_BMA253_set_bw(bma253_t* bma253, uint8_t bw_u8);
+
+/*
 Value range of BMA253_ACCEL_AXIS_LSB_REG:
     BMA253_ACCEL_X12_LSB_REG
     BMA253_ACCEL_Y12_LSB_REG

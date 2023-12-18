@@ -28,6 +28,8 @@ void PCL_BMA253_Init(BMA253_TypeDef* pcl_bma253, I2C_HandleTypeDef* hi2c) {
     HCL_BMA253_set_shadow_dis(pcl_bma253, !BMA253_ACCD_HBW_SHADOW_DIS_BITS_VAL);
     /* Filter accel data */
     HCL_BMA253_set_data_high_bw(pcl_bma253, !BMA253_ACCD_HBW_DATA_HIGH_BW_BITS_VAL);
+    /* Set data aquision bandwidth */
+    HCL_BMA253_set_bw(pcl_bma253, BMA253_PMU_BW_BW_BITS_7_81HZ);
 }
 
 void PCL_BMA253_Mem_Read(BMA253_TypeDef* pcl_bma253, uint8_t reg_addr, uint8_t* p_data, uint16_t read_length) {

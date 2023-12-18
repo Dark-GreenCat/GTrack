@@ -77,6 +77,21 @@ void HCL_BMA253_set_data_high_bw(bma253_t* bma253, uint8_t data_high_bw_u8) {
                                 data_high_bw_u8);
 }
 
+uint8_t HCL_BMA253_get_bw(bma253_t* bma253) {
+    return
+    HCL_BMA253_get_bits(bma253, BMA253_PMU_BW_BW_BITS_REG,
+                                BMA253_PMU_BW_BW_BITS_POS,
+                                BMA253_PMU_BW_BW_BITS_MSK,
+                                BMA253_GEN_READ_WRITE_LENGTH);
+}
+
+void HCL_BMA253_set_bw(bma253_t* bma253, uint8_t bw_u8) {
+    HCL_BMA253_set_bits(bma253, BMA253_PMU_BW_BW_BITS_REG,
+                                BMA253_PMU_BW_BW_BITS_POS,
+                                BMA253_PMU_BW_BW_BITS_MSK,
+                                bw_u8);
+}
+
 int16_t HCL_BMA253_get_accel(bma253_t* bma253, uint8_t BMA253_ACCEL_AXIS_LSB_REG) {
     uint8_t data_u8[BMA253_ACCEL_DATA_SIZE] = {
         BMA253_INIT_VALUE, BMA253_INIT_VALUE

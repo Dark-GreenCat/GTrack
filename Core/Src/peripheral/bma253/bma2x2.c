@@ -1140,14 +1140,14 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_set_range(u8 range_u8)
  *  @param bw_u8 : The value of bandwidth
  *          bw_u8          |   result
  *       ----------------- | --------------
- *              0x08       | BMA2x2_BW_7_81HZ
- *              0x09       | BMA2x2_BW_15_63HZ
- *              0x0A       | BMA2x2_BW_31_25HZ
- *              0x0B       | BMA2x2_BW_62_50HZ
- *              0x0C       | BMA2x2_BW_125HZ
- *              0x0D       | BMA2x2_BW_250HZ
- *              0x0E       | BMA2x2_BW_500HZ
- *              0x0F       | BMA2x2_BW_1000HZ
+ *              0x08       | BMA253_PMU_BW_BW_BITS_7_81HZ
+ *              0x09       | BMA253_PMU_BW_BW_BITS_15_63HZ
+ *              0x0A       | BMA253_PMU_BW_BW_BITS_31_25HZ
+ *              0x0B       | BMA253_PMU_BW_BW_BITS_62_50HZ
+ *              0x0C       | BMA253_PMU_BW_BW_BITS_125HZ
+ *              0x0D       | BMA253_PMU_BW_BW_BITS_250HZ
+ *              0x0E       | BMA253_PMU_BW_BW_BITS_500HZ
+ *              0x0F       | BMA253_PMU_BW_BW_BITS_1000HZ
  *
  *
  *
@@ -1171,9 +1171,9 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_get_bw(u8 *bw_u8)
 			/* Read the bandwidth register 0x10*/
 			com_rslt = p_bma2x2->BMA2x2_BUS_READ_FUNC
 			(p_bma2x2->dev_addr,
-			BMA2x2_BW_REG, &data_u8,
+			BMA253_PMU_BW_BW_BITS_REG, &data_u8,
 			BMA253_GEN_READ_WRITE_LENGTH);
-			data_u8 = BMA253_GET_BITSLICE(data_u8, BMA2x2_BW);
+			data_u8 = BMA253_GET_BITSLICE(data_u8, BMA253_PMU_BW_BW_BITS);
 			*bw_u8 = data_u8;
 		}
 	return com_rslt;
@@ -1187,14 +1187,14 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_get_bw(u8 *bw_u8)
  *  @param bw_u8 : The value of bandwidth
  *		  bw_u8          |   result
  *       ----------------- | --------------
- *              0x08       | BMA2x2_BW_7_81HZ
- *              0x09       | BMA2x2_BW_15_63HZ
- *              0x0A       | BMA2x2_BW_31_25HZ
- *              0x0B       | BMA2x2_BW_62_50HZ
- *              0x0C       | BMA2x2_BW_125HZ
- *              0x0D       | BMA2x2_BW_250HZ
- *              0x0E       | BMA2x2_BW_500HZ
- *              0x0F       | BMA2x2_BW_1000HZ
+ *              0x08       | BMA253_PMU_BW_BW_BITS_7_81HZ
+ *              0x09       | BMA253_PMU_BW_BW_BITS_15_63HZ
+ *              0x0A       | BMA253_PMU_BW_BW_BITS_31_25HZ
+ *              0x0B       | BMA253_PMU_BW_BW_BITS_62_50HZ
+ *              0x0C       | BMA253_PMU_BW_BW_BITS_125HZ
+ *              0x0D       | BMA253_PMU_BW_BW_BITS_250HZ
+ *              0x0E       | BMA253_PMU_BW_BW_BITS_500HZ
+ *              0x0F       | BMA253_PMU_BW_BW_BITS_1000HZ
  *
  *
  *
@@ -1220,38 +1220,38 @@ if (p_bma2x2 == BMA2x2_NULL) {
 		if (bw_u8 > BMA253_ACCEL_BW_MIN_RANGE &&
 		bw_u8 < BMA253_ACCEL_BW_1000HZ_RANGE) {
 			switch (bw_u8) {
-			case BMA2x2_BW_7_81HZ:
-				data_bw_u8 = BMA2x2_BW_7_81HZ;
+			case BMA253_PMU_BW_BW_BITS_7_81HZ:
+				data_bw_u8 = BMA253_PMU_BW_BW_BITS_7_81HZ;
 
 				/*  7.81 Hz      64000 uS   */
 			break;
-			case BMA2x2_BW_15_63HZ:
-				data_bw_u8 = BMA2x2_BW_15_63HZ;
+			case BMA253_PMU_BW_BW_BITS_15_63HZ:
+				data_bw_u8 = BMA253_PMU_BW_BW_BITS_15_63HZ;
 
 			/*  15.63 Hz     32000 uS   */
 			break;
-			case BMA2x2_BW_31_25HZ:
-				data_bw_u8 = BMA2x2_BW_31_25HZ;
+			case BMA253_PMU_BW_BW_BITS_31_25HZ:
+				data_bw_u8 = BMA253_PMU_BW_BW_BITS_31_25HZ;
 
 			/*  31.25 Hz     16000 uS   */
 			break;
-			case BMA2x2_BW_62_50HZ:
-				data_bw_u8 = BMA2x2_BW_62_50HZ;
+			case BMA253_PMU_BW_BW_BITS_62_50HZ:
+				data_bw_u8 = BMA253_PMU_BW_BW_BITS_62_50HZ;
 
 			/*  62.50 Hz     8000 uS   */
 			break;
-			case BMA2x2_BW_125HZ:
-				data_bw_u8 = BMA2x2_BW_125HZ;
+			case BMA253_PMU_BW_BW_BITS_125HZ:
+				data_bw_u8 = BMA253_PMU_BW_BW_BITS_125HZ;
 
 			/*  125 Hz       4000 uS   */
 			break;
-			case BMA2x2_BW_250HZ:
-				data_bw_u8 = BMA2x2_BW_250HZ;
+			case BMA253_PMU_BW_BW_BITS_250HZ:
+				data_bw_u8 = BMA253_PMU_BW_BW_BITS_250HZ;
 
 			/*  250 Hz       2000 uS   */
 			break;
-			case BMA2x2_BW_500HZ:
-				data_bw_u8 = BMA2x2_BW_500HZ;
+			case BMA253_PMU_BW_BW_BITS_500HZ:
+				data_bw_u8 = BMA253_PMU_BW_BW_BITS_500HZ;
 
 			/*  500 Hz       1000 uS   */
 			break;
@@ -1261,12 +1261,12 @@ if (p_bma2x2 == BMA2x2_NULL) {
 			/* Write the bandwidth register */
 			com_rslt = p_bma2x2->BMA2x2_BUS_READ_FUNC
 			(p_bma2x2->dev_addr,
-			BMA2x2_BW_REG, &data_u8,
+			BMA253_PMU_BW_BW_BITS_REG, &data_u8,
 			BMA253_GEN_READ_WRITE_LENGTH);
 			data_u8 = BMA253_SET_BITSLICE(data_u8,
-			BMA2x2_BW, data_bw_u8);
+			BMA253_PMU_BW_BW_BITS, data_bw_u8);
 			com_rslt += bma2x2_write_reg
-			(BMA2x2_BW_REG, &data_u8,
+			(BMA253_PMU_BW_BW_BITS_REG, &data_u8,
 			BMA253_GEN_READ_WRITE_LENGTH);
 			} else {
 			com_rslt = E_OUT_OF_RANGE;
@@ -1275,43 +1275,43 @@ if (p_bma2x2 == BMA2x2_NULL) {
 		if (bw_u8 > BMA253_ACCEL_BW_MIN_RANGE &&
 		bw_u8 < BMA253_ACCEL_BW_MAX_RANGE) {
 			switch (bw_u8) {
-			case BMA2x2_BW_7_81HZ:
-				data_bw_u8 = BMA2x2_BW_7_81HZ;
+			case BMA253_PMU_BW_BW_BITS_7_81HZ:
+				data_bw_u8 = BMA253_PMU_BW_BW_BITS_7_81HZ;
 
 			/*  7.81 Hz      64000 uS   */
 			break;
-			case BMA2x2_BW_15_63HZ:
-				data_bw_u8 = BMA2x2_BW_15_63HZ;
+			case BMA253_PMU_BW_BW_BITS_15_63HZ:
+				data_bw_u8 = BMA253_PMU_BW_BW_BITS_15_63HZ;
 
 			/*  15.63 Hz     32000 uS   */
 			break;
-			case BMA2x2_BW_31_25HZ:
-				data_bw_u8 = BMA2x2_BW_31_25HZ;
+			case BMA253_PMU_BW_BW_BITS_31_25HZ:
+				data_bw_u8 = BMA253_PMU_BW_BW_BITS_31_25HZ;
 
 			/*  31.25 Hz     16000 uS   */
 			break;
-			case BMA2x2_BW_62_50HZ:
-				data_bw_u8 = BMA2x2_BW_62_50HZ;
+			case BMA253_PMU_BW_BW_BITS_62_50HZ:
+				data_bw_u8 = BMA253_PMU_BW_BW_BITS_62_50HZ;
 
 			/*  62.50 Hz     8000 uS   */
 			break;
-			case BMA2x2_BW_125HZ:
-				data_bw_u8 = BMA2x2_BW_125HZ;
+			case BMA253_PMU_BW_BW_BITS_125HZ:
+				data_bw_u8 = BMA253_PMU_BW_BW_BITS_125HZ;
 
 			/*  125 Hz       4000 uS   */
 			break;
-			case BMA2x2_BW_250HZ:
-				data_bw_u8 = BMA2x2_BW_250HZ;
+			case BMA253_PMU_BW_BW_BITS_250HZ:
+				data_bw_u8 = BMA253_PMU_BW_BW_BITS_250HZ;
 
 			/*  250 Hz       2000 uS   */
 			break;
-			case BMA2x2_BW_500HZ:
-				data_bw_u8 = BMA2x2_BW_500HZ;
+			case BMA253_PMU_BW_BW_BITS_500HZ:
+				data_bw_u8 = BMA253_PMU_BW_BW_BITS_500HZ;
 
 			/*!  500 Hz       1000 uS   */
 			break;
-			case BMA2x2_BW_1000HZ:
-				data_bw_u8 = BMA2x2_BW_1000HZ;
+			case BMA253_PMU_BW_BW_BITS_1000HZ:
+				data_bw_u8 = BMA253_PMU_BW_BW_BITS_1000HZ;
 
 			/*  1000 Hz      500 uS   */
 			break;
@@ -1321,12 +1321,12 @@ if (p_bma2x2 == BMA2x2_NULL) {
 			/* Write the bandwidth register */
 			com_rslt = p_bma2x2->BMA2x2_BUS_READ_FUNC
 			(p_bma2x2->dev_addr,
-			BMA2x2_BW_REG, &data_u8,
+			BMA253_PMU_BW_BW_BITS_REG, &data_u8,
 			BMA253_GEN_READ_WRITE_LENGTH);
 			data_u8 = BMA253_SET_BITSLICE
-			(data_u8, BMA2x2_BW, data_bw_u8);
+			(data_u8, BMA253_PMU_BW_BW_BITS, data_bw_u8);
 			com_rslt += bma2x2_write_reg(
-			BMA2x2_BW_REG, &data_u8,
+			BMA253_PMU_BW_BW_BITS_REG, &data_u8,
 			BMA253_GEN_READ_WRITE_LENGTH);
 			} else {
 			com_rslt = E_OUT_OF_RANGE;
