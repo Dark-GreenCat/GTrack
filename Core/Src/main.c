@@ -30,6 +30,7 @@
 #include "application/timer/timer_app.h"
 #include "application/usart/usart_app.h"
 #include "peripheral/mc60/gnss/gnss.h"
+#include "test/test_bma253.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -102,7 +103,7 @@ int main(void)
   MX_TIM3_Init();
   MX_I2C1_Init();
   /* USER CODE BEGIN 2 */
-
+  test_main_bma253();
   /* USER CODE END 2 */
 
   /* Infinite loop */
