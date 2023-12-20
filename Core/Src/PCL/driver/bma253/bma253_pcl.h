@@ -33,5 +33,6 @@ int16_t PCL_BMA253_Get_Accel_X(BMA253_TypeDef* pcl_bma253);
 int16_t PCL_BMA253_Get_Accel_Y(BMA253_TypeDef* pcl_bma253);
 int16_t PCL_BMA253_Get_Accel_Z(BMA253_TypeDef* pcl_bma253);
 void PCL_BMA253_Get_Accel_XYZ(BMA253_TypeDef* pcl_bma253, BMA253_Accel_Data_t* pcl_bma253_accel_data);
+void PCL_BMA253_Get_Accel_XYZ_FIFO(BMA253_TypeDef* pcl_bma253, BMA253_Accel_Data_t* pcl_bma253_accel_data);
 
 #endif
