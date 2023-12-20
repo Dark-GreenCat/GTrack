@@ -28,6 +28,7 @@ void PCL_BMA253_Mem_Write(BMA253_TypeDef* pcl_bma253, uint8_t reg_addr, uint8_t*
 
 
 
+int16_t PCL_BMA253_Accel_Process_Raw_Data(uint16_t accel_data_u16, uint8_t range_u8);
 int16_t PCL_BMA253_Get_Accel_X(BMA253_TypeDef* pcl_bma253);
 int16_t PCL_BMA253_Get_Accel_Y(BMA253_TypeDef* pcl_bma253);
 int16_t PCL_BMA253_Get_Accel_Z(BMA253_TypeDef* pcl_bma253);

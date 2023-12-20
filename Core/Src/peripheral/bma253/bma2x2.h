@@ -409,7 +409,7 @@ burst_read(device_addr, register_addr, register_data, rd_len)
 #define         BMA253_INIT_VALUE                       ((u8)0)
 #define         BMA253_GEN_READ_WRITE_LENGTH            ((u8)1)
 #define		BMA2x2_INTERFACE_IDLE_TIME_DELAY	((u8)1)
-#define         BMA2x2_LSB_MSB_READ_LENGTH		((u8)2)
+#define         BMA253_LSB_MSB_READ_LENGTH		((u8)2)
 	/**	BIT SHIFT DEFINITIONS    */
 #define         BMA253_SHIFT_TWO_BITS                   ((u8)2)
 #define         BMA253_SHIFT_FOUR_BITS                  ((u8)4)
@@ -417,18 +417,18 @@ burst_read(device_addr, register_addr, register_data, rd_len)
 #define         BMA253_SHIFT_SIX_BITS                   ((u8)6)
 #define         BMA253_SHIFT_EIGHT_BITS                 ((u8)8)
 	/**	FIFO DEFINITIONS    */
-#define		BMA253_FIFO_CONFIG_1_STATUS_RANGE		((u8)2)
-#define		BMA2x2_FIFO_DATA_SELECT_RANGE		((u8)4)
-#define		BMA253_FIFO_CONFIG_1_RANGE			((u8)4)
+#define		BMA253_FIFO_CONFIG_1_FIFO_MODE_STATUS_RANGE		((u8)2)
+#define		BMA253_FIFO_CONFIG_1_FIFO_DATA_SELECT_RANGE		((u8)4)
+#define		BMA253_FIFO_CONFIG_1_FIFO_MODE_RANGE			((u8)4)
 #define         BMA2x2_FIFO_WML_RANGE                   ((u8)32)
 
-#define         BMA2x2_FIFO_XYZ_DATA_ENABLED          (0x00)
-#define         BMA2x2_FIFO_X_DATA_ENABLED          (0x01)
-#define         BMA2x2_FIFO_Y_DATA_ENABLED          (0x02)
-#define         BMA2x2_FIFO_Z_DATA_ENABLED          (0x03)
-#define         BMA2x2_FIFO_DATA_ENABLED_MASK         (0x03)
-#define         BMA2x2_FIFO_XYZ_AXES_FRAME_SIZE       ((u8)6)
-#define         BMA2x2_FIFO_SINGLE_AXIS_FRAME_SIZE    ((u8)2)
+#define         BMA253_FIFO_XYZ_DATA_ENABLED          (0x00)
+#define         BMA253_FIFO_X_DATA_ENABLED          (0x01)
+#define         BMA253_FIFO_Y_DATA_ENABLED          (0x02)
+#define         BMA253_FIFO_Z_DATA_ENABLED          (0x03)
+#define         BMA253_FIFO_DATA_ENABLED_MASK         (0x03)
+#define         BMA253_FIFO_XYZ_AXES_FRAME_SIZE       ((u8)6)
+#define         BMA253_FIFO_SINGLE_AXIS_FRAME_SIZE    ((u8)2)
 	/**	MODE RANGES    */
 #define         BMA253_ACCEL_BW_MIN_RANGE               ((u8)7)
 #define         BMA253_ACCEL_BW_1000HZ_RANGE            ((u8)15)
@@ -476,7 +476,7 @@ burst_read(device_addr, register_addr, register_data, rd_len)
 #define BMA2x2_STAT_ORIENT_HIGH_ADDR		(0x0C)
 #define BMA2x2_STAT_FIFO_ADDR			(0x0E)
 /**STATUS ADDRESS DEFINITIONS */
-#define BMA2x2_RANGE_SELECT_ADDR		(0x0F)
+#define BMA253_PMU_RANGE_RANGE_ADDR		(0x0F)
 #define BMA253_PMU_BW_BW_BITS_SELECT_ADDR                   (0x10)
 #define BMA2x2_MODE_CTRL_ADDR                   (0x11)
 #define BMA2x2_LOW_NOISE_CTRL_ADDR              (0x12)
@@ -521,7 +521,7 @@ burst_read(device_addr, register_addr, register_data, rd_len)
 #define BMA2x2_GP1_ADDR                          (0x3C)
 /**FIFO ADDRESS DEFINITIONS */
 #define BMA253_FIFO_CONFIG_1_ADDR                    (0x3E)
-#define BMA2x2_FIFO_DATA_OUTPUT_ADDR             (0x3F)
+#define BMA253_FIFO_DATA_OUTPUT_ADDR             (0x3F)
 #define BMA2x2_FIFO_WML_TRIG                     (0x30)
 
 /**************************************************************/
@@ -936,10 +936,10 @@ struct fifo_configuration {
 /*********************************************/
 /**\name INTERRUPT STATUS OF FIFO FRAME COUNT */
 /*********************************************/
-#define BMA2x2_FIFO_FRAME_COUNT_STAT_POS             (0)
-#define BMA2x2_FIFO_FRAME_COUNT_STAT_LEN             (7)
-#define BMA2x2_FIFO_FRAME_COUNT_STAT_MSK             (0x7F)
-#define BMA2x2_FIFO_FRAME_COUNT_STAT_REG             BMA2x2_STAT_FIFO_ADDR
+#define BMA253_FIFO_STATUS_FIFO_FRAME_COUNTER_POS             (0)
+#define BMA253_FIFO_STATUS_FIFO_FRAME_COUNTER_LEN             (7)
+#define BMA253_FIFO_STATUS_FIFO_FRAME_COUNTER_MSK             (0x7F)
+#define BMA253_FIFO_STATUS_FIFO_FRAME_COUNTER_REG             BMA2x2_STAT_FIFO_ADDR
 /*********************************************/
 /**\name INTERRUPT STATUS OF FIFO OVERRUN */
 /*********************************************/
@@ -950,10 +950,10 @@ struct fifo_configuration {
 /****************************/
 /**\name RANGE */
 /****************************/
-#define BMA2x2_RANGE_SELECT_POS             (0)
-#define BMA2x2_RANGE_SELECT_LEN             (4)
-#define BMA2x2_RANGE_SELECT_MSK             (0x0F)
-#define BMA2x2_RANGE_SELECT_REG             BMA2x2_RANGE_SELECT_ADDR
+#define BMA253_PMU_RANGE_RANGE_POS             (0)
+#define BMA253_PMU_RANGE_RANGE_LEN             (4)
+#define BMA253_PMU_RANGE_RANGE_MSK             (0x0F)
+#define BMA253_PMU_RANGE_RANGE_REG             BMA253_PMU_RANGE_RANGE_ADDR
 /****************************/
 /**\name BANDWIDTH */
 /****************************/
@@ -1643,17 +1643,17 @@ BMA2x2_INTR_SOURCE_ADDR
 /****************************************************/
 /**\name    FIFO DATA SELECT       */
 /***************************************************/
-#define BMA2x2_FIFO_DATA_SELECT_POS                 (0)
-#define BMA2x2_FIFO_DATA_SELECT_LEN                 (2)
-#define BMA2x2_FIFO_DATA_SELECT_MSK                 (0x03)
-#define BMA2x2_FIFO_DATA_SELECT_REG                 BMA253_FIFO_CONFIG_1_ADDR
+#define BMA253_FIFO_CONFIG_1_FIFO_DATA_SELECT_POS                 (0)
+#define BMA253_FIFO_CONFIG_1_FIFO_DATA_SELECT_LEN                 (2)
+#define BMA253_FIFO_CONFIG_1_FIFO_DATA_SELECT_MSK                 (0x03)
+#define BMA253_FIFO_CONFIG_1_FIFO_DATA_SELECT_REG                 BMA253_FIFO_CONFIG_1_ADDR
 /****************************************************/
 /**\name   FIFO MODE      */
 /***************************************************/
-#define BMA253_FIFO_CONFIG_1_POS                 (6)
-#define BMA253_FIFO_CONFIG_1_LEN                 (2)
-#define BMA253_FIFO_CONFIG_1_MSK                 (0xC0)
-#define BMA253_FIFO_CONFIG_1_REG                 BMA253_FIFO_CONFIG_1_ADDR
+#define BMA253_FIFO_CONFIG_1_FIFO_MODE_POS                 (6)
+#define BMA253_FIFO_CONFIG_1_FIFO_MODE_LEN                 (2)
+#define BMA253_FIFO_CONFIG_1_FIFO_MODE_MSK                 (0xC0)
+#define BMA253_FIFO_CONFIG_1_FIFO_MODE_REG                 BMA253_FIFO_CONFIG_1_ADDR
 
 /****************************************************/
 /**\name  BITSLICE FUNCTIONS      */
@@ -1722,13 +1722,13 @@ BMA2x2_INTR_SOURCE_ADDR
 /****************************************************/
 /**\name  RANGE AND BANDWIDTH SELECT     */
 /***************************************************/
-#define BMA2x2_RANGE_2G                 (3)
+#define BMA253_PMU_RANGE_RANGE_2G                 (3)
 /**< sets range to +/- 2G mode */
-#define BMA2x2_RANGE_4G                 (5)
+#define BMA253_PMU_RANGE_RANGE_4G                 (5)
 /**< sets range to +/- 4G mode */
-#define BMA2x2_RANGE_8G                 (8)
+#define BMA253_PMU_RANGE_RANGE_8G                 (8)
 /**< sets range to +/- 8G mode */
-#define BMA2x2_RANGE_16G                (12)
+#define BMA253_PMU_RANGE_RANGE_16G                (12)
 /**< sets range to +/- 16G mode */
 
 
@@ -2473,10 +2473,10 @@ u8 *intr_stat_u8);
  *	@param range_u8 : The value of range
  *		  range_u8       |   result
  *       ----------------- | --------------
- *              0x03       | BMA2x2_RANGE_2G
- *              0x05       | BMA2x2_RANGE_4G
- *              0x08       | BMA2x2_RANGE_8G
- *              0x0C       | BMA2x2_RANGE_16G
+ *              0x03       | BMA253_PMU_RANGE_RANGE_2G
+ *              0x05       | BMA253_PMU_RANGE_RANGE_4G
+ *              0x08       | BMA253_PMU_RANGE_RANGE_8G
+ *              0x0C       | BMA253_PMU_RANGE_RANGE_16G
  *
  *
  *
@@ -2495,10 +2495,10 @@ BMA2x2_RETURN_FUNCTION_TYPE bma2x2_get_range(u8 *range_u8);
  *	@param range_u8 : The value of range
  *		  range_u8       |   result
  *       ----------------- | --------------
- *              0x03       | BMA2x2_RANGE_2G
- *              0x05       | BMA2x2_RANGE_4G
- *              0x08       | BMA2x2_RANGE_8G
- *              0x0C       | BMA2x2_RANGE_16G
+ *              0x03       | BMA253_PMU_RANGE_RANGE_2G
+ *              0x05       | BMA253_PMU_RANGE_RANGE_4G
+ *              0x08       | BMA253_PMU_RANGE_RANGE_8G
+ *              0x0C       | BMA253_PMU_RANGE_RANGE_16G
  *
  *
  *
