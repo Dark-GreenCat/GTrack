@@ -143,8 +143,9 @@ uint8_t HCL_BMA253_get_fifo_frame_counter(bma253_t* bma253);
 void HCL_BMA253_read_fifo_data(bma253_t* bma253, bma253_fifo_config_t* bma253_fifo_data);
 void HCL_BMA253_get_fifo_data_1frame(bma253_t* bma253, uint8_t* fifo_data_u8);
 
-uint8_t HCL_BMA253_get_data_high_bw(bma253_t* bma253);
+
 void HCL_BMA253_set_data_high_bw(bma253_t* bma253, uint8_t data_high_bw_u8);
+uint8_t HCL_BMA253_get_data_high_bw(bma253_t* bma253);
 
 /*
  * 		  Value of bw_u8
@@ -159,8 +160,9 @@ void HCL_BMA253_set_data_high_bw(bma253_t* bma253, uint8_t data_high_bw_u8);
  *              0x0E       | BMA253_PMU_BW_BW_BITS_500HZ
  *              0x0F       | BMA253_PMU_BW_BW_BITS_1000HZ
 */
-uint8_t HCL_BMA253_get_bw(bma253_t* bma253);
+
 void HCL_BMA253_set_bw(bma253_t* bma253, uint8_t bw_u8);
+uint8_t HCL_BMA253_get_bw(bma253_t* bma253);
 
 uint16_t HCL_BMA253_get_accd_x_msb_lsb(bma253_t* bma253);
 uint16_t HCL_BMA253_get_accd_y_msb_lsb(bma253_t* bma253);
