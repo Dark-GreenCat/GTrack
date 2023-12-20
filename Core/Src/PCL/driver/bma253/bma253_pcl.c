@@ -103,3 +103,40 @@ void PCL_BMA253_Get_Accel_XYZ(BMA253_TypeDef* pcl_bma253, BMA253_Accel_Data_t* p
     pcl_bma253_accel_data->y = PCL_BMA253_Get_Accel_Y(pcl_bma253);
     pcl_bma253_accel_data->z = PCL_BMA253_Get_Accel_Z(pcl_bma253);
 }
+
+void PCL_BMA253_Get_Accel_XYZ_FIFO(BMA253_TypeDef* pcl_bma253, BMA253_Accel_Data_t* pcl_bma253_accel_data) {
+    uint16_t fifo_data_readout_u16[] = {
+        BMA253_INIT_VALUE, BMA253_INIT_VALUE, BMA253_INIT_VALUE
+    };
+    uint8_t range_u8 = BMA253_INIT_VALUE;
+    uint8_t fifo_data_select_u8 = BMA253_INIT_VALUE;
+
+    HCL_BMA253_get_fifo_data_1frame(pcl_bma253, (uint8_t*) fifo_data_readout_u16);
+    range_u8 = HCL_BMA253_get_range(pcl_bma253);
+    fifo_data_select_u8 = HCL_BMA253_get_fifo_data_select(pcl_bma253);
+
+    pcl_bma253_accel_data->x = pcl_bma253_accel_data->y = pcl_bma253_accel_data->z = BMA253_INIT_VALUE;
+    switch (fifo_data_select_u8)
+    {
+    case BMA253_FIFO_XYZ_DATA_ENABLED:
+        pcl_bma253_accel_data->x = PCL_BMA253_Accel_Process_Raw_Data(fifo_data_readout_u16[0], range_u8);
+        pcl_bma253_accel_data->y = PCL_BMA253_Accel_Process_Raw_Data(fifo_data_readout_u16[1], range_u8);
+        pcl_bma253_accel_data->z = PCL_BMA253_Accel_Process_Raw_Data(fifo_data_readout_u16[2], range_u8);
+        break;
+    
+    case BMA253_FIFO_X_DATA_ENABLED:
+        pcl_bma253_accel_data->x = PCL_BMA253_Accel_Process_Raw_Data(fifo_data_readout_u16[0], range_u8);
+        break;
+    
+    case BMA253_FIFO_Y_DATA_ENABLED:
+        pcl_bma253_accel_data->y = PCL_BMA253_Accel_Process_Raw_Data(fifo_data_readout_u16[0], range_u8);
+        break;
+    
+    case BMA253_FIFO_Z_DATA_ENABLED:
+        pcl_bma253_accel_data->z = PCL_BMA253_Accel_Process_Raw_Data(fifo_data_readout_u16[0], range_u8);
+        break;
+    
+    default:
+        break;
+    }
+}
