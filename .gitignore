@@ -3,6 +3,7 @@ MDK-ARM/*.txt
 MDK-ARM/*.scvd
 MDK-ARM/*.MintCat
 MDK-ARM/*.uvoptx
+*/*/Backup
 
 clean_log.txt
 build_log.txt
