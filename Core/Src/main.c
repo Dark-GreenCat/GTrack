@@ -81,7 +81,7 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
-  APP_UART_Init(huart_terminal, 64);
+  APP_UART_Init(huart_terminal, 512);
   APP_UART_Init(huart_mc60, 512);
   APP_TIMER_Init(&htim3);
 
@@ -120,24 +120,53 @@ int main(void)
   HAL_Delay(6000);
   APP_UART_FlushToUART_String(huart_mc60, huart_terminal);
 
-  APP_UART_OutString(huart_terminal, "\n-------- Power on GNSS --------\n");
-  MC60_GNSS_Power_On(1);
-  HAL_Delay(3000);
+//  APP_UART_OutString(huart_terminal, "\n-------- Power on GNSS --------\n");
+//  MC60_GNSS_Power_On(1);
+//  HAL_Delay(3000);
   APP_UART_FlushToUART_String(huart_mc60, huart_terminal);
 
+
+
   // APP_TIMER_Start();
-  uint32_t pre = HAL_GetTick();
-  uint32_t cur = pre;
+  // uint32_t pre = HAL_GetTick();
+  // uint32_t cur = pre;
+  bool isDone = 0;
+  char SerialLine[512];
   while (1) {
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-    cur = HAL_GetTick();
-    APP_UART_FlushToUART_Char(huart_terminal, huart_mc60);
-    if (cur - pre >= 5000) {
-      MC60_GNSS_Get_NavigationInfo();
-      pre = cur;
+    APP_UART_FlushToUART_String(huart_mc60, huart_terminal);
+
+    isDone = APP_UART_ReadStringUntil(huart_terminal, '\n', SerialLine);
+    if (isDone) {
+      if(UTIL_STRING_isStartWith(SerialLine, "_OPEN"))
+        MC60_ATCommand_Execute("AT+QMTOPEN=0,\"io.adafruit.com\",1883");
+      
+      else
+      if(UTIL_STRING_isStartWith(SerialLine, "_CON"))
+        MC60_ATCommand_Execute("AT+QMTCONN=0,\"huy\",\"greencat3008\",\"aio_rHdm93w35YaXUWcC3hA9NCIpTUIv\"");
+
+      else
+      if(UTIL_STRING_isStartWith(SerialLine, "_PUB"))
+        MC60_ATCommand_Execute("AT+QMTPUB=0,0,0,0,\"greencat3008/feeds/huy\",4");
+
+      else {
+        APP_UART_OutString(huart_mc60, SerialLine);
+        APP_UART_OutChar(huart_mc60, '\n');
+      }
+
+      //MC60_ATCommand_Send("Hello");
+
+      isDone = 0;
     }
+
+    // cur = HAL_GetTick();
+    // APP_UART_FlushToUART_Char(huart_terminal, huart_mc60);
+    // if (cur - pre >= 5000) {
+    //   MC60_GNSS_Get_NavigationInfo();
+    //   pre = cur;
+    // }
   }
   /* USER CODE END 3 */
 }
