@@ -23,7 +23,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef* huart) {
 }
 
 
-void APP_UART_Init(UART_HandleTypeDef* huart, uint32_t size) {
+void HCL_UART_Init(UART_HandleTypeDef* huart, uint32_t size) {
     Fifo_t* Fifo_n = NULL;
     if (huart == huart_terminal) Fifo_n = &Fifo_1;
     if (huart == huart_mc60) Fifo_n = &Fifo_3;
@@ -31,11 +31,11 @@ void APP_UART_Init(UART_HandleTypeDef* huart, uint32_t size) {
     Fifo_Init(Fifo_n, size);
 }
 
-void APP_UART_StartReceive(UART_HandleTypeDef* huart) {
+void HCL_UART_StartReceive(UART_HandleTypeDef* huart) {
     HAL_UART_Receive_IT(huart, &Rx_data, 1);
 }
 
-char APP_UART_InChar(UART_HandleTypeDef* huart) {
+char HCL_UART_InChar(UART_HandleTypeDef* huart) {
     Fifo_t* Fifo_n = NULL;
     if (huart == huart_terminal) Fifo_n = &Fifo_1;
     if (huart == huart_mc60) Fifo_n = &Fifo_3;
@@ -44,11 +44,11 @@ char APP_UART_InChar(UART_HandleTypeDef* huart) {
     return Fifo_Get(Fifo_n);
 }
 
-void APP_UART_OutChar(UART_HandleTypeDef* huart, char data) {
+void HCL_UART_OutChar(UART_HandleTypeDef* huart, char data) {
     HAL_UART_Transmit(huart, (uint8_t*)&data, 1, 1);
 }
 
-void APP_UART_FIFO_Flush(UART_HandleTypeDef* huart) {
+void HCL_UART_FIFO_Flush(UART_HandleTypeDef* huart) {
     Fifo_t* Fifo_n = NULL;
     if (huart == huart_terminal) Fifo_n = &Fifo_1;
     if (huart == huart_mc60) Fifo_n = &Fifo_3;
@@ -56,11 +56,11 @@ void APP_UART_FIFO_Flush(UART_HandleTypeDef* huart) {
     uint8_t data;
     while (!Fifo_isEmpty(Fifo_n)) {
         data = Fifo_Get(Fifo_n);
-        APP_UART_OutChar(huart_terminal, data);
+        HCL_UART_OutChar(huart_terminal, data);
     }
 }
 
-bool APP_UART_IsAvailable(UART_HandleTypeDef* huart) {
+bool HCL_UART_IsAvailable(UART_HandleTypeDef* huart) {
     Fifo_t* Fifo_n = NULL;
     if (huart == huart_terminal) Fifo_n = &Fifo_1;
     if (huart == huart_mc60) Fifo_n = &Fifo_3;

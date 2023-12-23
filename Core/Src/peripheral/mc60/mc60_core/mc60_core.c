@@ -21,7 +21,7 @@ void MC60_PowerOff(void) {
 }
 
 void MC60_ATCommand_Send(const char* str) {
-    APP_UART_OutString(mc60_huart, str);
+    PCL_UART_OutString(mc60_huart, str);
 }
 
 void MC60_ATCommand_Test(const char* str) {

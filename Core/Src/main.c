@@ -81,8 +81,8 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
-  APP_UART_Init(huart_terminal, 64);
-  APP_UART_Init(huart_mc60, 512);
+  HCL_UART_Init(huart_terminal, 64);
+  HCL_UART_Init(huart_mc60, 512);
   APP_TIMER_Init(&htim3);
 
   MC60_Init(huart_mc60);
@@ -109,21 +109,21 @@ int main(void)
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
 
-  APP_UART_StartReceive(huart_terminal);
-  APP_UART_StartReceive(huart_mc60);
+  HCL_UART_StartReceive(huart_terminal);
+  HCL_UART_StartReceive(huart_mc60);
 
-  APP_UART_OutString(huart_terminal, "\n-------- Power on MC60 --------\n");
+  PCL_UART_OutString(huart_terminal, "\n-------- Power on MC60 --------\n");
   MC60_PowerOn();
-  APP_UART_OutString(huart_terminal, "\n------ Check MC60 status ------");
-  APP_UART_OutString(huart_terminal, "\n\t>> Running command: AT\n");
+  PCL_UART_OutString(huart_terminal, "\n------ Check MC60 status ------");
+  PCL_UART_OutString(huart_terminal, "\n\t>> Running command: AT\n");
   MC60_ATCommand_Execute("AT");
   HAL_Delay(6000);
-  APP_UART_FlushToUART_String(huart_mc60, huart_terminal);
+  PCL_UART_FlushToUART_String(huart_mc60, huart_terminal);
 
-  APP_UART_OutString(huart_terminal, "\n-------- Power on GNSS --------\n");
+  PCL_UART_OutString(huart_terminal, "\n-------- Power on GNSS --------\n");
   MC60_GNSS_Power_On(1);
   HAL_Delay(3000);
-  APP_UART_FlushToUART_String(huart_mc60, huart_terminal);
+  PCL_UART_FlushToUART_String(huart_mc60, huart_terminal);
 
   // APP_TIMER_Start();
   uint32_t pre = HAL_GetTick();
@@ -133,7 +133,7 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
     cur = HAL_GetTick();
-    APP_UART_FlushToUART_Char(huart_terminal, huart_mc60);
+    PCL_UART_FlushToUART_Char(huart_terminal, huart_mc60);
     if (cur - pre >= 5000) {
       MC60_GNSS_Get_NavigationInfo();
       pre = cur;

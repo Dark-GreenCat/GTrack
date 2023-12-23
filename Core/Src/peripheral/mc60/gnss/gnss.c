@@ -23,21 +23,21 @@ void MC60_GNSS_Get_NavigationInfo() {
     if (TimeOut_Cur - TimeOut_Pre >= MC60_GNSS_TIMEOUT)
       return;
 
-    bool isDone = APP_UART_ReadStringUntil(huart_mc60, '\n', SerialLine);
+    bool isDone = PCL_UART_ReadStringUntil(huart_mc60, '\n', SerialLine);
     if (isDone) {
       if (UTIL_STRING_isStartWith(SerialLine, "OK"))
         return;
       if (UTIL_STRING_isStartWith(SerialLine, "\r"))
         continue;
       if (UTIL_STRING_isStartWith(SerialLine, "AT+")) {
-        APP_UART_OutString(
+        PCL_UART_OutString(
             huart_terminal,
             "\n\n\n------ GETTING NAVIGATION INFORMATION ------");
         continue;
       }
 
-      APP_UART_OutString(huart_terminal, "\nRead: ");
-      APP_UART_OutString(huart_terminal, SerialLine);
+      PCL_UART_OutString(huart_terminal, "\nRead: ");
+      PCL_UART_OutString(huart_terminal, SerialLine);
       char *p_SerialLine = SerialLine;
       UTIL_STRING_getSubStringAfterChar(p_SerialLine, ' ', p_SerialLine);
       UTIL_STRING_getSubStringBeforeChar(p_SerialLine, '\r', p_SerialLine);
@@ -47,8 +47,8 @@ void MC60_GNSS_Get_NavigationInfo() {
       do {
         p_SerialLine += index + 1;
         UTIL_STRING_getSubStringBeforeChar(p_SerialLine, ',', GNGLL_Data);
-        APP_UART_OutString(huart_terminal, "\n    Data: ");
-        APP_UART_OutString(huart_terminal, GNGLL_Data);
+        PCL_UART_OutString(huart_terminal, "\n    Data: ");
+        PCL_UART_OutString(huart_terminal, GNGLL_Data);
         index = (uint32_t)UTIL_STRING_indexOf(p_SerialLine, ',');
       } while (index != (uint32_t)-1);
     }
