@@ -27,7 +27,7 @@
 /* USER CODE BEGIN Includes */
 #include "string_util.h"
 #include "PCL/signal/signal_pcl.h"
-#include "application/timer/timer_app.h"
+#include "HCL/timer/timer_hcl.h"
 #include "HCL/usart/usart_hcl.h"
 #include "peripheral/mc60/gnss/gnss.h"
 #include "test_bma253.h"
@@ -83,7 +83,7 @@ int main(void)
   /* USER CODE BEGIN Init */
   HCL_UART_Init(huart_terminal, 64);
   HCL_UART_Init(huart_mc60, 512);
-  APP_TIMER_Init(&htim3);
+  HCL_TIMER_Init(&htim3);
 
   MC60_Init(huart_mc60);
 
@@ -125,7 +125,7 @@ int main(void)
   HAL_Delay(3000);
   PCL_UART_FlushToUART_String(huart_mc60, huart_terminal);
 
-  // APP_TIMER_Start();
+  // HCL_TIMER_Start();
   uint32_t pre = HAL_GetTick();
   uint32_t cur = pre;
   while (1) {

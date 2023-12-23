@@ -440,16 +440,6 @@
               <FileType>1</FileType>
               <FilePath>..\Core\Src\peripheral\mc60\gnss\gnss.c</FilePath>
             </File>
-            <File>
-              <FileName>power_app.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Core\Src\application\power\power_app.c</FilePath>
-            </File>
-            <File>
-              <FileName>timer_app.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Core\Src\application\timer\timer_app.c</FilePath>
-            </File>
           </Files>
         </Group>
         <Group>
@@ -574,6 +564,11 @@
               <FileName>usart_hcl.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Core\Src\GTrack\HCL\usart\usart_hcl.c</FilePath>
+            </File>
+            <File>
+              <FileName>timer_hcl.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\Src\GTrack\HCL\timer\timer_hcl.c</FilePath>
             </File>
           </Files>
         </Group>
