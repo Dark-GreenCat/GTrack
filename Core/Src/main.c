@@ -141,15 +141,16 @@ int main(void)
     isDone = APP_UART_ReadStringUntil(huart_terminal, '\n', SerialLine);
     if (isDone) {
       if(UTIL_STRING_isStartWith(SerialLine, "_OPEN"))
-        MC60_ATCommand_Execute("AT+QMTOPEN=0,\"io.adafruit.com\",1883");
+        MC60_ATCommand_Execute("AT+QMTOPEN=0,\"ff2dc67294f34255a8cbf37a09b3cd9f.s1.eu.hivemq.cloud\",8883");
       
       else
       if(UTIL_STRING_isStartWith(SerialLine, "_CON"))
-        MC60_ATCommand_Execute("AT+QMTCONN=0,\"huy\",\"greencat3008\",\"aio_rHdm93w35YaXUWcC3hA9NCIpTUIv\"");
+        MC60_ATCommand_Execute("AT+QMTCONN=0,\"ff2dc67294f34255a8cbf37a09b3cd9f\"");
 
       else
-      if(UTIL_STRING_isStartWith(SerialLine, "_PUB"))
-        MC60_ATCommand_Execute("AT+QMTPUB=0,0,0,0,\"greencat3008/feeds/huy\",4");
+      if(UTIL_STRING_isStartWith(SerialLine, "_PUB")) {
+        MC60_ATCommand_Execute("AT+QMTPUB=0,0,0,0,\"testtopic/1\"");
+      }
 
       else {
         APP_UART_OutString(huart_mc60, SerialLine);
