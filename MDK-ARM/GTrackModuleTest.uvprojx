@@ -49,11 +49,11 @@
             <NotGenerated>0</NotGenerated>
             <InvalidFlash>1</InvalidFlash>
           </TargetStatus>
-          <OutputDirectory>GTrackModuleTest\</OutputDirectory>
+          <OutputDirectory>.\GTrackModuleTest\</OutputDirectory>
           <OutputName>GTrackModuleTest</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
-          <CreateHexFile>1</CreateHexFile>
+          <CreateHexFile>0</CreateHexFile>
           <DebugInformation>1</DebugInformation>
           <BrowseInformation>1</BrowseInformation>
           <ListingPath></ListingPath>
@@ -341,7 +341,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F030xC</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;../Drivers/STM32F0xx_HAL_Driver/Inc;../Drivers/STM32F0xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F0xx/Include;../Drivers/CMSIS/Include</IncludePath>
+              <IncludePath>../Core/Inc;../Drivers/STM32F0xx_HAL_Driver/Inc;../Drivers/STM32F0xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F0xx/Include;../Drivers/CMSIS/Include;..\Core\Src\GTrack;..\Core\Ultilities</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -431,16 +431,6 @@
               <FilePath>../Core/Src/stm32f0xx_hal_msp.c</FilePath>
             </File>
             <File>
-              <FileName>bma253_pcl.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Core\Src\PCL\driver\bma253\bma253_pcl.c</FilePath>
-            </File>
-            <File>
-              <FileName>bma253_hcl.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Core\Src\peripheral\bma253\bma253_hcl.c</FilePath>
-            </File>
-            <File>
               <FileName>mc60_core.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Core\Src\peripheral\mc60\mc60_core\mc60_core.c</FilePath>
@@ -449,11 +439,6 @@
               <FileName>gnss.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Core\Src\peripheral\mc60\gnss\gnss.c</FilePath>
-            </File>
-            <File>
-              <FileName>i2c_hcl.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Core\Src\HCL\i2c\i2c_hcl.c</FilePath>
             </File>
             <File>
               <FileName>power_app.c</FileName>
@@ -483,7 +468,22 @@
             <File>
               <FileName>string_util.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Ultilities\string_util.c</FilePath>
+              <FilePath>..\Core\Ultilities\string_util.c</FilePath>
+            </File>
+            <File>
+              <FileName>i2c_hcl.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\Src\GTrack\HCL\i2c\i2c_hcl.c</FilePath>
+            </File>
+            <File>
+              <FileName>bma253_hcl.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\Src\GTrack\HCL\driver\bma253\bma253_hcl.c</FilePath>
+            </File>
+            <File>
+              <FileName>bma253_pcl.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\Src\GTrack\PCL\driver\bma253\bma253_pcl.c</FilePath>
             </File>
           </Files>
         </Group>

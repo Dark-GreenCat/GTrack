@@ -1,8 +1,9 @@
 #ifndef __BMA253_PCL_H
 #define __BMA253_PCL_H
 
-#include "../../../peripheral/bma253/bma253_hcl.h"
-#include "../Src/HCL/i2c/i2c_hcl.h"
+
+#include "HCL/driver/bma253/bma253_hcl.h"
+#include "HCL/i2c/i2c_hcl.h"
 
 
 #define PCL_BMA253_I2C_DEVICE_ADDRESS_SHIFT     1

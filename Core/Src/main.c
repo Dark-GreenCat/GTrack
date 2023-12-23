@@ -25,7 +25,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "../../Ultilities/string_util.h"
+#include "string_util.h"
 #include "application/signal/signal_app.h"
 #include "application/timer/timer_app.h"
 #include "application/usart/usart_app.h"
