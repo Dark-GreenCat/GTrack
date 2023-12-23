@@ -1,5 +1,5 @@
-#ifndef __SIGNAL_APP_H
-#define __SIGNAL_APP_H
+#ifndef __SIGNAL_PCL_H
+#define __SIGNAL_PCL_H
 
 #include "main.h"
 #include <stdbool.h>

@@ -1,5 +1,5 @@
-#ifndef __FIFO_H
-#define __FIFO_H
+#ifndef __FIFO_HCL_H
+#define __FIFO_HCL_H
 
 
 // FiFo.h

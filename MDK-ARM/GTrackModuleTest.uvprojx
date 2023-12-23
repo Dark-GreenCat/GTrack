@@ -450,16 +450,6 @@
               <FileType>1</FileType>
               <FilePath>..\Core\Src\application\timer\timer_app.c</FilePath>
             </File>
-            <File>
-              <FileName>fifo_app.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Core\Src\application\usart\fifo_app.c</FilePath>
-            </File>
-            <File>
-              <FileName>usart_app.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Core\Src\application\usart\usart_app.c</FilePath>
-            </File>
           </Files>
         </Group>
         <Group>
@@ -575,6 +565,16 @@
               <FileType>1</FileType>
               <FilePath>..\Core\Src\GTrack\HCL\driver\bma253\bma253_hcl.c</FilePath>
             </File>
+            <File>
+              <FileName>fifo_hcl.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\Src\GTrack\HCL\usart\fifo_hcl.c</FilePath>
+            </File>
+            <File>
+              <FileName>usart_hcl.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\Src\GTrack\HCL\usart\usart_hcl.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -584,6 +584,11 @@
               <FileName>bma253_pcl.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Core\Src\GTrack\PCL\driver\bma253\bma253_pcl.c</FilePath>
+            </File>
+            <File>
+              <FileName>usart_pcl.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\Src\GTrack\PCL\usart\usart_pcl.c</FilePath>
             </File>
           </Files>
         </Group>

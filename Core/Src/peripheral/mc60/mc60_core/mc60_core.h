@@ -4,7 +4,7 @@
 #include <stdbool.h>
 
 #include "stm32f0xx_hal.h"
-#include "../../../application/usart/usart_app.h"
+#include "PCL/usart/usart_pcl.h"
 
 #define MC60_VBAT_GPIO_Port   GSM_EN_GPIO_Port
 #define MC60_VBAT_Pin         GSM_EN_Pin

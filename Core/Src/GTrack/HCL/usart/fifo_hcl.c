@@ -4,7 +4,7 @@
 // Last Modified: 1/2/2023
 // Student names: change this to your names or look very silly
 // Last modification date: change this to the last modification date or look very silly
-#include "fifo_app.h"
+#include "fifo_hcl.h"
 
 // *********** FiFo_Init**********
 // Initializes a software FIFO of a

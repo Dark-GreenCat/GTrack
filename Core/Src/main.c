@@ -28,7 +28,7 @@
 #include "string_util.h"
 #include "PCL/signal/signal_pcl.h"
 #include "application/timer/timer_app.h"
-#include "application/usart/usart_app.h"
+#include "HCL/usart/usart_hcl.h"
 #include "peripheral/mc60/gnss/gnss.h"
 #include "test_bma253.h"
 /* USER CODE END Includes */
