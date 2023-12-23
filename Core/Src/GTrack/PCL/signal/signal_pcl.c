@@ -1,4 +1,4 @@
-#include "signal_app.h"
+#include "signal_pcl.h"
 
 void APP_SIGNAL_PWR_SetState(bool state) {
     HAL_GPIO_WritePin(LED_PWR_GPIO_Port, LED_PWR_Pin, !state);

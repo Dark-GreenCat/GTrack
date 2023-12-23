@@ -446,11 +446,6 @@
               <FilePath>..\Core\Src\application\power\power_app.c</FilePath>
             </File>
             <File>
-              <FileName>signal_app.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Core\Src\application\signal\signal_app.c</FilePath>
-            </File>
-            <File>
               <FileName>timer_app.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Core\Src\application\timer\timer_app.c</FilePath>

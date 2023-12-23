@@ -6,7 +6,7 @@
 #include "usart.h"
 #include "tim.h"
 #include "fifo_app.h"
-#include "../signal/signal_app.h"
+#include "PCL/signal/signal_pcl.h"
 
 #define APP_CHAR_LF     0x0A
 

@@ -4,7 +4,7 @@
 #include "main.h"
 #include <stdbool.h>
 
-void APP_SIGNAL_PWR_SetState(bool state);
-void APP_SIGNAL_LED_SetState(bool state);
+void PCL_SIGNAL_PWR_SetState(bool state);
+void PCL_SIGNAL_LED_SetState(bool state);
 
 #endif

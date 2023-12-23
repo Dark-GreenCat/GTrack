@@ -26,7 +26,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "string_util.h"
-#include "application/signal/signal_app.h"
+#include "PCL/signal/signal_pcl.h"
 #include "application/timer/timer_app.h"
 #include "application/usart/usart_app.h"
 #include "peripheral/mc60/gnss/gnss.h"
