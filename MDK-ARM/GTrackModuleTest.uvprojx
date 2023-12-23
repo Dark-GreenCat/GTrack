@@ -341,7 +341,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F030xC</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;../Drivers/STM32F0xx_HAL_Driver/Inc;../Drivers/STM32F0xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F0xx/Include;../Drivers/CMSIS/Include;..\Core\Src\GTrack;..\Core\Ultilities</IncludePath>
+              <IncludePath>../Core/Inc;../Drivers/STM32F0xx_HAL_Driver/Inc;../Drivers/STM32F0xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F0xx/Include;../Drivers/CMSIS/Include;..\Core\Src\GTrack;..\Core\Ultilities;..\Core\Src\Test</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -465,26 +465,6 @@
               <FileType>1</FileType>
               <FilePath>..\Core\Src\application\usart\usart_app.c</FilePath>
             </File>
-            <File>
-              <FileName>string_util.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Core\Ultilities\string_util.c</FilePath>
-            </File>
-            <File>
-              <FileName>i2c_hcl.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Core\Src\GTrack\HCL\i2c\i2c_hcl.c</FilePath>
-            </File>
-            <File>
-              <FileName>bma253_hcl.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Core\Src\GTrack\HCL\driver\bma253\bma253_hcl.c</FilePath>
-            </File>
-            <File>
-              <FileName>bma253_pcl.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Core\Src\GTrack\PCL\driver\bma253\bma253_pcl.c</FilePath>
-            </File>
           </Files>
         </Group>
         <Group>
@@ -584,6 +564,41 @@
               <FileName>system_stm32f0xx.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Core/Src/system_stm32f0xx.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Layers/HCL</GroupName>
+          <Files>
+            <File>
+              <FileName>i2c_hcl.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\Src\GTrack\HCL\i2c\i2c_hcl.c</FilePath>
+            </File>
+            <File>
+              <FileName>bma253_hcl.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\Src\GTrack\HCL\driver\bma253\bma253_hcl.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Layers/PCL</GroupName>
+          <Files>
+            <File>
+              <FileName>bma253_pcl.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\Src\GTrack\PCL\driver\bma253\bma253_pcl.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Utilities</GroupName>
+          <Files>
+            <File>
+              <FileName>string_util.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\Ultilities\string_util.c</FilePath>
             </File>
           </Files>
         </Group>
