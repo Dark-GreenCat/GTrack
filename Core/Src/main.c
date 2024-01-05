@@ -30,7 +30,7 @@
 #include "HCL/timer/timer_hcl.h"
 #include "HCL/usart/usart_hcl.h"
 #include "peripheral/mc60/gnss/gnss.h"
-#include "test_bma253.h"
+//#include "test_bma253.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
