@@ -430,16 +430,6 @@
               <FileType>1</FileType>
               <FilePath>../Core/Src/stm32f0xx_hal_msp.c</FilePath>
             </File>
-            <File>
-              <FileName>mc60_core.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Core\Src\peripheral\mc60\mc60_core\mc60_core.c</FilePath>
-            </File>
-            <File>
-              <FileName>gnss.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Core\Src\peripheral\mc60\gnss\gnss.c</FilePath>
-            </File>
           </Files>
         </Group>
         <Group>
@@ -584,6 +574,16 @@
               <FileName>usart_pcl.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Core\Src\GTrack\PCL\usart\usart_pcl.c</FilePath>
+            </File>
+            <File>
+              <FileName>mc60_core_pcl.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\Src\GTrack\PCL\driver\mc60\mc60_core\mc60_core_pcl.c</FilePath>
+            </File>
+            <File>
+              <FileName>gnss_pcl.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\Src\GTrack\PCL\driver\mc60\gnss\gnss_pcl.c</FilePath>
             </File>
           </Files>
         </Group>
