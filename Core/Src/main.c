@@ -29,7 +29,7 @@
 #include "PCL/signal/signal_pcl.h"
 #include "HCL/timer/timer_hcl.h"
 #include "HCL/usart/usart_hcl.h"
-#include "peripheral/mc60/gnss/gnss.h"
+#include "PCL/driver/mc60/gnss/gnss_pcl.h"
 #include "test_bma253.h"
 /* USER CODE END Includes */
 
