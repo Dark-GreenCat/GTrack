@@ -30,7 +30,7 @@
 #include "timer/timer_hcl.h"
 #include "usart/usart_hcl.h"
 #include "interface/mc60_interface.h"
-// #include "PCL/driver/mc60/gnss/gnss_pcl.h"
+#include "PCL/driver/mc60/gnss/gnss_pcl.h"
 #include "BMA253/bma253_pal.h"
 #include "gpio/gpio_hcl.h"
 ////#include "test_bma253.h"
@@ -90,7 +90,7 @@ int main(void)
   HCL_TIMER_Init(&htim3);
 
   mc60_t mc60;
-  MC60_Init(&mc60, huart_mc60, &hgpio_mc60_pwrkey, &hgpio_mc60_vdd_ext);
+  MC60_ITF_Init(&mc60, huart_mc60, &hgpio_mc60_pwrkey, &hgpio_mc60_vdd_ext);
   HCL_GPIO_WritePin(&hgpio_mc60_gsm_en, GPIO_PIN_RESET);
   /* USER CODE END Init */
 
@@ -116,21 +116,36 @@ int main(void)
   HCL_UART_StartReceive(huart_terminal);
   HCL_UART_StartReceive(huart_mc60);
 
-  bool mc60_state = false;
-  PCL_UART_OutString(huart_terminal, "\nCheck MC60 Status: ");
-  mc60_state = HCL_GPIO_ReadPin(&hgpio_mc60_vdd_ext);
-  PCL_UART_OutNumber(huart_terminal, mc60_state);
 
   PCL_UART_OutString(huart_terminal, "\n-------- Power on MC60 --------\n");
-  MC60_PowerOn(&mc60);
+  MC60_PowerOn();
   PCL_UART_OutString(huart_terminal, "\n------ Check MC60 status ------");
   PCL_UART_OutString(huart_terminal, "\n\t>> Running command: AT\n");
-  //MC60_SendCmd(&mc60, "AT");
-  PCL_UART_OutString(huart_mc60, "AT+GMR\r\n");
+  MC60_ATCommand_Execute("AT");
   HAL_Delay(6000);
-  PCL_UART_OutString(huart_terminal, "\nCheck MC60 Status: ");
-  mc60_state = HCL_GPIO_ReadPin(&hgpio_mc60_vdd_ext);
-  PCL_UART_OutNumber(huart_terminal, mc60_state);
+  PCL_UART_FlushToUART_String(huart_mc60, huart_terminal);
+
+  PCL_UART_OutString(huart_terminal, "\n-------- Power on GNSS --------\n");
+  MC60_GNSS_Power_On(1);
+  HAL_Delay(3000);
+  PCL_UART_FlushToUART_String(huart_mc60, huart_terminal);
+
+// {  bool mc60_state = false;
+//   PCL_UART_OutString(huart_terminal, "\nCheck MC60 Status: ");
+//   mc60_state = HCL_GPIO_ReadPin(&hgpio_mc60_vdd_ext);
+//   PCL_UART_OutNumber(huart_terminal, mc60_state);
+
+//   PCL_UART_OutString(huart_terminal, "\n-------- Power on MC60 --------\n");
+//   // MC60_ITF_PowerOn(&mc60);
+//   MC60_PowerOn();
+//   PCL_UART_OutString(huart_terminal, "\n------ Check MC60 status ------");
+//   PCL_UART_OutString(huart_terminal, "\n\t>> Running command: AT\n");
+//   //MC60_SendCmd(&mc60, "AT");
+//   PCL_UART_OutString(huart_mc60, "AT+GMR\r\n");
+//   HAL_Delay(6000);
+//   PCL_UART_OutString(huart_terminal, "\nCheck MC60 Status: ");
+//   mc60_state = HCL_GPIO_ReadPin(&hgpio_mc60_vdd_ext);
+//   PCL_UART_OutNumber(huart_terminal, mc60_state);}
   
 
   // PCL_UART_OutString(huart_terminal, "\n-------- Power on GNSS --------\n");
@@ -139,20 +154,23 @@ int main(void)
   // PCL_UART_FlushToUART_String(huart_mc60, huart_terminal);
 
   // // HCL_TIMER_Start();
-  // uint32_t pre = HAL_GetTick();
-  // uint32_t cur = pre;
+  uint32_t pre = HAL_GetTick();
+  uint32_t cur = pre;
   
   while (1) {
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-    // cur = HAL_GetTick();
+    cur = HAL_GetTick();
     PCL_UART_FlushToUART_Char(huart_terminal, huart_mc60);
     PCL_UART_FlushToUART_Char(huart_mc60, huart_terminal);
-    // if (cur - pre >= 5000) {
-    //   MC60_GNSS_Get_NavigationInfo();
-    //   pre = cur;
-    // }
+    if (cur - pre >= 2000) {
+		//MC60_UART_Send(huart_mc60, "AT\r\n");
+      MC60_ATCommand_Execute("AT");
+		//PCL_UART_OutString(huart_mc60, "AT\r\n");
+      // MC60_GNSS_Get_NavigationInfo();
+      pre = cur;
+    }
   }
   /* USER CODE END 3 */
 }
