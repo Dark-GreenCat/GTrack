@@ -341,7 +341,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F030xC</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;../Drivers/STM32F0xx_HAL_Driver/Inc;../Drivers/STM32F0xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F0xx/Include;../Drivers/CMSIS/Include;..\Core\Src\GTrack;..\Core\Ultilities;..\Core\Src\Test</IncludePath>
+              <IncludePath>../Core/Inc;../Drivers/STM32F0xx_HAL_Driver/Inc;../Drivers/STM32F0xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F0xx/Include;../Drivers/CMSIS/Include;..\Core\Src\GTrack;..\Core\Ultilities;..\Core\Src\Test;..\Drivers\Device_Driver\bma253_generic;..\HardwareLayer;..\AbstractionLayer;..\Components\Libraries;..\Components\Middlewares\NetworkLayer;..\Components\Middlewares\UserLayer</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -536,45 +536,40 @@
           <GroupName>Layers/HCL</GroupName>
           <Files>
             <File>
-              <FileName>i2c_hcl.c</FileName>
+              <FileName>bma253_hardware_interface.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Core\Src\GTrack\HCL\i2c\i2c_hcl.c</FilePath>
-            </File>
-            <File>
-              <FileName>bma253_hcl.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Core\Src\GTrack\HCL\driver\bma253\bma253_hcl.c</FilePath>
-            </File>
-            <File>
-              <FileName>fifo_hcl.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Core\Src\GTrack\HCL\usart\fifo_hcl.c</FilePath>
-            </File>
-            <File>
-              <FileName>usart_hcl.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Core\Src\GTrack\HCL\usart\usart_hcl.c</FilePath>
+              <FilePath>..\Drivers\Device_Driver\bma253_generic\hardware\bma253_hardware_interface.c</FilePath>
             </File>
             <File>
               <FileName>timer_hcl.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Core\Src\GTrack\HCL\timer\timer_hcl.c</FilePath>
+              <FilePath>..\HardwareLayer\timer\timer_hcl.c</FilePath>
+            </File>
+            <File>
+              <FileName>i2c_hcl.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\HardwareLayer\i2c\i2c_hcl.c</FilePath>
+            </File>
+            <File>
+              <FileName>fifo_hcl.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\HardwareLayer\usart\fifo_hcl.c</FilePath>
+            </File>
+            <File>
+              <FileName>usart_hcl.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\HardwareLayer\usart\usart_hcl.c</FilePath>
+            </File>
+            <File>
+              <FileName>gpio_hcl.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\HardwareLayer\gpio\gpio_hcl.c</FilePath>
             </File>
           </Files>
         </Group>
         <Group>
           <GroupName>Layers/PCL</GroupName>
           <Files>
-            <File>
-              <FileName>bma253_pcl.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Core\Src\GTrack\PCL\driver\bma253\bma253_pcl.c</FilePath>
-            </File>
-            <File>
-              <FileName>usart_pcl.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Core\Src\GTrack\PCL\usart\usart_pcl.c</FilePath>
-            </File>
             <File>
               <FileName>mc60_core_pcl.c</FileName>
               <FileType>1</FileType>
@@ -584,6 +579,21 @@
               <FileName>gnss_pcl.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Core\Src\GTrack\PCL\driver\mc60\gnss\gnss_pcl.c</FilePath>
+            </File>
+            <File>
+              <FileName>bma253_driver.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\Device_Driver\bma253_generic\bma253_driver.c</FilePath>
+            </File>
+            <File>
+              <FileName>usart_pal.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\AbstractionLayer\usart\usart_pal.c</FilePath>
+            </File>
+            <File>
+              <FileName>bma253_pal.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Components\Libraries\BMA253\bma253_pal.c</FilePath>
             </File>
           </Files>
         </Group>

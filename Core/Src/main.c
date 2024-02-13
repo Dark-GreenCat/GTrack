@@ -26,10 +26,11 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "string_util.h"
-#include "PCL/signal/signal_pcl.h"
-#include "HCL/timer/timer_hcl.h"
-#include "HCL/usart/usart_hcl.h"
+#include "signal/signal_pal.h"
+#include "timer/timer_hcl.h"
+#include "usart/usart_hcl.h"
 #include "PCL/driver/mc60/gnss/gnss_pcl.h"
+#include "BMA253/bma253_pal.h"
 ////#include "test_bma253.h"
 /* USER CODE END Includes */
 
@@ -108,7 +109,32 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-
+  PAL_BMA253_Init();
+  HCL_UART_StartReceive(huart_terminal);
+  bma253_accel_data_t accel_data;
+  uint8_t data_high_bw = 0;
+  uint8_t data = 4;
+  uint8_t data_high_bw_u8 = BMA253_FIFO_X_DATA_ENABLED;
+  uint8_t fifo[6];
+  
+  while(1) {
+    HAL_Delay(1000);
+    PCL_UART_OutString(huart_terminal, "\n\n----- GET DATA -----\n");
+    PAL_BMA253_Get_Accel_XYZ(&accel_data);
+    PCL_UART_OutString(huart_terminal, "\nx = ");
+    PCL_UART_OutNumber_Signed(huart_terminal, accel_data.x);
+    PCL_UART_OutString(huart_terminal, "\ny = ");
+    PCL_UART_OutNumber_Signed(huart_terminal, accel_data.y);
+    PCL_UART_OutString(huart_terminal, "\nz = ");
+    PCL_UART_OutNumber_Signed(huart_terminal, accel_data.z);
+    // HCL_BMA253_get_fifo_data_1frame(&pcl_bma253, fifo);
+    // for(int8_t i = 0; i < 3; i++) {
+    //   APP_UART_OutBinary_16BIT(huart_terminal, *(((uint16_t*) fifo) + i));
+    //   APP_UART_OutChar(huart_terminal, '\n');
+    // }
+    // HCL_BMA253_set_fifo_data_select(&pcl_bma253, data_high_bw);
+    // data_high_bw = data_high_bw == BMA253_FIFO_CONFIG_1_FIFO_DATA_SELECT_X? BMA253_FIFO_CONFIG_1_FIFO_DATA_SELECT_Z : BMA253_FIFO_CONFIG_1_FIFO_DATA_SELECT_X;
+  }
   HCL_UART_StartReceive(huart_terminal);
   HCL_UART_StartReceive(huart_mc60);
 
@@ -128,6 +154,7 @@ int main(void)
   // HCL_TIMER_Start();
   uint32_t pre = HAL_GetTick();
   uint32_t cur = pre;
+  
   while (1) {
     /* USER CODE END WHILE */
 

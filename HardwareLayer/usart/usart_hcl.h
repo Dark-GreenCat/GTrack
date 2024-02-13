@@ -6,7 +6,7 @@
 #include "usart.h"
 #include "tim.h"
 #include "fifo_hcl.h"
-#include "PCL/signal/signal_pcl.h"
+#include "signal/signal_pal.h"
 
 extern UART_HandleTypeDef* huart_terminal;
 extern UART_HandleTypeDef* huart_mc60;

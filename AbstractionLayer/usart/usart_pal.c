@@ -1,4 +1,4 @@
-#include "usart_pcl.h"
+#include "usart_pal.h"
 
 bool PCL_UART_ReadStringUntil(UART_HandleTypeDef *huart, char terminatedChar, char *destination) {
     static bool isFirstInit = true;

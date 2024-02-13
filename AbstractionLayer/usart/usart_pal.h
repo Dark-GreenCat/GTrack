@@ -3,7 +3,7 @@
 
 #include <stdbool.h>
 #include "stm32f0xx_hal.h"
-#include "HCL/usart/usart_hcl.h"
+#include "usart/usart_hcl.h"
 
 bool PCL_UART_ReadStringUntil(UART_HandleTypeDef* huart, char terminatedChar, char* destination);
 
