@@ -2,7 +2,6 @@
 #define __MC60_ITF_INTERFACE_H
 
 #include "mc60_mcu_interface.h"
-#include "../Core/Src/GTrack/PCL/driver/mc60/mc60_core/mc60_core_pcl.h"
 
 typedef struct {
     mc60_uart_interface_t* uart_interface;
@@ -19,7 +18,6 @@ static inline void MC60_ITF_Init(mc60_t* mc60, mc60_uart_interface_t* uart_inter
     mc60->gpio_vdd_ext_interface = gpio_vdd_ext_interface;
 
     MC60_GPIO_Reset(gpio_pwrkey_interface);
-    MC60_Init(uart_interface);
 }
 /* Đưa MC60_ITF_PWRKEY lên 1 trong 100ms -> MC_PWRKEY về 0 trong 1200ms */
 static inline void MC60_ITF_PowerOn(mc60_t* mc60) {
