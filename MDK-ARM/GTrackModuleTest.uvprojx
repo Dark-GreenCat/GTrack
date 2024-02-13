@@ -315,7 +315,7 @@
           </ArmAdsMisc>
           <Cads>
             <interw>1</interw>
-            <Optim>4</Optim>
+            <Optim>1</Optim>
             <oTime>0</oTime>
             <SplitLS>0</SplitLS>
             <OneElfS>1</OneElfS>
@@ -341,7 +341,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F030xC</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;../Drivers/STM32F0xx_HAL_Driver/Inc;../Drivers/STM32F0xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F0xx/Include;../Drivers/CMSIS/Include;..\Core\Src\GTrack;..\Core\Ultilities;..\Core\Src\Test;..\Drivers\Device_Driver\bma253_generic;..\HardwareLayer;..\AbstractionLayer;..\Components\Libraries;..\Components\Middlewares\NetworkLayer;..\Components\Middlewares\UserLayer</IncludePath>
+              <IncludePath>../Core/Inc;../Drivers/STM32F0xx_HAL_Driver/Inc;../Drivers/STM32F0xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F0xx/Include;../Drivers/CMSIS/Include;../Core/Src/GTrack;../Core/Ultilities;../Core/Src/Test;../Drivers/Device_Driver/bma253_generic;../HardwareLayer;../AbstractionLayer;../Components/Libraries;../Components/Middlewares/NetworkLayer;../Components/Middlewares/UserLayer;..\Drivers\Device_Driver\mc60_stm32</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>

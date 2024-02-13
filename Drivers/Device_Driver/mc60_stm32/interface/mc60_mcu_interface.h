@@ -81,6 +81,11 @@ static inline void MC60_GPIO_Reset(mc60_gpio_interface_t* mc60_gpio_interface) {
     HCL_GPIO_WritePin(mc60_gpio_interface, GPIO_PIN_SET);
 }
 
+
+static inline bool MC60_GPIO_Read(mc60_gpio_interface_t* mc60_gpio_interface) {
+    return (bool) HCL_GPIO_ReadPin(mc60_gpio_interface);
+}
+
 // static inline void MC60_Delay(uint32_t delay_ms) {}
 static inline void MC60_Delay(uint32_t delay_ms) {
     HAL_Delay(delay_ms);

@@ -2,4 +2,5 @@
 
 GPIO_HandleTypeDef hgpio_mc60_pwrkey;
 GPIO_HandleTypeDef hgpio_mc60_gnss_en;
-GPIO_HandleTypeDef hgpio_mc60_vbat;
+GPIO_HandleTypeDef hgpio_mc60_gsm_en;
+GPIO_HandleTypeDef hgpio_mc60_vdd_ext;

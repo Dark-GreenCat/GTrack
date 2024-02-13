@@ -85,7 +85,10 @@ void PCL_UART_OutBinary_16BIT(UART_HandleTypeDef* huart, uint16_t data) {
 
 
 void PCL_UART_FlushToUART_Char(UART_HandleTypeDef* huart_transmit, UART_HandleTypeDef* huart_receive) {
-    if (HCL_UART_IsAvailable(huart_transmit)) {
+	if (HCL_UART_IsAvailable(huart_transmit)) {
+		if(huart_transmit == huart_mc60) {
+			huart_transmit = huart_mc60;
+		}
         char data = HCL_UART_InChar(huart_transmit);
         HCL_UART_OutChar(huart_receive, data);
     }

@@ -27,22 +27,22 @@ typedef struct {
 
 void BMA253_HWI_Init(bma253_t* bma253);
 
-inline void BMA253_HWI_Read_Reg(bma253_t* bma253, u8 reg_addr, u8* p_data, u16 read_length) {
+static inline void BMA253_HWI_Read_Reg(bma253_t* bma253, u8 reg_addr, u8* p_data, u16 read_length) {
 	bma253->__read(bma253->i2c_interface, bma253->dev_addr, reg_addr, p_data, read_length);
 }
 
-inline void BMA253_HWI_Write_Reg(bma253_t* bma253, u8 reg_addr, u8* p_data, u16 write_length) {
+static inline void BMA253_HWI_Write_Reg(bma253_t* bma253, u8 reg_addr, u8* p_data, u16 write_length) {
     bma253->__write(bma253->i2c_interface, bma253->dev_addr, reg_addr, p_data, write_length);
 }
 
-inline u8 BMA253_HWI_get_bits(bma253_t* bma253, u8 reg_addr, u8 bits_pos, u8 bits_msk, u16 length) {
+static inline u8 BMA253_HWI_get_bits(bma253_t* bma253, u8 reg_addr, u8 bits_pos, u8 bits_msk, u16 length) {
 	u8 data_u8;
     BMA253_HWI_Read_Reg(bma253, reg_addr, &data_u8, length);
     data_u8 = ((data_u8 & bits_msk) >> bits_pos);
     return data_u8;
 }
 
-inline void BMA253_HWI_set_bits(bma253_t* bma253, u8 reg_addr, u8 bits_pos, u8 bits_msk, u8 val) {
+static inline void BMA253_HWI_set_bits(bma253_t* bma253, u8 reg_addr, u8 bits_pos, u8 bits_msk, u8 val) {
     u8 data_u8 = BMA253_INIT_VALUE;
     BMA253_HWI_Read_Reg(bma253, reg_addr, &data_u8, BMA253_GEN_READ_WRITE_LENGTH);
     data_u8 = (data_u8 & ~bits_msk) | ((val << bits_pos) & bits_msk);

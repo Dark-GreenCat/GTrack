@@ -29,8 +29,10 @@
 #include "signal/signal_pal.h"
 #include "timer/timer_hcl.h"
 #include "usart/usart_hcl.h"
-#include "PCL/driver/mc60/gnss/gnss_pcl.h"
+#include "interface/mc60_interface.h"
+// #include "PCL/driver/mc60/gnss/gnss_pcl.h"
 #include "BMA253/bma253_pal.h"
+#include "gpio/gpio_hcl.h"
 ////#include "test_bma253.h"
 /* USER CODE END Includes */
 
@@ -82,12 +84,14 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
+  HCL_GPIO_Init();
   HCL_UART_Init(huart_terminal, 64);
   HCL_UART_Init(huart_mc60, 512);
   HCL_TIMER_Init(&htim3);
 
-  MC60_Init(huart_mc60);
-
+  mc60_t mc60;
+  MC60_Init(&mc60, huart_mc60, &hgpio_mc60_pwrkey, &hgpio_mc60_vdd_ext);
+  HCL_GPIO_WritePin(&hgpio_mc60_gsm_en, GPIO_PIN_RESET);
   /* USER CODE END Init */
 
   /* Configure the system clock */
@@ -109,62 +113,46 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  PAL_BMA253_Init();
-  HCL_UART_StartReceive(huart_terminal);
-  bma253_accel_data_t accel_data;
-  uint8_t data_high_bw = 0;
-  uint8_t data = 4;
-  uint8_t data_high_bw_u8 = BMA253_FIFO_X_DATA_ENABLED;
-  uint8_t fifo[6];
-  
-  while(1) {
-    HAL_Delay(1000);
-    PCL_UART_OutString(huart_terminal, "\n\n----- GET DATA -----\n");
-    PAL_BMA253_Get_Accel_XYZ(&accel_data);
-    PCL_UART_OutString(huart_terminal, "\nx = ");
-    PCL_UART_OutNumber_Signed(huart_terminal, accel_data.x);
-    PCL_UART_OutString(huart_terminal, "\ny = ");
-    PCL_UART_OutNumber_Signed(huart_terminal, accel_data.y);
-    PCL_UART_OutString(huart_terminal, "\nz = ");
-    PCL_UART_OutNumber_Signed(huart_terminal, accel_data.z);
-    // HCL_BMA253_get_fifo_data_1frame(&pcl_bma253, fifo);
-    // for(int8_t i = 0; i < 3; i++) {
-    //   APP_UART_OutBinary_16BIT(huart_terminal, *(((uint16_t*) fifo) + i));
-    //   APP_UART_OutChar(huart_terminal, '\n');
-    // }
-    // HCL_BMA253_set_fifo_data_select(&pcl_bma253, data_high_bw);
-    // data_high_bw = data_high_bw == BMA253_FIFO_CONFIG_1_FIFO_DATA_SELECT_X? BMA253_FIFO_CONFIG_1_FIFO_DATA_SELECT_Z : BMA253_FIFO_CONFIG_1_FIFO_DATA_SELECT_X;
-  }
   HCL_UART_StartReceive(huart_terminal);
   HCL_UART_StartReceive(huart_mc60);
 
+  bool mc60_state = false;
+  PCL_UART_OutString(huart_terminal, "\nCheck MC60 Status: ");
+  mc60_state = HCL_GPIO_ReadPin(&hgpio_mc60_vdd_ext);
+  PCL_UART_OutNumber(huart_terminal, mc60_state);
+
   PCL_UART_OutString(huart_terminal, "\n-------- Power on MC60 --------\n");
-  MC60_PowerOn();
+  MC60_PowerOn(&mc60);
   PCL_UART_OutString(huart_terminal, "\n------ Check MC60 status ------");
   PCL_UART_OutString(huart_terminal, "\n\t>> Running command: AT\n");
-  MC60_ATCommand_Execute("AT");
+  //MC60_SendCmd(&mc60, "AT");
+  PCL_UART_OutString(huart_mc60, "AT+GMR\r\n");
   HAL_Delay(6000);
-  PCL_UART_FlushToUART_String(huart_mc60, huart_terminal);
+  PCL_UART_OutString(huart_terminal, "\nCheck MC60 Status: ");
+  mc60_state = HCL_GPIO_ReadPin(&hgpio_mc60_vdd_ext);
+  PCL_UART_OutNumber(huart_terminal, mc60_state);
+  
 
-  PCL_UART_OutString(huart_terminal, "\n-------- Power on GNSS --------\n");
-  MC60_GNSS_Power_On(1);
-  HAL_Delay(3000);
-  PCL_UART_FlushToUART_String(huart_mc60, huart_terminal);
+  // PCL_UART_OutString(huart_terminal, "\n-------- Power on GNSS --------\n");
+  // MC60_GNSS_Power_On(1);
+  // HAL_Delay(3000);
+  // PCL_UART_FlushToUART_String(huart_mc60, huart_terminal);
 
-  // HCL_TIMER_Start();
-  uint32_t pre = HAL_GetTick();
-  uint32_t cur = pre;
+  // // HCL_TIMER_Start();
+  // uint32_t pre = HAL_GetTick();
+  // uint32_t cur = pre;
   
   while (1) {
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-    cur = HAL_GetTick();
+    // cur = HAL_GetTick();
     PCL_UART_FlushToUART_Char(huart_terminal, huart_mc60);
-    if (cur - pre >= 5000) {
-      MC60_GNSS_Get_NavigationInfo();
-      pre = cur;
-    }
+    PCL_UART_FlushToUART_Char(huart_mc60, huart_terminal);
+    // if (cur - pre >= 5000) {
+    //   MC60_GNSS_Get_NavigationInfo();
+    //   pre = cur;
+    // }
   }
   /* USER CODE END 3 */
 }

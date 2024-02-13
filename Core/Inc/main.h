@@ -63,6 +63,8 @@ void Error_Handler(void);
 #define GNSS_EN_GPIO_Port GPIOB
 #define MC60_PWRKEY_Pin GPIO_PIN_14
 #define MC60_PWRKEY_GPIO_Port GPIOB
+#define MC60_VDD_EXT_Pin GPIO_PIN_15
+#define MC60_VDD_EXT_GPIO_Port GPIOB
 #define LED_GREEN_Pin GPIO_PIN_11
 #define LED_GREEN_GPIO_Port GPIOA
 #define LED_PWR_Pin GPIO_PIN_12
