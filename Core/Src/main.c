@@ -120,7 +120,7 @@ int main(void)
 
   bool mc60_state = false;
   PCL_UART_OutString(huart_terminal, "\nCheck MC60 Status: ");
-  mc60_state = MC60_ITF_IsReady(&mc60);
+  mc60_state = MC60_ITF_IsRunning(&mc60);
   PCL_UART_OutNumber(huart_terminal, mc60_state);
 
   PCL_UART_OutString(huart_terminal, "\n-------- Power on MC60 --------\n");
@@ -130,7 +130,7 @@ int main(void)
   MC60_ITF_SendCmd(&mc60, "AT");
   HAL_Delay(6000);
   PCL_UART_OutString(huart_terminal, "\nCheck MC60 Status: ");
-  mc60_state = MC60_ITF_IsReady(&mc60);
+  mc60_state = MC60_ITF_IsRunning(&mc60);
   PCL_UART_OutNumber(huart_terminal, mc60_state);
   
 
@@ -142,7 +142,8 @@ int main(void)
   // // HCL_TIMER_Start();
   uint32_t pre = HAL_GetTick();
   uint32_t cur = pre;
-  
+  int count = 1;
+  bool lastState = mc60_state;
   while (1) {
     /* USER CODE END WHILE */
 
@@ -154,6 +155,7 @@ int main(void)
       MC60_ITF_SendCmd(&mc60, "AT");
       // MC60_GNSS_Get_NavigationInfo();
       pre = cur;
+      count++;
     }
   }
   /* USER CODE END 3 */
