@@ -55,6 +55,25 @@ static inline bool MC60_UART_IsAvailable(mc60_uart_interface_t* mc60_uart_interf
     return HCL_UART_IsAvailable(mc60_uart_interface);
 }
 
+// static inline uint32_t MC60_MCU_Uptime() {}
+static inline uint32_t MC60_MCU_Uptime() {
+    return HAL_GetTick();
+}
+
+// static inline char MC60_UART_ReceiveChar(mc60_uart_interface_t* mc60_uart_interface, uint32_t timeout) {}
+static inline char MC60_UART_ReceiveChar(mc60_uart_interface_t* mc60_uart_interface, uint32_t timeout) {
+    uint32_t lastReceived = HAL_GetTick();
+    char c = 0;
+    while (lastReceived + timeout > HAL_GetTick()) {
+        if(HCL_UART_IsAvailable(mc60_uart_interface)) {
+            c = HCL_UART_InChar(mc60_uart_interface);
+            break;
+        }
+    }
+
+    return c;
+}
+
 // static inline void MC60_UART_Receive(mc60_uart_interface_t* mc60_uart_interface, char* response, uint16_t maxLength, uint32_t timeout) {}
 static inline void MC60_UART_Receive(mc60_uart_interface_t* mc60_uart_interface, char* response, uint16_t max_length, uint32_t timeout) {
     uint32_t lastReceived = HAL_GetTick();
@@ -73,12 +92,18 @@ static inline void MC60_UART_Receive(mc60_uart_interface_t* mc60_uart_interface,
 // Please IMPLEMENT your own gpio interface function
 // static inline void MC60_GPIO_Set(mc60_gpio_interface_t* mc60_gpio_interface) {}
 static inline void MC60_GPIO_Set(mc60_gpio_interface_t* mc60_gpio_interface) {
-    HCL_GPIO_WritePin(mc60_gpio_interface, GPIO_PIN_RESET);
+    if(mc60_gpio_interface == &hgpio_mc60_gnss_en)
+        HCL_GPIO_WritePin(mc60_gpio_interface, GPIO_PIN_SET);
+    else
+        HCL_GPIO_WritePin(mc60_gpio_interface, GPIO_PIN_RESET);
 }
 
 // static inline void MC60_GPIO_Reset(mc60_gpio_interface_t* mc60_gpio_interface) {}
 static inline void MC60_GPIO_Reset(mc60_gpio_interface_t* mc60_gpio_interface) {
-    HCL_GPIO_WritePin(mc60_gpio_interface, GPIO_PIN_SET);
+    if(mc60_gpio_interface == &hgpio_mc60_gnss_en)
+        HCL_GPIO_WritePin(mc60_gpio_interface, GPIO_PIN_RESET);
+    else
+        HCL_GPIO_WritePin(mc60_gpio_interface, GPIO_PIN_SET);
 }
 
 // static inline bool MC60_GPIO_Read(mc60_gpio_interface_t* mc60_gpio_interface) {}

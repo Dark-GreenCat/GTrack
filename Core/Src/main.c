@@ -25,12 +25,15 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include <stdio.h>
+
 #include "string_util.h"
 #include "signal/signal_pal.h"
 #include "timer/timer_hcl.h"
 #include "usart/usart_hcl.h"
 #include "interface/mc60_interface.h"
 #include "PCL/driver/mc60/gnss/gnss_pcl.h"
+#include "gnss/mc60_gnss_data_retrieval.h"
 #include "BMA253/bma253_pal.h"
 #include "gpio/gpio_hcl.h"
 ////#include "test_bma253.h"
@@ -107,7 +110,7 @@ int main(void)
   HCL_TIMER_Init(&htim3);
 
   mc60_t mc60;
-  MC60_ITF_Init(&mc60, huart_mc60, &hgpio_mc60_pwrkey, &hgpio_mc60_vdd_ext);
+  MC60_ITF_Init(&mc60, huart_mc60, &hgpio_mc60_pwrkey, &hgpio_mc60_gnss_en, &hgpio_mc60_vdd_ext);
   HCL_GPIO_WritePin(&hgpio_mc60_gsm_en, GPIO_PIN_RESET);
   //test_main_bma253();
   /* USER CODE END 2 */
@@ -134,16 +137,17 @@ int main(void)
   PCL_UART_OutNumber(huart_terminal, mc60_state);
   
 
-  // PCL_UART_OutString(huart_terminal, "\n-------- Power on GNSS --------\n");
-  // MC60_GNSS_Power_On(1);
-  // HAL_Delay(3000);
-  // PCL_UART_FlushToUART_String(huart_mc60, huart_terminal);
+ PCL_UART_OutString(huart_terminal, "\n-------- Power on GNSS --------\n");
+ MC60_ITF_GNSS_PowerOn(&mc60);
+ HAL_Delay(3000);
+ PCL_UART_FlushToUART_String(huart_mc60, huart_terminal);
 
   // // HCL_TIMER_Start();
   uint32_t pre = HAL_GetTick();
   uint32_t cur = pre;
-  int count = 1;
-  bool lastState = mc60_state;
+//  bool lastState = mc60_state;
+  char buffer[256];
+  nmea_data GPSData;
   while (1) {
     /* USER CODE END WHILE */
 
@@ -151,11 +155,25 @@ int main(void)
     cur = HAL_GetTick();
     PCL_UART_FlushToUART_Char(huart_terminal, huart_mc60);
     PCL_UART_FlushToUART_Char(huart_mc60, huart_terminal);
-    if (cur - pre >= 2000) {
-      MC60_ITF_SendCmd(&mc60, "AT");
-      // MC60_GNSS_Get_NavigationInfo();
+    if (cur - pre >= 5000) {
+      PCL_UART_OutString(huart_terminal, "\nConnecting GNSS...\n");
+      if (MC60_GNSS_Get_Navigation_Info(&mc60, &GPSData, 3000)) {
+        NMEA_Parser_changeTimezone(&GPSData, 7);
+        char temp[30];
+        sprintf(buffer, "\n----- CAPTURING GNSS DATA -----\n");
+        sprintf(buffer + strlen(buffer), "Time: %02d:%02d:%02d\n", GPSData.Time.hours, GPSData.Time.minutes, GPSData.Time.seconds);
+        sprintf(buffer + strlen(buffer), "Date: %02d/%02d/%04d\n", GPSData.Date.day, GPSData.Date.month, 2000 + GPSData.Date.year);
+        sprintf(buffer + strlen(buffer), "Latitude: %s\n", NMEA_Parser_nmeafloattostr(GPSData.Location.latitude, temp));
+        sprintf(buffer + strlen(buffer), "Longitude: %s\n", NMEA_Parser_nmeafloattostr(GPSData.Location.longitude, temp));
+        sprintf(buffer + strlen(buffer), "Speed: %s knots\n", NMEA_Parser_nmeafloattostr(GPSData.Speed.speed_knot, temp));
+        sprintf(buffer + strlen(buffer), "Course: %s degrees\n", NMEA_Parser_nmeafloattostr(GPSData.Course.course_degree, temp));
+        sprintf(buffer + strlen(buffer), "HDOP: %s\n", NMEA_Parser_nmeafloattostr(GPSData.HDOP.hdop, temp));
+        sprintf(buffer + strlen(buffer), "Altitude: %s m\n", NMEA_Parser_nmeafloattostr(GPSData.Altitude.altitude_meter, temp));
+        sprintf(buffer + strlen(buffer), "\n");
+
+        PCL_UART_OutString(huart_terminal, buffer);
+      }
       pre = cur;
-      count++;
     }
   }
   /* USER CODE END 3 */

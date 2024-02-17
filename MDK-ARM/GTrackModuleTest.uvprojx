@@ -565,6 +565,26 @@
               <FileType>1</FileType>
               <FilePath>..\HardwareLayer\gpio\gpio_hcl.c</FilePath>
             </File>
+            <File>
+              <FileName>nmea_utility.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\Device_Driver\mc60_stm32\gnss\parser\NMEAParser-0.1.2\src\nmea_utility.c</FilePath>
+            </File>
+            <File>
+              <FileName>nmea_converter.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\Device_Driver\mc60_stm32\gnss\parser\NMEAParser-0.1.2\src\core\nmea_converter.c</FilePath>
+            </File>
+            <File>
+              <FileName>nmea_data.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\Device_Driver\mc60_stm32\gnss\parser\NMEAParser-0.1.2\src\core\nmea_data.c</FilePath>
+            </File>
+            <File>
+              <FileName>nmea_decoder.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\Device_Driver\mc60_stm32\gnss\parser\NMEAParser-0.1.2\src\core\nmea_decoder.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

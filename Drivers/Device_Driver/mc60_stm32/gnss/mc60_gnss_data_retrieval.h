@@ -3,6 +3,8 @@
 
 #include "../interface/mc60_interface.h"
 
+#include "parser/NMEAParser-0.1.2/nmea_parser.h"
+
 #define NMEA_RMC_PARAM "NMEA/RMC"
 #define NMEA_VTG_PARAM "NMEA/VTG"
 #define NMEA_GGA_PARAM "NMEA/GGA"
@@ -19,8 +21,25 @@ enum NMEASentenceType {
     NMEA_GLL = (1 << 5)
 };
 
-static inline void MC60_GNSS_Get_NMEA_Sentence(mc60_t* mc60, NMEASentenceType nmea_type, char* sentence) {
-    
+static inline bool MC60_GNSS_Get_Navigation_Info(mc60_t* mc60, nmea_data* gnss_data, uint32_t timeout) {
+    MC60_ITF_SendCmd(mc60, "AT+QGNSSRD?");
+    bool isSuccess = false;
+
+    uint8_t numberOfLineNeedProcess = 2;
+    uint32_t last = MC60_MCU_Uptime();
+
+    uint16_t current_index = 0;
+    while (last + timeout > MC60_MCU_Uptime()) {
+        char c = MC60_ITF_ReceiveChar(mc60, timeout);
+        if (c == 0) continue;
+        last = MC60_MCU_Uptime();
+
+        if (isSuccess && MC60_ITF_DetectResponse(c, MC60_RESPONSE_OK_STRING, MC60_RESPONSE_OK_LENGTH, &current_index)) break;
+        if (!(NMEA_Parser_Process(gnss_data, c))) continue;
+        isSuccess = (--numberOfLineNeedProcess == 0);
+    }
+
+    return isSuccess;
 }
 
 #endif
