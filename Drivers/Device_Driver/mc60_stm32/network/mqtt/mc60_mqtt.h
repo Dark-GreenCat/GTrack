@@ -25,5 +25,6 @@ typedef enum {
 
 int8_t MC60_MQTT_Open(mc60_t* mc60, uint8_t tcp_connect_id, const char* host_name, uint16_t port, uint32_t timeout);
 int8_t MC60_MQTT_Connect(mc60_t* mc60, mc60_mqtt_tcp_id tcp_connect_id, const char* client_id, const char* user_name, const char* password, uint32_t timeout);
+int8_t MC60_MQTT_Disconnect(mc60_t* mc60, mc60_mqtt_tcp_id tcp_connect_id, uint32_t timeout);
 
 #endif

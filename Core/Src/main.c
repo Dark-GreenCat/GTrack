@@ -174,12 +174,22 @@ int main(void)
 
       if(!isMQTTConnect) {
         int8_t result = MC60_MQTT_Connect(&mc60, MC60_MQTT_TCP_CONNECT_ID_0, "demo.thingsboard.io", "3QcnES9LsYKtGIIXxNXU", "", 3000); 
-        PAL_UART_OutString(huart_terminal, "\n*** Connecting MQTT broker... ");
+        PAL_UART_OutString(huart_terminal, "\n*** Connecting to MQTT broker... ");
         PAL_UART_OutString(huart_terminal, "\nStatus code: ");
         PAL_UART_OutNumber_Signed(huart_terminal, result);
         if(result == 0 || result == 1) {
           isMQTTConnect = true;
           PAL_UART_OutString(huart_terminal, "\nMQTT broker connected!\n");
+        }
+      }
+      else {
+        int8_t result = MC60_MQTT_Disconnect(&mc60, MC60_MQTT_TCP_CONNECT_ID_0, 3000);
+        PAL_UART_OutString(huart_terminal, "\n*** Disconnecting from MQTT broker... ");
+        PAL_UART_OutString(huart_terminal, "\nStatus code: ");
+        PAL_UART_OutNumber_Signed(huart_terminal, result);
+        if(result == 0) {
+          isMQTTOpen = isMQTTConnect = false;
+          PAL_UART_OutString(huart_terminal, "\nMQTT broker disconnected!\n");
         }
       }
       

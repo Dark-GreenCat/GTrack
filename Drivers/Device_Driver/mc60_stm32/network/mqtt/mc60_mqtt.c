@@ -74,3 +74,40 @@ int8_t MC60_MQTT_Connect(mc60_t* mc60, mc60_mqtt_tcp_id tcp_connect_id, const ch
 
     return ret;
 }
+
+int8_t MC60_MQTT_Disconnect(mc60_t* mc60, mc60_mqtt_tcp_id tcp_connect_id, uint32_t timeout) {
+    int8_t ret = -1;
+    
+    char temp[2];
+    sprintf(temp, "%d", tcp_connect_id);
+    MC60_ITF_SendCmdWithParam(mc60, "AT+QMTDISC", temp);
+    MC60_ITF_WaitForResponse(mc60, "\r\n", 2, timeout);
+
+    mc60_result_process_t process;
+    MC60_ITF_UTIL_ResultProcess_Init(temp, &process);
+    uint32_t last = MC60_MCU_Uptime();
+    while (last + timeout > MC60_MCU_Uptime()) {
+        char c = MC60_ITF_ReceiveChar(mc60, timeout);
+        if (c == 0) continue;
+
+        last = MC60_MCU_Uptime();
+        if (!MC60_ITF_UTIL_GetResult(&process, c)) continue;
+
+        switch (process.termCount) {
+            case 1:
+                if (strcmp(temp, "+QMTDISC") != 0) {
+                    MC60_ITF_UTIL_ResultProcess_Init(temp, &process);
+                    continue;
+                }
+                break;
+
+            case 3:
+                ret = (int8_t) MC60_ITF_UTIL_ResultToNum(temp);
+
+            default:
+                break;
+        }
+    }
+
+    return ret;
+}
