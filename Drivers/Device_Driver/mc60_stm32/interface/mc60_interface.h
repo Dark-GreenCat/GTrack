@@ -4,6 +4,7 @@
 #include "mc60_mcu_interface.h"
 #include "utils/mc60_util.h"
 
+#define MC60_AT_COMMAND_MAX_SIZE            256
 #define MC60_RESPONSE_OK_STRING "OK\r\n"
 #define MC60_RESPONSE_OK_LENGTH 4
 
@@ -60,6 +61,10 @@ static inline void MC60_ITF_PowerOff(mc60_t* mc60) {
     MC60_GPIO_Set(mc60->gpio_pwrkey_interface);
 }
 
+static inline void MC60_ITF_Send(mc60_t* mc60, const char* str) {
+    MC60_UART_Send(mc60->uart_interface, str);
+}
+
 static inline void MC60_ITF_SendCmd(mc60_t* mc60, const char* cmd) {
     MC60_UART_Send(mc60->uart_interface, cmd);
     MC60_UART_Send(mc60->uart_interface, "\r\n");
@@ -93,6 +98,21 @@ static inline bool MC60_ITF_DetectResponse(char c, const char* target, int targe
         *current_index = 0;
     }
     
+    return false;
+}
+
+static inline bool MC60_ITF_WaitForResponse(mc60_t* mc60, const char* response, uint32_t response_length, uint32_t timeout) {
+    uint32_t last = MC60_MCU_Uptime();
+    
+	uint16_t current_index = 0; 
+    while (last + timeout > MC60_MCU_Uptime()) {
+        char c = MC60_ITF_ReceiveChar(mc60, timeout);
+        if (c == 0) continue;
+
+        last = MC60_MCU_Uptime();
+        if(!MC60_ITF_DetectResponse(c, "\r\n", 2, &current_index)) return true;
+    }
+
     return false;
 }
 

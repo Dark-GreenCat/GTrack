@@ -585,6 +585,16 @@
               <FileType>1</FileType>
               <FilePath>..\Drivers\Device_Driver\mc60_stm32\gnss\parser\NMEAParser-0.1.2\src\core\nmea_decoder.c</FilePath>
             </File>
+            <File>
+              <FileName>mc60_util.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\Device_Driver\mc60_stm32\interface\utils\mc60_util.c</FilePath>
+            </File>
+            <File>
+              <FileName>mc60_mqtt.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\Device_Driver\mc60_stm32\network\mqtt\mc60_mqtt.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

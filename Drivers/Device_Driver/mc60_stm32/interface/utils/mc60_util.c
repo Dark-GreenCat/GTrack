@@ -3,6 +3,8 @@
 
 void MC60_ITF_UTIL_ResultProcess_Init(char* result, mc60_result_process_t* mc60_result_process) {
     mc60_result_process->result = result;
+
+    mc60_result_process->termCount = 0;
     mc60_result_process->curTermIndex = 0;
     mc60_result_process->isResponse = false;
     mc60_result_process->isCommandTerm = false;
@@ -51,6 +53,7 @@ bool MC60_ITF_UTIL_GetResult(mc60_result_process_t* process, char c) {
         case ':':
             process->result[process->curTermIndex] = '\0';
             process->curTermIndex = 0;
+            process->termCount++;
             process->isCommandTerm = false;
             return true;
 

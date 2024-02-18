@@ -60,7 +60,7 @@ static inline uint32_t MC60_MCU_Uptime() {
     return HAL_GetTick();
 }
 
-// static inline char MC60_UART_ReceiveChar(mc60_uart_interface_t* mc60_uart_interface, uint32_t timeout) {}
+// static inline char MC60_UART_ReceiveChar(mc60_uart_interface_t* mc60_uart_interface, uint32_t timeout) { return 0; }
 static inline char MC60_UART_ReceiveChar(mc60_uart_interface_t* mc60_uart_interface, uint32_t timeout) {
     uint32_t lastReceived = HAL_GetTick();
     char c = 0;

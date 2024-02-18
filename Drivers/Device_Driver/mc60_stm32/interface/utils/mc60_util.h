@@ -6,6 +6,8 @@
 
 typedef struct {
     char* result;
+
+    uint8_t termCount;
     uint32_t curTermIndex;
     bool isResponse, isCommandTerm;
 } mc60_result_process_t;
