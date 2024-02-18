@@ -107,7 +107,7 @@ int main(void)
   HCL_GPIO_Init();
   HCL_UART_Init(huart_terminal, 64);
   HCL_UART_Init(huart_mc60, 512);
-  HCL_TIMER_Init(&htim3);
+  //HCL_TIMER_Init(&htim3);
 
   mc60_t mc60;
   MC60_ITF_Init(&mc60, huart_mc60, &hgpio_mc60_pwrkey, &hgpio_mc60_gnss_en, &hgpio_mc60_vdd_ext);
