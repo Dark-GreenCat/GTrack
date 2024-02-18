@@ -440,6 +440,13 @@
         </Group>
         <Group>
           <GroupName>Peripheral/Devices/MC60</GroupName>
+          <Files>
+            <File>
+              <FileName>mc60_pal.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Components\Libraries\mc60\mc60_pal.c</FilePath>
+            </File>
+          </Files>
         </Group>
         <Group>
           <GroupName>Peripheral/Devices/BMA253</GroupName>
@@ -447,7 +454,7 @@
             <File>
               <FileName>bma253_pal.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Components\Libraries\BMA253\bma253_pal.c</FilePath>
+              <FilePath>..\Components\Libraries\bma253\bma253_pal.c</FilePath>
             </File>
           </Files>
         </Group>
