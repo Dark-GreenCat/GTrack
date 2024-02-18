@@ -32,7 +32,6 @@
 #include "timer/timer_hcl.h"
 #include "usart/usart_hcl.h"
 #include "interface/mc60_interface.h"
-#include "PCL/driver/mc60/gnss/gnss_pcl.h"
 #include "gnss/mc60_gnss.h"
 #include "BMA253/bma253_pal.h"
 #include "gpio/gpio_hcl.h"
@@ -122,25 +121,25 @@ int main(void)
 
 
   bool mc60_state = false;
-  PCL_UART_OutString(huart_terminal, "\nCheck MC60 Status: ");
+  PAL_UART_OutString(huart_terminal, "\nCheck MC60 Status: ");
   mc60_state = MC60_ITF_IsRunning(&mc60);
-  PCL_UART_OutNumber(huart_terminal, mc60_state);
+  PAL_UART_OutNumber(huart_terminal, mc60_state);
 
-  PCL_UART_OutString(huart_terminal, "\n-------- Power on MC60 --------\n");
+  PAL_UART_OutString(huart_terminal, "\n-------- Power on MC60 --------\n");
   MC60_ITF_PowerOn(&mc60);
-  PCL_UART_OutString(huart_terminal, "\n------ Check MC60 status ------");
-  PCL_UART_OutString(huart_terminal, "\n\t>> Running command: AT\n");
+  PAL_UART_OutString(huart_terminal, "\n------ Check MC60 status ------");
+  PAL_UART_OutString(huart_terminal, "\n\t>> Running command: AT\n");
   MC60_ITF_SendCmd(&mc60, "AT");
   HAL_Delay(6000);
-  PCL_UART_OutString(huart_terminal, "\nCheck MC60 Status: ");
+  PAL_UART_OutString(huart_terminal, "\nCheck MC60 Status: ");
   mc60_state = MC60_ITF_IsRunning(&mc60);
-  PCL_UART_OutNumber(huart_terminal, mc60_state);
+  PAL_UART_OutNumber(huart_terminal, mc60_state);
   
 
- PCL_UART_OutString(huart_terminal, "\n-------- Power on GNSS --------\n");
+ PAL_UART_OutString(huart_terminal, "\n-------- Power on GNSS --------\n");
  MC60_ITF_GNSS_PowerOn(&mc60);
  HAL_Delay(3000);
- PCL_UART_FlushToUART_String(huart_mc60, huart_terminal);
+ PAL_UART_FlushToUART_String(huart_mc60, huart_terminal);
 
   // // HCL_TIMER_Start();
   uint32_t pre = HAL_GetTick();
@@ -153,10 +152,10 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
     cur = HAL_GetTick();
-    PCL_UART_FlushToUART_Char(huart_terminal, huart_mc60);
-    PCL_UART_FlushToUART_Char(huart_mc60, huart_terminal);
+    PAL_UART_FlushToUART_Char(huart_terminal, huart_mc60);
+    PAL_UART_FlushToUART_Char(huart_mc60, huart_terminal);
     if (cur - pre >= 5000) {
-      PCL_UART_OutString(huart_terminal, "\nConnecting GNSS...\n");
+      PAL_UART_OutString(huart_terminal, "\nConnecting GNSS...\n");
       if (MC60_GNSS_Get_Navigation_Info(&mc60, &GPSData, 3000)) {
         NMEA_Parser_changeTimezone(&GPSData, 7);
         char temp[30];
@@ -171,7 +170,7 @@ int main(void)
         sprintf(buffer + strlen(buffer), "Altitude: %s m\n", NMEA_Parser_nmeafloattostr(GPSData.Altitude.altitude_meter, temp));
         sprintf(buffer + strlen(buffer), "\n");
 
-        PCL_UART_OutString(huart_terminal, buffer);
+        PAL_UART_OutString(huart_terminal, buffer);
       }
       pre = cur;
     }

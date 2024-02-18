@@ -1,6 +1,6 @@
 #include "usart_pal.h"
 
-bool PCL_UART_ReadStringUntil(UART_HandleTypeDef *huart, char terminatedChar, char *destination) {
+bool PAL_UART_ReadStringUntil(UART_HandleTypeDef *huart, char terminatedChar, char *destination) {
     static bool isFirstInit = true;
     static char* p_Destination = NULL;
     
@@ -24,12 +24,12 @@ bool PCL_UART_ReadStringUntil(UART_HandleTypeDef *huart, char terminatedChar, ch
     return isDone;
 }
 
-void PCL_UART_OutString(UART_HandleTypeDef* huart, const char* str) {
+void PAL_UART_OutString(UART_HandleTypeDef* huart, const char* str) {
     while (*str != '\0')
         HCL_UART_OutChar(huart, (uint8_t)*str++);
 }
 
-void PCL_UART_OutNumber(UART_HandleTypeDef* huart, uint32_t number) {
+void PAL_UART_OutNumber(UART_HandleTypeDef* huart, uint32_t number) {
     if(number == 0) {
         HCL_UART_OutChar(huart, '0');
         return;
@@ -45,7 +45,7 @@ void PCL_UART_OutNumber(UART_HandleTypeDef* huart, uint32_t number) {
     while(index--) HCL_UART_OutChar(huart, number_str[index]);
 }
 
-void PCL_UART_OutNumber_Signed(UART_HandleTypeDef* huart, int32_t number) {
+void PAL_UART_OutNumber_Signed(UART_HandleTypeDef* huart, int32_t number) {
     if(number == 0) {
 		HCL_UART_OutChar(huart, '0');
 		return;
@@ -65,7 +65,7 @@ void PCL_UART_OutNumber_Signed(UART_HandleTypeDef* huart, int32_t number) {
 	while(index--) HCL_UART_OutChar(huart, number_str[index]);
 }
 
-void PCL_UART_OutBinary_8BIT(UART_HandleTypeDef* huart, uint8_t data) {
+void PAL_UART_OutBinary_8BIT(UART_HandleTypeDef* huart, uint8_t data) {
     uint8_t bit;
 	uint8_t i = 8;
     while(i--) {
@@ -74,7 +74,7 @@ void PCL_UART_OutBinary_8BIT(UART_HandleTypeDef* huart, uint8_t data) {
     }
 }
 
-void PCL_UART_OutBinary_16BIT(UART_HandleTypeDef* huart, uint16_t data) {
+void PAL_UART_OutBinary_16BIT(UART_HandleTypeDef* huart, uint16_t data) {
     uint8_t bit;
 	uint8_t i = 16;
     while(i--) {
@@ -84,7 +84,7 @@ void PCL_UART_OutBinary_16BIT(UART_HandleTypeDef* huart, uint16_t data) {
 }
 
 
-void PCL_UART_FlushToUART_Char(UART_HandleTypeDef* huart_transmit, UART_HandleTypeDef* huart_receive) {
+void PAL_UART_FlushToUART_Char(UART_HandleTypeDef* huart_transmit, UART_HandleTypeDef* huart_receive) {
 	if (HCL_UART_IsAvailable(huart_transmit)) {
 		if(huart_transmit == huart_mc60) {
 			huart_transmit = huart_mc60;
@@ -94,9 +94,9 @@ void PCL_UART_FlushToUART_Char(UART_HandleTypeDef* huart_transmit, UART_HandleTy
     }
 }
 
-void PCL_UART_FlushToUART_String(UART_HandleTypeDef* huart_transmit, UART_HandleTypeDef* huart_receive) {
+void PAL_UART_FlushToUART_String(UART_HandleTypeDef* huart_transmit, UART_HandleTypeDef* huart_receive) {
     while (HCL_UART_IsAvailable(huart_transmit)) {
-        PCL_UART_FlushToUART_Char(huart_transmit, huart_receive);
+        PAL_UART_FlushToUART_Char(huart_transmit, huart_receive);
     }
 }
 

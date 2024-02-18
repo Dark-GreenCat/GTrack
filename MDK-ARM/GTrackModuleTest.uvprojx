@@ -591,16 +591,6 @@
           <GroupName>Layers/PCL</GroupName>
           <Files>
             <File>
-              <FileName>mc60_core_pcl.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Core\Src\GTrack\PCL\driver\mc60\mc60_core\mc60_core_pcl.c</FilePath>
-            </File>
-            <File>
-              <FileName>gnss_pcl.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Core\Src\GTrack\PCL\driver\mc60\gnss\gnss_pcl.c</FilePath>
-            </File>
-            <File>
               <FileName>bma253_driver.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Drivers\Device_Driver\bma253_generic\bma253_driver.c</FilePath>

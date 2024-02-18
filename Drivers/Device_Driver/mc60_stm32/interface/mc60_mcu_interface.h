@@ -46,7 +46,7 @@ typedef GPIO_HandleTypeDef mc60_gpio_interface_t;
 // Please IMPLEMENT your own uart interface function
 // static inline void MC60_UART_Send(mc60_uart_interface_t* mc60_uart_interface, char* cmd) {}
 static inline void MC60_UART_Send(mc60_uart_interface_t* mc60_uart_interface, const char* content) {
-    PCL_UART_OutString(mc60_uart_interface, content);
+    PAL_UART_OutString(mc60_uart_interface, content);
 }
 
 // static inline bool MC60_UART_IsAvailable(mc60_uart_interface_t* mc60_uart_interface) {}
