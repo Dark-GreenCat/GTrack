@@ -2,6 +2,7 @@
 #define __MC60_ITF_INTERFACE_H
 
 #include "mc60_mcu_interface.h"
+#include "utils/mc60_util.h"
 
 #define MC60_RESPONSE_OK_STRING "OK\r\n"
 #define MC60_RESPONSE_OK_LENGTH 4

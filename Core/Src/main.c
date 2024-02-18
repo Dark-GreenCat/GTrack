@@ -33,7 +33,7 @@
 #include "usart/usart_hcl.h"
 #include "interface/mc60_interface.h"
 #include "PCL/driver/mc60/gnss/gnss_pcl.h"
-#include "gnss/mc60_gnss_data_retrieval.h"
+#include "gnss/mc60_gnss.h"
 #include "BMA253/bma253_pal.h"
 #include "gpio/gpio_hcl.h"
 ////#include "test_bma253.h"
