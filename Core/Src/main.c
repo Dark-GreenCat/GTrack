@@ -162,39 +162,68 @@ int main(void)
     if (cur - pre >= 5000) {
       if (!isMQTTOpen) {
         isMQTTConnect = false;
-        int8_t result = MC60_MQTT_Open(&mc60, MC60_MQTT_TCP_CONNECT_ID_0, "demo.thingsboard.io", 1883, 3000);
         PAL_UART_OutString(huart_terminal, "\n*** Opening MQTT connection... ");
+        int8_t result = MC60_MQTT_Open(&mc60, MC60_MQTT_TCP_CONNECT_ID_4, "demo.thingsboard.io", 1883, 3000);
         PAL_UART_OutString(huart_terminal, "\nStatus code: ");
         PAL_UART_OutNumber_Signed(huart_terminal, result);
         if (result == 0 || result == 2) {
           isMQTTOpen = true;
           PAL_UART_OutString(huart_terminal, "\nMQTT connection openned!\n");
         }
+        else {
+          isMQTTConnect = false;
+          continue;
+        }
       }
 
-      if(!isMQTTConnect) {
-        int8_t result = MC60_MQTT_Connect(&mc60, MC60_MQTT_TCP_CONNECT_ID_0, "demo.thingsboard.io", "3QcnES9LsYKtGIIXxNXU", "", 3000); 
+      if (!isMQTTConnect) {
         PAL_UART_OutString(huart_terminal, "\n*** Connecting to MQTT broker... ");
+        int8_t result = MC60_MQTT_Connect(&mc60, MC60_MQTT_TCP_CONNECT_ID_4, "demo.thingsboard.io", "3QcnES9LsYKtGIIXxNXU", "", 3000);
         PAL_UART_OutString(huart_terminal, "\nStatus code: ");
         PAL_UART_OutNumber_Signed(huart_terminal, result);
-        if(result == 0 || result == 1) {
+        if (result == 0 || result == 1) {
           isMQTTConnect = true;
           PAL_UART_OutString(huart_terminal, "\nMQTT broker connected!\n");
         }
-      }
-      else {
-        int8_t result = MC60_MQTT_Disconnect(&mc60, MC60_MQTT_TCP_CONNECT_ID_0, 3000);
-        PAL_UART_OutString(huart_terminal, "\n*** Disconnecting from MQTT broker... ");
+        else {
+          PAL_UART_OutString(huart_terminal, "\nCannot connect to MQTT broker!\n");
+			          PAL_UART_OutString(huart_terminal, "\n*** Disconnecting from MQTT broker... ");
+          int8_t result = MC60_MQTT_Disconnect(&mc60, MC60_MQTT_TCP_CONNECT_ID_4, 3000);
+          PAL_UART_OutString(huart_terminal, "\nStatus code: ");
+          PAL_UART_OutNumber_Signed(huart_terminal, result);
+          if (result == 0) {
+            isMQTTOpen = isMQTTConnect = false;
+            PAL_UART_OutString(huart_terminal, "\nMQTT broker disconnected!\n");
+          }
+          isMQTTOpen = false;
+          continue;
+        }
+
+        HAL_Delay(3000);
+        PAL_UART_OutString(huart_terminal, "Publishing: \"{lat:18.123456,long:13.472425}\"");
+        result = MC60_MQTT_Publish(&mc60, MC60_MQTT_TCP_CONNECT_ID_4, 0, 0, 0, "v1/devices/me/telemetry", "{lat:18.123456,long:13.472425}", 30, 10000);
         PAL_UART_OutString(huart_terminal, "\nStatus code: ");
         PAL_UART_OutNumber_Signed(huart_terminal, result);
-        if(result == 0) {
-          isMQTTOpen = isMQTTConnect = false;
-          PAL_UART_OutString(huart_terminal, "\nMQTT broker disconnected!\n");
+        if (result == 0) {
+          PAL_UART_OutString(huart_terminal, "\nPublished!\n");
+
+          PAL_UART_OutString(huart_terminal, "\n*** Disconnecting from MQTT broker... ");
+          int8_t result = MC60_MQTT_Disconnect(&mc60, MC60_MQTT_TCP_CONNECT_ID_4, 3000);
+          PAL_UART_OutString(huart_terminal, "\nStatus code: ");
+          PAL_UART_OutNumber_Signed(huart_terminal, result);
+          if (result == 0) {
+            isMQTTOpen = isMQTTConnect = false;
+            PAL_UART_OutString(huart_terminal, "\nMQTT broker disconnected!\n");
+          }
+        }
+        else {
+          PAL_UART_OutString(huart_terminal, "\nPublish failed!\n");
+          isMQTTOpen = false;
         }
       }
       
       // if (result == 0 || result == 2) {
-      //   MC60_MQTT_Connect(mc60, MC60_MQTT_TCP_CONNECT_ID_0, )
+      //   MC60_MQTT_Connect(mc60, MC60_MQTT_TCP_CONNECT_ID_4, )
       // }
       // PAL_UART_OutString(huart_terminal, "\nConnecting GNSS...\n");
       // if (MC60_GNSS_Get_Navigation_Info(&mc60, &GPSData, 3000)) {

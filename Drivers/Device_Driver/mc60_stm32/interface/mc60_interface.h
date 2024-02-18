@@ -85,7 +85,7 @@ static inline void MC60_ITF_ReceiveResponse(mc60_t* mc60, char *res, uint16_t ma
     MC60_UART_Receive(mc60->uart_interface, res, max_length, timeout);
 }
 
-static inline bool MC60_ITF_DetectResponse(char c, const char* target, int target_length, uint16_t* current_index) {
+static inline bool MC60_ITF_DetectResponse(char c, const char* target, uint32_t target_length, uint32_t* current_index) {
     if (c == target[*current_index]) {
         (*current_index)++;
         if (*current_index == target_length) {
@@ -104,13 +104,13 @@ static inline bool MC60_ITF_DetectResponse(char c, const char* target, int targe
 static inline bool MC60_ITF_WaitForResponse(mc60_t* mc60, const char* response, uint32_t response_length, uint32_t timeout) {
     uint32_t last = MC60_MCU_Uptime();
     
-	uint16_t current_index = 0; 
-    while (last + timeout > MC60_MCU_Uptime()) {
+	uint32_t current_index = 0; 
+    while (MC60_MCU_Uptime() - last < timeout) {
         char c = MC60_ITF_ReceiveChar(mc60, timeout);
         if (c == 0) continue;
-
+        
         last = MC60_MCU_Uptime();
-        if(!MC60_ITF_DetectResponse(c, "\r\n", 2, &current_index)) return true;
+        if(MC60_ITF_DetectResponse(c, response, response_length, &current_index)) return true;
     }
 
     return false;

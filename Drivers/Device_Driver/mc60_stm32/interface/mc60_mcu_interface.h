@@ -64,7 +64,7 @@ static inline uint32_t MC60_MCU_Uptime() {
 static inline char MC60_UART_ReceiveChar(mc60_uart_interface_t* mc60_uart_interface, uint32_t timeout) {
     uint32_t lastReceived = HAL_GetTick();
     char c = 0;
-    while (lastReceived + timeout > HAL_GetTick()) {
+    while (HAL_GetTick() - lastReceived < timeout) {
         if(HCL_UART_IsAvailable(mc60_uart_interface)) {
             c = HCL_UART_InChar(mc60_uart_interface);
             break;
@@ -78,7 +78,7 @@ static inline char MC60_UART_ReceiveChar(mc60_uart_interface_t* mc60_uart_interf
 static inline void MC60_UART_Receive(mc60_uart_interface_t* mc60_uart_interface, char* response, uint16_t max_length, uint32_t timeout) {
     uint32_t lastReceived = HAL_GetTick();
     uint16_t length = 0;
-    while ((length < max_length) && (lastReceived + timeout < HAL_GetTick())) {
+    while ((length < max_length) && (HAL_GetTick() - lastReceived < timeout)) {
         if (MC60_UART_IsAvailable(mc60_uart_interface)) {
             *response++ = HCL_UART_InChar(mc60_uart_interface);
             length++;

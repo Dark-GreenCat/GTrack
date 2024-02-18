@@ -28,8 +28,8 @@ static inline bool MC60_GNSS_Get_Navigation_Info(mc60_t* mc60, nmea_data* gnss_d
     uint8_t numberOfLineNeedProcess = 2;
     uint32_t last = MC60_MCU_Uptime();
 
-    uint16_t current_index = 0;
-    while (last + timeout > MC60_MCU_Uptime()) {
+    uint32_t current_index = 0;
+    while (MC60_MCU_Uptime() - last < timeout) {
         char c = MC60_ITF_ReceiveChar(mc60, timeout);
         if (c == 0) continue;
         last = MC60_MCU_Uptime();
