@@ -39,6 +39,44 @@ int8_t MC60_MQTT_Open(mc60_t* mc60, uint8_t tcp_connect_id, const char* host_nam
     return ret;
 }
 
+int8_t MC60_MQTT_Close(mc60_t* mc60, mc60_mqtt_tcp_id tcp_connect_id, uint32_t timeout) {
+    int8_t ret = -1;
+    
+    char temp[15];
+    sprintf(temp, "%d", tcp_connect_id);
+    MC60_ITF_SendCmdWithParam(mc60, "AT+QMTCLOSE", temp);
+    MC60_ITF_WaitForResponse(mc60, "\r\n", 2, timeout);
+
+    mc60_result_process_t process;
+    MC60_ITF_UTIL_ResultProcess_Init(temp, &process);
+    uint32_t last = MC60_MCU_Uptime();
+    while (MC60_MCU_Uptime() - last < timeout) {
+        char c = MC60_ITF_ReceiveChar(mc60, timeout);
+        if (c == 0) continue;
+
+        last = MC60_MCU_Uptime();
+        if (!MC60_ITF_UTIL_GetResult(&process, c)) continue;
+
+        switch (process.termCount) {
+            case 1:
+                if (strcmp(temp, "+QMTCLOSE") != 0) {
+                    MC60_ITF_UTIL_ResultProcess_Init(temp, &process);
+                    continue;
+                }
+                break;
+
+            case 3:
+                ret = (int8_t) MC60_ITF_UTIL_ResultToNum(temp);
+                return ret;
+
+            default:
+                break;
+        }
+    }
+
+    return ret;
+}
+
 int8_t MC60_MQTT_Connect(mc60_t* mc60, mc60_mqtt_tcp_id tcp_connect_id, const char* client_id, const char* user_name, const char* password, uint32_t timeout) {
     int8_t ret = -1;
     

@@ -140,110 +140,93 @@ int main(void)
 
 //  PAL_UART_OutString(huart_terminal, "\n-------- Power on GNSS --------\n");
 //  MC60_ITF_GNSS_PowerOn(&mc60);
-//  HAL_Delay(3000);
+//  HAL_Delay(1);
  PAL_UART_FlushToUART_String(huart_mc60, huart_terminal);
 
   // // HCL_TIMER_Start();
   uint32_t pre = HAL_GetTick();
   uint32_t cur = pre;
-//  bool lastState = mc60_state;
   char buffer[256];
   nmea_data GPSData;
   bool isMQTTOpen = false;
-  bool isMQTTConnect = false;
+  bool isSuccess = false;
+  int8_t result;
+  HAL_Delay(5000);
   while (1) {
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-    cur = HAL_GetTick();
+    // cur = HAL_GetTick();
     PAL_UART_FlushToUART_Char(huart_terminal, huart_mc60);
     PAL_UART_FlushToUART_Char(huart_mc60, huart_terminal);
-
-    if (cur - pre >= 5000) {
-      if (!isMQTTOpen) {
-        isMQTTConnect = false;
-        PAL_UART_OutString(huart_terminal, "\n*** Opening MQTT connection... ");
-        int8_t result = MC60_MQTT_Open(&mc60, MC60_MQTT_TCP_CONNECT_ID_4, "demo.thingsboard.io", 1883, 3000);
-        PAL_UART_OutString(huart_terminal, "\nStatus code: ");
-        PAL_UART_OutNumber_Signed(huart_terminal, result);
-        if (result == 0 || result == 2) {
-          isMQTTOpen = true;
-          PAL_UART_OutString(huart_terminal, "\nMQTT connection openned!\n");
-        }
-        else {
-          isMQTTConnect = false;
-          continue;
-        }
+    if (!isMQTTOpen) {
+      PAL_UART_OutString(huart_terminal, "\n*** Opening MQTT connection...");
+      result = MC60_MQTT_Open(&mc60, MC60_MQTT_TCP_CONNECT_ID_0, "demo.thingsboard.io", 1883, 3000);
+      isSuccess = (result == 0 || result == 2);
+      PAL_UART_OutString(huart_terminal, "\nResult code: "); PAL_UART_OutNumber_Signed(huart_terminal, result);
+      if (!isSuccess) {
+        if (result == 3) NVIC_SystemReset();
+        PAL_UART_OutString(huart_terminal, "\nFailed to open MQTT connection. Retrying in 3 seconds...");
+        HAL_Delay(1);
+        continue;
       }
 
-      if (!isMQTTConnect) {
-        PAL_UART_OutString(huart_terminal, "\n*** Connecting to MQTT broker... ");
-        int8_t result = MC60_MQTT_Connect(&mc60, MC60_MQTT_TCP_CONNECT_ID_4, "demo.thingsboard.io", "3QcnES9LsYKtGIIXxNXU", "", 3000);
-        PAL_UART_OutString(huart_terminal, "\nStatus code: ");
-        PAL_UART_OutNumber_Signed(huart_terminal, result);
-        if (result == 0 || result == 1) {
-          isMQTTConnect = true;
-          PAL_UART_OutString(huart_terminal, "\nMQTT broker connected!\n");
-        }
-        else {
-          PAL_UART_OutString(huart_terminal, "\nCannot connect to MQTT broker!\n");
-			          PAL_UART_OutString(huart_terminal, "\n*** Disconnecting from MQTT broker... ");
-          int8_t result = MC60_MQTT_Disconnect(&mc60, MC60_MQTT_TCP_CONNECT_ID_4, 3000);
-          PAL_UART_OutString(huart_terminal, "\nStatus code: ");
-          PAL_UART_OutNumber_Signed(huart_terminal, result);
-          if (result == 0) {
-            isMQTTOpen = isMQTTConnect = false;
-            PAL_UART_OutString(huart_terminal, "\nMQTT broker disconnected!\n");
-          }
-          isMQTTOpen = false;
-          continue;
-        }
-
-        HAL_Delay(3000);
-        PAL_UART_OutString(huart_terminal, "Publishing: \"{lat:18.123456,long:13.472425}\"");
-        result = MC60_MQTT_Publish(&mc60, MC60_MQTT_TCP_CONNECT_ID_4, 0, 0, 0, "v1/devices/me/telemetry", "{lat:18.123456,long:13.472425}", 30, 10000);
-        PAL_UART_OutString(huart_terminal, "\nStatus code: ");
-        PAL_UART_OutNumber_Signed(huart_terminal, result);
-        if (result == 0) {
-          PAL_UART_OutString(huart_terminal, "\nPublished!\n");
-
-          PAL_UART_OutString(huart_terminal, "\n*** Disconnecting from MQTT broker... ");
-          int8_t result = MC60_MQTT_Disconnect(&mc60, MC60_MQTT_TCP_CONNECT_ID_4, 3000);
-          PAL_UART_OutString(huart_terminal, "\nStatus code: ");
-          PAL_UART_OutNumber_Signed(huart_terminal, result);
-          if (result == 0) {
-            isMQTTOpen = isMQTTConnect = false;
-            PAL_UART_OutString(huart_terminal, "\nMQTT broker disconnected!\n");
-          }
-        }
-        else {
-          PAL_UART_OutString(huart_terminal, "\nPublish failed!\n");
-          isMQTTOpen = false;
-        }
-      }
-      
-      // if (result == 0 || result == 2) {
-      //   MC60_MQTT_Connect(mc60, MC60_MQTT_TCP_CONNECT_ID_4, )
-      // }
-      // PAL_UART_OutString(huart_terminal, "\nConnecting GNSS...\n");
-      // if (MC60_GNSS_Get_Navigation_Info(&mc60, &GPSData, 3000)) {
-      //   NMEA_Parser_changeTimezone(&GPSData, 7);
-      //   char temp[30];
-      //   sprintf(buffer, "\n----- CAPTURING GNSS DATA -----\n");
-      //   sprintf(buffer + strlen(buffer), "Time: %02d:%02d:%02d\n", GPSData.Time.hours, GPSData.Time.minutes, GPSData.Time.seconds);
-      //   sprintf(buffer + strlen(buffer), "Date: %02d/%02d/%04d\n", GPSData.Date.day, GPSData.Date.month, 2000 + GPSData.Date.year);
-      //   sprintf(buffer + strlen(buffer), "Latitude: %s\n", NMEA_Parser_nmeafloattostr(GPSData.Location.latitude, temp));
-      //   sprintf(buffer + strlen(buffer), "Longitude: %s\n", NMEA_Parser_nmeafloattostr(GPSData.Location.longitude, temp));
-      //   sprintf(buffer + strlen(buffer), "Speed: %s knots\n", NMEA_Parser_nmeafloattostr(GPSData.Speed.speed_knot, temp));
-      //   sprintf(buffer + strlen(buffer), "Course: %s degrees\n", NMEA_Parser_nmeafloattostr(GPSData.Course.course_degree, temp));
-      //   sprintf(buffer + strlen(buffer), "HDOP: %s\n", NMEA_Parser_nmeafloattostr(GPSData.HDOP.hdop, temp));
-      //   sprintf(buffer + strlen(buffer), "Altitude: %s m\n", NMEA_Parser_nmeafloattostr(GPSData.Altitude.altitude_meter, temp));
-      //   sprintf(buffer + strlen(buffer), "\n");
-
-      //   PAL_UART_OutString(huart_terminal, buffer);
-      // }
-      pre = cur;
+      isMQTTOpen = true;
     }
+
+    PAL_UART_OutString(huart_terminal, "\n*** Connecting MQTT broker...");
+    result = MC60_MQTT_Connect(&mc60, MC60_MQTT_TCP_CONNECT_ID_0, "demo.thingsboard.io", "3QcnES9LsYKtGIIXxNXU", "", 3000);
+    PAL_UART_OutString(huart_terminal, "\nResult code: "); PAL_UART_OutNumber_Signed(huart_terminal, result);
+    isSuccess = (result == 0 || result == 1);
+    if(!isSuccess) {
+      PAL_UART_OutString(huart_terminal, "\nFailed to connect to MQTT broker. Retrying in 3 seconds...");
+      MC60_MQTT_Disconnect(&mc60, MC60_MQTT_TCP_CONNECT_ID_0, 3000);
+      isMQTTOpen = false;
+      HAL_Delay(1);
+      continue;
+    }
+
+    PAL_UART_OutString(huart_terminal, "\n*** Publishing MQTT message...");
+    result = MC60_MQTT_Publish(&mc60, MC60_MQTT_TCP_CONNECT_ID_0, 0, 0, 0, "v1/devices/me/telemetry", "{lat:18.123456,long:13.472425}", 30, 10000);
+    PAL_UART_OutString(huart_terminal, "\nResult code: "); PAL_UART_OutNumber_Signed(huart_terminal, result);
+    isSuccess = (result == 0);
+    if(isSuccess) {
+      PAL_UART_OutString(huart_terminal, "\nMessage published successfully. Disconnecting from MQTT broker...");
+      MC60_MQTT_Disconnect(&mc60, MC60_MQTT_TCP_CONNECT_ID_0, 3000);
+      isMQTTOpen = false;
+      HAL_Delay(1);
+      continue;
+    }
+    else {
+      PAL_UART_OutString(huart_terminal, "\nFailed to publish MQTT message. Disconnecting and retrying in 3 seconds...");
+      MC60_MQTT_Disconnect(&mc60, MC60_MQTT_TCP_CONNECT_ID_0, 3000);
+      isMQTTOpen = false;
+      HAL_Delay(1);
+      continue;      
+    }
+      
+    //   // if (result == 0 || result == 2) {
+    //   //   MC60_MQTT_Connect(mc60, MC60_MQTT_TCP_CONNECT_ID_4, )
+    //   // }
+    //   // PAL_UART_OutString(huart_terminal, "\nConnecting GNSS...\n");
+    //   // if (MC60_GNSS_Get_Navigation_Info(&mc60, &GPSData, 3000)) {
+    //   //   NMEA_Parser_changeTimezone(&GPSData, 7);
+    //   //   char temp[30];
+    //   //   sprintf(buffer, "\n----- CAPTURING GNSS DATA -----\n");
+    //   //   sprintf(buffer + strlen(buffer), "Time: %02d:%02d:%02d\n", GPSData.Time.hours, GPSData.Time.minutes, GPSData.Time.seconds);
+    //   //   sprintf(buffer + strlen(buffer), "Date: %02d/%02d/%04d\n", GPSData.Date.day, GPSData.Date.month, 2000 + GPSData.Date.year);
+    //   //   sprintf(buffer + strlen(buffer), "Latitude: %s\n", NMEA_Parser_nmeafloattostr(GPSData.Location.latitude, temp));
+    //   //   sprintf(buffer + strlen(buffer), "Longitude: %s\n", NMEA_Parser_nmeafloattostr(GPSData.Location.longitude, temp));
+    //   //   sprintf(buffer + strlen(buffer), "Speed: %s knots\n", NMEA_Parser_nmeafloattostr(GPSData.Speed.speed_knot, temp));
+    //   //   sprintf(buffer + strlen(buffer), "Course: %s degrees\n", NMEA_Parser_nmeafloattostr(GPSData.Course.course_degree, temp));
+    //   //   sprintf(buffer + strlen(buffer), "HDOP: %s\n", NMEA_Parser_nmeafloattostr(GPSData.HDOP.hdop, temp));
+    //   //   sprintf(buffer + strlen(buffer), "Altitude: %s m\n", NMEA_Parser_nmeafloattostr(GPSData.Altitude.altitude_meter, temp));
+    //   //   sprintf(buffer + strlen(buffer), "\n");
+
+    //   //   PAL_UART_OutString(huart_terminal, buffer);
+    //   // }
+    //   pre = cur;
+    // }
   }
   /* USER CODE END 3 */
 }
