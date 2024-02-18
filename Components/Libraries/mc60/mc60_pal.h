@@ -38,6 +38,7 @@ extern MC60_TypeDef pal_mc60;
 
 void PAL_MC60_Init();
 void PAL_MC60_MQTT_Init();
+void PAL_MC60_PowerOn();
 void PAL_MC60_MQTT_Send(const char* topic, const char* message);
 
 static inline int8_t PAL_MC60_MQTT_Open(MC60_TypeDef* mc60) {

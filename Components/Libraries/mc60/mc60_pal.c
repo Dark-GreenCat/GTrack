@@ -22,17 +22,47 @@ void PAL_MC60_Init() {
 void PAL_MC60_MQTT_Init() {
     pal_mc60.mqtt.tcpid = PAL_MC60_MQTT_TCP_ID;
     pal_mc60.mqtt.port = PAL_MC60_MQTT_PORT;
-    pal_mc60.mqtt.hostname = (char*) mqtt_hostname;
-    pal_mc60.mqtt.clientid = (char*) mqtt_clientid;
-    pal_mc60.mqtt.username = (char*) mqtt_username;
-    pal_mc60.mqtt.password = (char*) mqtt_password;
+    pal_mc60.mqtt.hostname = (char*)mqtt_hostname;
+    pal_mc60.mqtt.clientid = (char*)mqtt_clientid;
+    pal_mc60.mqtt.username = (char*)mqtt_username;
+    pal_mc60.mqtt.password = (char*)mqtt_password;
+}
+
+void PAL_MC60_PowerOn() {
+    bool mc60_state = false;
+    PAL_UART_OutString(huart_terminal, "\nCheck MC60 Status: ");
+    mc60_state = MC60_ITF_IsRunning(&pal_mc60.core);
+    PAL_UART_OutNumber(huart_terminal, mc60_state);
+
+    PAL_UART_OutString(huart_terminal, "\n-------- Power on MC60 --------\n");
+    MC60_ITF_PowerOn(&pal_mc60.core);
+    PAL_UART_OutString(huart_terminal, "\n------ Check MC60 status ------");
+    PAL_UART_OutString(huart_terminal, "\n\t>> Running command: AT\n");
+    MC60_ITF_SendCmd(&pal_mc60.core, "AT");
+    HAL_Delay(6000);
+    PAL_UART_FlushToUART_String(huart_mc60, huart_terminal);
+    PAL_UART_OutString(huart_terminal, "\nCheck MC60 Status: ");
+    mc60_state = MC60_ITF_IsRunning(&pal_mc60.core);
+    PAL_UART_OutNumber(huart_terminal, mc60_state);
+    if(!mc60_state) return;
+
+    MC60_ITF_SendCmd(&pal_mc60.core, "AT+QIFGCNT=2");
+    MC60_ITF_SendCmd(&pal_mc60.core, "AT+QICSGP=1,\"m-wap\",\"mms\",\"mms\"");
+    HAL_Delay(7000);
+    MC60_ITF_SendCmd(&pal_mc60.core, "AT+CREG?;+CGREG?");
+    MC60_ITF_SendCmd(&pal_mc60.core, "AT+QGNSSTS?");
+    MC60_ITF_SendCmd(&pal_mc60.core, "AT+QGREFLOC=21.04196,105.786865");
+    MC60_ITF_SendCmd(&pal_mc60.core, "AT+QGNSSEPO=1");
+    PAL_UART_FlushToUART_String(huart_mc60, huart_terminal);
 }
 
 void PAL_MC60_MQTT_Send(const char* topic, const char* message) {
     bool isMQTTOpen = false;
     bool isSuccess = false;
     int8_t result;
-    while (1) {
+
+    uint32_t timestart = HAL_GetTick();
+    while (HAL_GetTick() - timestart < pal_mc60.timeout) {
         if (!isMQTTOpen) {
             PAL_UART_OutString(huart_terminal, "\n*** Opening MQTT connection...");
             result = PAL_MC60_MQTT_Open(&pal_mc60);
@@ -58,7 +88,8 @@ void PAL_MC60_MQTT_Send(const char* topic, const char* message) {
             continue;
         }
 
-        PAL_UART_OutString(huart_terminal, "\n*** Publishing MQTT message...");
+        PAL_UART_OutString(huart_terminal, "\n*** Publishing MQTT message: ");
+        PAL_UART_OutString(huart_terminal, message);
         result = PAL_MC60_MQTT_Publish(&pal_mc60, topic, message);
         PAL_UART_OutString(huart_terminal, "\nResult code: "); PAL_UART_OutNumber_Signed(huart_terminal, result);
         isSuccess = (result == 0);
@@ -66,7 +97,7 @@ void PAL_MC60_MQTT_Send(const char* topic, const char* message) {
             PAL_UART_OutString(huart_terminal, "\nMessage published successfully. Disconnecting from MQTT broker...");
             PAL_MC60_MQTT_Disconnect(&pal_mc60);
             isMQTTOpen = false;
-            continue;
+            return;
         }
         else {
             PAL_UART_OutString(huart_terminal, "\nFailed to publish MQTT message. Disconnecting and retrying in 3 seconds...");
