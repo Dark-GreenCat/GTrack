@@ -25,17 +25,18 @@ void UAL_GTRACK_GeoTrack_Enable() {
 
     PAL_MC60_RunCommand("AT+QIFGCNT=2");
     PAL_MC60_RunCommand("AT+QICSGP=1,\"m-wap\",\"mms\",\"mms\"");
+	//PAL_MC60_RunCommand("AT+QICSGP=1,\"v-internet\"");
     HAL_Delay(10000);
     PAL_MC60_RunCommand("AT+CREG?;+CGREG?");
     PAL_MC60_RunCommand("AT+QGNSSTS?");
-    // PAL_MC60_RunCommand("AT+QGREFLOC=21.04196,105.786865");
-    // PAL_MC60_RunCommand("AT+QGNSSEPO=1");
+    PAL_MC60_RunCommand("AT+QGREFLOC=21.04196,105.786865");
+    PAL_MC60_RunCommand("AT+QGNSSEPO=1");
     PAL_UART_FlushToUART_String(huart_mc60, huart_terminal);
 }
 
 void UAL_GTRACK_GeoTrack_Activate(feature_geotrack_state state) {
     PAL_UART_OutString(huart_terminal, "\n-------- Power on GNSS --------\n");
-    PAL_MC60_GNSS_PowerOn((mc60_gnss_state) state);
+    MC60_ITF_GNSS_PowerOn(&pal_mc60.core);
 }
 
 void UAL_GTRACK_GeoTrack_GetMetric() {
@@ -47,7 +48,7 @@ void UAL_GTRACK_GeoTrack_GetMetric() {
     PAL_UART_FlushToUART_String(huart_mc60, huart_terminal);
     PAL_UART_OutString(huart_terminal, "\nConnecting GNSS...\n");
     if (MC60_GNSS_Get_Navigation_Info(&pal_mc60.core, &GPSData, 3000)) {
-        UAL_GTRACK_GeoTrack_Activate(GEOTRACK_DEACTIVATE);
+        MC60_ITF_SendCmd(&pal_mc60.core, "AT+QGNSSC=0");
         HAL_Delay(200);
         PAL_UART_FlushToUART_String(huart_mc60, huart_terminal);
         NMEA_Parser_changeTimezone(&GPSData, 7);
@@ -69,5 +70,5 @@ void UAL_GTRACK_GeoTrack_GetMetric() {
 
         NAL_GTRACK_Send(buffer);
     }
-    UAL_GTRACK_GeoTrack_Activate(GEOTRACK_DEACTIVATE);
+
 }

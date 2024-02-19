@@ -81,6 +81,6 @@ void NAL_GTRACK_Send(const char* message) {
 
         NAL_GTRACK_Disconnect();
         isMQTTOpen = false;
-        continue;
+        break;;
     }
 }

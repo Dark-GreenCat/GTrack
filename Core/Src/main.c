@@ -135,10 +135,10 @@ int main(void)
         UAL_GTRACK_GeoTrack_Enable();
     }
 
-    // if(cur - pre > 15000) {    
-    //     UAL_GTRACK_GeoTrack_GetMetric();
-    //     pre = cur;
-    // }
+    if(cur - pre > 15000) {    
+        UAL_GTRACK_GeoTrack_GetMetric();
+        pre = cur;
+    }
   }
   /* USER CODE END 3 */
 }
