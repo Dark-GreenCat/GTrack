@@ -34,6 +34,8 @@
 #include "BMA253/bma253_pal.h"
 #include "gpio/gpio_hcl.h"
 #include "mc60/mc60_pal.h"
+#include "gtrack_nal.h"
+#include "gtrack_ual.h"
 ////#include "test_bma253.h"
 /* USER CODE END Includes */
 
@@ -107,7 +109,7 @@ int main(void)
   HCL_UART_Init(huart_mc60, 512);
   //HCL_TIMER_Init(&htim3);
 
-  PAL_MC60_Init();
+  UAL_GTRACK_Init();
   //test_main_bma253();
   /* USER CODE END 2 */
 
@@ -116,11 +118,9 @@ int main(void)
   HCL_UART_StartReceive(huart_terminal);
   HCL_UART_StartReceive(huart_mc60);
 
-  PAL_MC60_PowerOn();
+  UAL_GTRACK_GeoTrack_Enable();
 
   // // HCL_TIMER_Start();
-  char buffer[256];
-  nmea_data GPSData;
   uint32_t pre = HAL_GetTick();
   uint32_t cur = pre;
   while (1) {
@@ -132,41 +132,13 @@ int main(void)
     PAL_UART_FlushToUART_Char(huart_mc60, huart_terminal);
 
     if(!MC60_ITF_IsRunning(&pal_mc60.core)) {
-        PAL_MC60_PowerOn();
-        //continue;
+        UAL_GTRACK_GeoTrack_Enable();
     }
 
-    if(cur - pre > 15000) {    
-		PAL_UART_OutString(huart_terminal, "\n-------- Power on GNSS --------\n");
-		MC60_ITF_GNSS_PowerOn(&pal_mc60.core);
-		HAL_Delay(2000);
-		PAL_UART_FlushToUART_String(huart_mc60, huart_terminal);
-      PAL_UART_OutString(huart_terminal, "\nConnecting GNSS...\n");
-      if (MC60_GNSS_Get_Navigation_Info(&pal_mc60.core, &GPSData, 3000)) {
-		  MC60_ITF_SendCmd(&pal_mc60.core, "AT+QGNSSC=0");
-		  HAL_Delay(200);
-		  PAL_UART_FlushToUART_String(huart_mc60, huart_terminal);
-        NMEA_Parser_changeTimezone(&GPSData, 7);
-        char temp[30];
-        sprintf(buffer, "\n----- CAPTURING GNSS DATA -----\n");
-        sprintf(buffer + strlen(buffer), "Time: %02d:%02d:%02d\n", GPSData.Time.hours, GPSData.Time.minutes, GPSData.Time.seconds);
-        sprintf(buffer + strlen(buffer), "Date: %02d/%02d/%04d\n", GPSData.Date.day, GPSData.Date.month, 2000 + GPSData.Date.year);
-        sprintf(buffer + strlen(buffer), "Latitude: %s\n", NMEA_Parser_nmeafloattostr(GPSData.Location.latitude, temp));
-        sprintf(buffer + strlen(buffer), "Longitude: %s\n", NMEA_Parser_nmeafloattostr(GPSData.Location.longitude, temp));
-        sprintf(buffer + strlen(buffer), "Speed: %s knots\n", NMEA_Parser_nmeafloattostr(GPSData.Speed.speed_knot, temp));
-        sprintf(buffer + strlen(buffer), "Course: %s degrees\n", NMEA_Parser_nmeafloattostr(GPSData.Course.course_degree, temp));
-        sprintf(buffer + strlen(buffer), "HDOP: %s\n", NMEA_Parser_nmeafloattostr(GPSData.HDOP.hdop, temp));
-        sprintf(buffer + strlen(buffer), "Altitude: %s m\n", NMEA_Parser_nmeafloattostr(GPSData.Altitude.altitude_meter, temp));
-        sprintf(buffer + strlen(buffer), "\n");
-
-        PAL_UART_OutString(huart_terminal, buffer);
-        sprintf(buffer, "{lat:%s,long:%s}", NMEA_Parser_nmeafloattostr(GPSData.Location.latitude, temp), 
-                                           NMEA_Parser_nmeafloattostr(GPSData.Location.longitude, temp));
-
-        PAL_MC60_MQTT_Send(mqtt_topic, buffer);
-      }
-      pre = cur;
-    }
+    // if(cur - pre > 15000) {    
+    //     UAL_GTRACK_GeoTrack_GetMetric();
+    //     pre = cur;
+    // }
   }
   /* USER CODE END 3 */
 }

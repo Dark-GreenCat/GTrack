@@ -424,9 +424,23 @@
         </Group>
         <Group>
           <GroupName>Application/User</GroupName>
+          <Files>
+            <File>
+              <FileName>gtrack_ual.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Components\Middlewares\UserLayer\gtrack_ual.c</FilePath>
+            </File>
+          </Files>
         </Group>
         <Group>
           <GroupName>Application/Network</GroupName>
+          <Files>
+            <File>
+              <FileName>gtrack_nal.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Components\Middlewares\NetworkLayer\gtrack_nal.c</FilePath>
+            </File>
+          </Files>
         </Group>
         <Group>
           <GroupName>Peripheral/STM32</GroupName>
