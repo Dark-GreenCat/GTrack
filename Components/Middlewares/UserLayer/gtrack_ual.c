@@ -65,8 +65,9 @@ void UAL_GTRACK_GeoTrack_GetMetric() {
         sprintf(buffer + strlen(buffer), "\n");
 
         PAL_UART_OutString(huart_terminal, buffer);
-        sprintf(buffer, "{lat:%s,long:%s}", NMEA_Parser_nmeafloattostr(GPSData.Location.latitude, temp),
-            NMEA_Parser_nmeafloattostr(GPSData.Location.longitude, temp));
+        char lat[15], lon[15];
+        sprintf(buffer, "{lat:%s,long:%s}", NMEA_Parser_nmeafloattostr(GPSData.Location.latitude, lat),
+            NMEA_Parser_nmeafloattostr(GPSData.Location.longitude, lon));
 
         NAL_GTRACK_Send(buffer);
     }
