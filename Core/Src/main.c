@@ -123,14 +123,35 @@ int main(void)
   // // HCL_TIMER_Start();
   uint32_t pre = HAL_GetTick();
   uint32_t cur = pre;
+  bool isRunning = true;
+  char data = 0;
   while (1) {
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
     cur = HAL_GetTick();
-    PAL_UART_FlushToUART_Char(huart_terminal, huart_mc60);
+    //PAL_UART_FlushToUART_Char(huart_terminal, huart_mc60);
+	if (HCL_UART_IsAvailable(huart_terminal)) {
+		data = HCL_UART_InChar(huart_terminal);
+		HCL_UART_OutChar(huart_mc60, data);
+	}
     PAL_UART_FlushToUART_Char(huart_mc60, huart_terminal);
-
+		
+	if (data == '#') {
+		data = 0;
+		isRunning = !isRunning;
+		if (isRunning == false) {
+			PAL_UART_OutString(huart_terminal, "PAUSE RUNNING");
+			MC60_ITF_PowerOff(&pal_mc60.core);
+		}
+		else 
+			PAL_UART_OutString(huart_terminal, "CONTINUE RUNNING");
+	}
+	
+	if (!isRunning) {
+		continue;
+	}
+	
     if(!MC60_ITF_IsRunning(&pal_mc60.core)) {
         UAL_GTRACK_GeoTrack_Enable();
     }

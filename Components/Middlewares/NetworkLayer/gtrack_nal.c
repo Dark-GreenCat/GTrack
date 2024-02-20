@@ -39,15 +39,22 @@ void NAL_GTRACK_Send(const char* message) {
     bool isMQTTOpen = false;
     bool isSuccess = false;
     int8_t result;
+	uint8_t errorCount = 0;
 
     uint32_t timestart = HAL_GetTick();
     while (HAL_GetTick() - timestart < pal_mc60.timeout) {
+		if (errorCount >= 10) {
+			PAL_UART_OutString(huart_terminal, "\nToo many attemps failed. Restarting GTrack...");
+			NVIC_SystemReset();
+		}
+		
         if (!isMQTTOpen) {
             PAL_UART_OutString(huart_terminal, "\n*** Opening MQTT connection...");
             result = NAL_GTRACK_OpenNetwork();
             isSuccess = (result == 0 || result == 2);
             PAL_UART_OutString(huart_terminal, "\nResult code: "); PAL_UART_OutNumber_Signed(huart_terminal, result);
             if (!isSuccess) {
+				errorCount++;
                 if (result == 3) {
                     PAL_UART_OutString(huart_terminal, "\nFailed to setup PDP context. Restarting GTrack...");
                     NVIC_SystemReset();
@@ -55,7 +62,7 @@ void NAL_GTRACK_Send(const char* message) {
                 PAL_UART_OutString(huart_terminal, "\nFailed to open MQTT connection. Retrying in 3 seconds...");
                 continue;
             }
-
+			errorCount = 0;
             isMQTTOpen = true;
         }
 
@@ -66,21 +73,29 @@ void NAL_GTRACK_Send(const char* message) {
         if (!isSuccess) {
             PAL_UART_OutString(huart_terminal, "\nFailed to connect to MQTT broker. Retrying in 3 seconds...");
             NAL_GTRACK_Disconnect();
+			errorCount++;
             isMQTTOpen = false;
             continue;
         }
-
+		errorCount = 0;
+		
         PAL_UART_OutString(huart_terminal, "\n*** Publishing MQTT message: ");
         PAL_UART_OutString(huart_terminal, message);
         result = NAL_GTRACK_PublishMessage(message);
         PAL_UART_OutString(huart_terminal, "\nResult code: "); PAL_UART_OutNumber_Signed(huart_terminal, result);
         isSuccess = (result == 0);
 
-        if (isSuccess) PAL_UART_OutString(huart_terminal, "\nMessage published successfully. Disconnecting from MQTT broker...");
-        else PAL_UART_OutString(huart_terminal, "\nFailed to publish MQTT message. Disconnecting and retrying in 3 seconds...");
-
+        if (isSuccess) {
+			errorCount = 0;
+			PAL_UART_OutString(huart_terminal, "\nMessage published successfully. Disconnecting from MQTT broker...");
+        }
+		else {
+			errorCount++;
+			PAL_UART_OutString(huart_terminal, "\nFailed to publish MQTT message. Disconnecting and retrying in 3 seconds...");
+		}
+		
         NAL_GTRACK_Disconnect();
         isMQTTOpen = false;
-        break;;
+        break;
     }
 }
