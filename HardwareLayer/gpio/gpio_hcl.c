@@ -1,5 +1,8 @@
 #include "gpio_hcl.h"
 
+GPIO_HandleTypeDef hgpio_ctrl_led_r;
+GPIO_HandleTypeDef hgpio_ctrl_led_g;
+
 GPIO_HandleTypeDef hgpio_mc60_pwrkey;
 GPIO_HandleTypeDef hgpio_mc60_gnss_en;
 GPIO_HandleTypeDef hgpio_mc60_gsm_en;

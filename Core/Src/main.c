@@ -69,7 +69,11 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
+  UNUSED(htim);
+  PAL_DISPLAY_Show("\nTimeout!\n");
+}
 /* USER CODE END 0 */
 
 /**
