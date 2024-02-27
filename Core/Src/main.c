@@ -31,7 +31,7 @@
 #include "timer/timer_hcl.h"
 #include "usart/usart_hcl.h"
 #include "gnss/mc60_gnss.h"
-#include "BMA253/bma253_pal.h"
+#include "bma253/bma253_pal.h"
 #include "gpio/gpio_hcl.h"
 #include "mc60/mc60_pal.h"
 #include "gtrack_nal.h"

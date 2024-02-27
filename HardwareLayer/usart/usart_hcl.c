@@ -7,9 +7,6 @@ static uint8_t Rx_data;
 static Fifo_t Fifo_1;
 static Fifo_t Fifo_3;
 
-void HAL_UART_TxCpltCallback(UART_HandleTypeDef* huart) {
-}
-
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef* huart) {
     if (huart == huart_terminal) {
         Fifo_Put(&Fifo_1, Rx_data);

@@ -3,21 +3,6 @@
 
 TIM_HandleTypeDef* htim_led;
 
-void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef* htim) {
-  static uint8_t blinkCount = 0;
-
-  if (htim == &htim3) {
-    if (blinkCount < 6) { // Blink 3 times (6 toggles)
-      HCL_GPIO_TogglePin(&hgpio_ctrl_led_g);
-      blinkCount++;
-    }
-    else {
-      HAL_TIM_Base_Stop_IT(htim);
-      blinkCount = 0;
-    }
-  }
-}
-
 void HCL_TIMER_Init(TIM_HandleTypeDef* htim) {
     htim_led = htim;
 }
