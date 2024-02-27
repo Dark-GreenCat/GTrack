@@ -18,7 +18,11 @@ static inline void saveFieldNMEA_GGA(nmea_data* data, uint8_t field_index) {
     switch (field_index) {
         case GGA_FIELD_TIME:
             setRawTime(&data->Time, Term);
-            decodeTime(&data->Time);
+            if(data->Time.time_raw[0] != '\0') {
+                data->Time.is_valid = true;
+                decodeTime(&data->Time);
+            }
+            else data->Time.is_valid = false;
             break;
 
         case GGA_FIELD_LATITUDE:
@@ -35,7 +39,11 @@ static inline void saveFieldNMEA_GGA(nmea_data* data, uint8_t field_index) {
 
         case GGA_FIELD_LONGITUDE_CARDINAL:
             setRawLocationCardinal(&data->Location.longitude_raw, Term);
-            decodeLocation(&data->Location);
+            if(data->Location.longitude_raw.location[0] != '\0') {
+                data->Location.is_valid = true;
+                decodeLocation(&data->Location);
+            }
+            else data->Location.is_valid = false;
             break;
         
         case GGA_FIELD_FIX_STATUS:
@@ -44,12 +52,20 @@ static inline void saveFieldNMEA_GGA(nmea_data* data, uint8_t field_index) {
 
         case GGA_FIELD_HDOP:
             setRawHDOP(&data->HDOP, Term);
-            decodeHDOP(&data->HDOP);
+            if(data->HDOP.hdop_raw[0] != '\0') {
+                data->HDOP.is_valid = true;
+                decodeHDOP(&data->HDOP);
+            }
+            else data->HDOP.is_valid = false;
             break;
 
         case GGA_FIELD_ALTITUDE:
             setRawAltitude(&data->Altitude, Term);
-            decodeAltitude(&data->Altitude);
+            if(data->Altitude.altitude_raw[0] != '\0') {
+                data->Altitude.is_valid = true;
+                decodeAltitude(&data->Altitude);
+            }
+            else data->Altitude.is_valid = false;
             break;
 
         default:

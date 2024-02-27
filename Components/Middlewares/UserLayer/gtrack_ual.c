@@ -7,21 +7,23 @@ void UAL_GTRACK_Init() {
 
 void UAL_GTRACK_GeoTrack_Enable() {
     bool mc60_state = false;
-    PAL_UART_OutString(huart_terminal, "\nCheck MC60 Status: ");
+    PAL_DISPLAY_Show("\nCheck MC60 Status: ");
     mc60_state = PAL_MC60_IsRunning();
-    PAL_UART_OutNumber(huart_terminal, mc60_state);
+    PAL_DISPLAY_ShowNumber(mc60_state);
 
-    PAL_UART_OutString(huart_terminal, "\n-------- Power on MC60 --------\n");
+    PAL_DISPLAY_Show("\n-------- Power on MC60 --------\n");
     PAL_MC60_PowerOn(MC60_POWER_ON);
-    PAL_UART_OutString(huart_terminal, "\n------ Check MC60 status ------");
-    PAL_UART_OutString(huart_terminal, "\n\t>> Running command: AT\n");
+    PAL_DISPLAY_Show("\n------ Check MC60 status ------");
+    PAL_DISPLAY_Show("\n\t>> Running command: AT\n");
     PAL_MC60_RunCommand("AT");
     HAL_Delay(5000);
     PAL_UART_FlushToUART_String(huart_mc60, huart_terminal);
-    PAL_UART_OutString(huart_terminal, "\nCheck MC60 Status: ");
+    PAL_DISPLAY_Show("\nCheck MC60 Status: ");
     mc60_state = PAL_MC60_IsRunning();
-    PAL_UART_OutNumber(huart_terminal, mc60_state);
+    PAL_DISPLAY_ShowNumber(mc60_state);
     if (!mc60_state) return;
+
+    PAL_MC60_RunCommand("AT+QSCLK=0");
 
     PAL_MC60_RunCommand("AT+QIFGCNT=2");
     PAL_MC60_RunCommand("AT+QICSGP=1,\"m-wap\",\"mms\",\"mms\"");
@@ -35,20 +37,21 @@ void UAL_GTRACK_GeoTrack_Enable() {
 }
 
 void UAL_GTRACK_GeoTrack_Activate(feature_geotrack_state state) {
-    PAL_UART_OutString(huart_terminal, "\n-------- Power on GNSS --------\n");
-    MC60_ITF_GNSS_PowerOn(&pal_mc60.core);
+    PAL_DISPLAY_Show("\n-------- Power on GNSS --------\n");
+    PAL_MC60_GNSS_PowerOn(MC60_GNSS_POWER_ON);
 }
 
 void UAL_GTRACK_GeoTrack_GetMetric() {
     char buffer[256];
     nmea_data GPSData;
+    NMEA_Parser_Reset(&GPSData);
 
     UAL_GTRACK_GeoTrack_Activate(GEOTRACK_ACTIVATE);
     HAL_Delay(2000);
     PAL_UART_FlushToUART_String(huart_mc60, huart_terminal);
-    PAL_UART_OutString(huart_terminal, "\nConnecting GNSS...\n");
+    PAL_DISPLAY_Show("\nConnecting GNSS...\n");
     if (MC60_GNSS_Get_Navigation_Info(&pal_mc60.core, &GPSData, 3000)) {
-        MC60_ITF_SendCmd(&pal_mc60.core, "AT+QGNSSC=0");
+        PAL_MC60_RunCommand("AT+QGNSSC=0");
         HAL_Delay(200);
         PAL_UART_FlushToUART_String(huart_mc60, huart_terminal);
         NMEA_Parser_changeTimezone(&GPSData, 7);
@@ -64,10 +67,8 @@ void UAL_GTRACK_GeoTrack_GetMetric() {
         sprintf(buffer + strlen(buffer), "Altitude: %s m\n", NMEA_Parser_nmeafloattostr(GPSData.Altitude.altitude_meter, temp));
         sprintf(buffer + strlen(buffer), "\n");
 
-        PAL_UART_OutString(huart_terminal, buffer);
-        char lat[15], lon[15];
-        sprintf(buffer, "{lat:%s,long:%s}", NMEA_Parser_nmeafloattostr(GPSData.Location.latitude, lat),
-            NMEA_Parser_nmeafloattostr(GPSData.Location.longitude, lon));
+        PAL_DISPLAY_Show(buffer);
+        NAL_GTRACK_ConstructMessage(buffer, &GPSData);
 
         NAL_GTRACK_Send(buffer);
     }

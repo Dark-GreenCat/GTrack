@@ -36,6 +36,7 @@
 #include "mc60/mc60_pal.h"
 #include "gtrack_nal.h"
 #include "gtrack_ual.h"
+#include "display/display_pal.h"
 ////#include "test_bma253.h"
 /* USER CODE END Includes */
 
@@ -119,7 +120,7 @@ int main(void)
   HCL_UART_StartReceive(huart_mc60);
 
   UAL_GTRACK_GeoTrack_Enable();
-
+  
   // // HCL_TIMER_Start();
   uint32_t pre = HAL_GetTick();
   uint32_t cur = pre;
@@ -131,34 +132,34 @@ int main(void)
     /* USER CODE BEGIN 3 */
     cur = HAL_GetTick();
     //PAL_UART_FlushToUART_Char(huart_terminal, huart_mc60);
-	if (HCL_UART_IsAvailable(huart_terminal)) {
-		data = HCL_UART_InChar(huart_terminal);
-		HCL_UART_OutChar(huart_mc60, data);
-	}
+    if (HCL_UART_IsAvailable(huart_terminal)) {
+      data = HCL_UART_InChar(huart_terminal);
+      HCL_UART_OutChar(huart_mc60, data);
+    }
     PAL_UART_FlushToUART_Char(huart_mc60, huart_terminal);
-		
-	if (data == '#') {
-		data = 0;
-		isRunning = !isRunning;
-		if (isRunning == false) {
-			PAL_UART_OutString(huart_terminal, "PAUSE RUNNING");
-			MC60_ITF_PowerOff(&pal_mc60.core);
-		}
-		else 
-			PAL_UART_OutString(huart_terminal, "CONTINUE RUNNING");
-	}
-	
-	if (!isRunning) {
-		continue;
-	}
-	
-    if(!MC60_ITF_IsRunning(&pal_mc60.core)) {
-        UAL_GTRACK_GeoTrack_Enable();
+
+    if (data == '#') {
+      data = 0;
+      isRunning = !isRunning;
+      if (isRunning == false) {
+        PAL_DISPLAY_Show("\nPAUSE RUNNING");
+        PAL_MC60_PowerOn(MC60_POWER_OFF);
+      }
+      else  PAL_DISPLAY_Show("\nCONTINUE RUNNING");
     }
 
-    if(cur - pre > 15000) {    
-        UAL_GTRACK_GeoTrack_GetMetric();
-        pre = cur;
+    if (!isRunning) {
+      continue;
+    }
+
+    if (!MC60_ITF_IsRunning(&pal_mc60.core)) {
+      UAL_GTRACK_GeoTrack_Enable();
+    }
+
+    if (cur - pre > 10000) {
+      // HCL_UART_OutChar(huart_mc60, '.');
+      UAL_GTRACK_GeoTrack_GetMetric();
+      pre = cur;
     }
   }
   /* USER CODE END 3 */

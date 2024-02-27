@@ -87,6 +87,11 @@ bool NMEA_Parser_Process(nmea_data* data, char c) {
     return false;
 }
 
+void NMEA_Parser_Reset(nmea_data* data) {
+    nmea_data empty_data = { 0 };
+    *data = empty_data;
+}
+
 void NMEA_Parser_nmeadata_to_tm(const nmea_data* data, struct tm* timeinfo) {
     timeinfo->tm_sec = data->Time.seconds;
     timeinfo->tm_min = data->Time.minutes;

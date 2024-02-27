@@ -10,6 +10,7 @@
 // Processes the incoming character 'c' and updates the NMEA data structure 'data' accordingly.
 // Returns true if a complete NMEA sentence is parsed and processed successfully, false otherwise.
 bool NMEA_Parser_Process(nmea_data* data, char c);
+void NMEA_Parser_Reset(nmea_data* data);
 
 // Converts the NMEA data structure to the 'struct tm' format.
 void NMEA_Parser_nmeadata_to_tm(const nmea_data* data, struct tm* timeinfo);

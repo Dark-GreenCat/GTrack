@@ -33,6 +33,8 @@ typedef struct {
     uint8_t minutes; // Minutes (0-59)
     uint8_t seconds; // Seconds (0-59)
     uint16_t milliseconds; // Milliseconds (0-999)
+
+    bool is_valid;
 } nmea_time;
 
 // Represents date information
@@ -41,6 +43,8 @@ typedef struct {
     uint8_t day; // Day (1-31)
     uint8_t month; // Month (1-12)
     uint8_t year; // Year (0-99)
+
+    bool is_valid;
 } nmea_date;
 
 // Represents location information in raw format
@@ -56,34 +60,40 @@ typedef struct {
 
     nmea_float latitude; // Latitude value (with decimal places)
     nmea_float longitude; // Longitude value (with decimal places)
+
+    bool is_valid;
 } nmea_location;
 
 // Represents speed information
 typedef struct {
     char speed_raw[NMEA_SPEED_FIELD_SIZE]; // Raw speed string
-
     nmea_float speed_knot; // Speed value in knots (with decimal places)
+
+    bool is_valid;
 } nmea_speed;
 
 // Represents course information
 typedef struct {
     char course_raw[NMEA_COURSE_FIELD_SIZE]; // Raw course string
-
     nmea_float course_degree; // Course value in degrees (with decimal places)
+
+    bool is_valid;
 } nmea_course;
 
 // Represents HDOP (Horizontal Dilution of Precision) information
 typedef struct {
     char hdop_raw[NMEA_HDOP_FIELD_SIZE]; // Raw HDOP string
-
     nmea_float hdop; // HDOP value (with decimal places)
+
+    bool is_valid;
 } nmea_hdop;
 
 // Represents altitude information
 typedef struct {
     char altitude_raw[NMEA_ALTITUDE_FIELD_SIZE]; // Raw altitude string
-
     nmea_float altitude_meter; // Altitude value in meters (with decimal places)
+
+    bool is_valid;
 } nmea_altitude;
 
 // Represents complete NMEA data

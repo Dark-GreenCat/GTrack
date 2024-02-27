@@ -4,12 +4,14 @@
 
 void test_parser() {
     // char sentence[] = "$GPRMC,123519,A,4807.038,N,01131.000,E,022.4,084.4,230394,003.1,W*6A";
-    char* sentence_rmc = "+QGNSSRD: $GNRMC,100234.000,A,2102.5194,N,10547.2117,E,0.66,166.83,061223,,,A*70\r\n";
+    char* sentence_rmc = "+QGNSSRD: $GNRMC,100234.000,A,2102.5194,N,10547.2117,E,0.66,166.83,061223,,,A*70\n$GNGSA,100236.000,2102.5239,N,10547.2110,E,1,5,2.98,50.0,M,-20.9,M,,*58\n$GNGGA,000142.094,,,,,0,0,,,M,,M,,*5C\n\nOK\r\n";
     char* sentence_gga = "AT+GNSSRD?: $GNGGA,100236.000,2102.5239,N,10547.2110,E,1,5,2.98,50.0,M,-20.9,M,,*58\r\n";
 
-    nmea_data GPSData = { 0 };
+    nmea_data GPSData;
+    NMEA_Parser_Reset(&GPSData);
     char temp[15];
-    for (int i = 0; sentence_rmc[i] != '\0'; i++) {
+    int i = 0;
+    for (i = 0; sentence_rmc[i] != '\0'; i++) {
         if (NMEA_Parser_Process(&GPSData, sentence_rmc[i])) {
             // GMT+7
             NMEA_Parser_changeTimezone(&GPSData, 7);
@@ -23,11 +25,13 @@ void test_parser() {
             printf("HDOP: %s\n", NMEA_Parser_nmeafloattostr(GPSData.HDOP.hdop, temp));
             printf("Altitude: %sm\n", NMEA_Parser_nmeafloattostr(GPSData.Altitude.altitude_meter, temp));
             printf("\n");
+
+            break;
         }
     }
 
-    for (int i = 0; sentence_gga[i] != '\0'; i++) {
-        if (NMEA_Parser_Process(&GPSData, sentence_gga[i])) {
+    for (; sentence_rmc[i] != '\0'; i++) {
+        if (NMEA_Parser_Process(&GPSData, sentence_rmc[i])) {
             // GMT+7
             NMEA_Parser_changeTimezone(&GPSData, 7);
             printf("\n----- CAPTURING GGA DATA -----\n");
@@ -42,6 +46,13 @@ void test_parser() {
             printf("\n");
         }
     }
+
+    char buffer[256];
+    char lat[15], lon[15];
+    sprintf(buffer, "{lat:%s,long:%s}", NMEA_Parser_nmeafloattostr(GPSData.Location.latitude, lat),
+        NMEA_Parser_nmeafloattostr(GPSData.Location.longitude, lon));
+
+    printf("\nbuffer: %s %s %s %d %d", buffer, lat, lon, GPSData.Location.is_valid, GPSData.Date.is_valid);
 }
 
 void test_converter() {
@@ -75,7 +86,7 @@ void test_converter() {
     printf("NMEA_Parser_numtostr: %s\n", str5);  // Expected output: "123.45"
 
     // Test NMEA_Parser_nmeafloattostr
-    nmea_float number2 = {12345, 2};
+    nmea_float number2 = { 12345, 2 };
     char result6[20];
     char* str6 = NMEA_Parser_nmeafloattostr(number2, result6);
     printf("NMEA_Parser_nmeafloattostr: %s\n", str6);  // Expected output: "123.45"

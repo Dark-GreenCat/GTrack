@@ -2,6 +2,7 @@
 #define __UAL_GTRACK_H
 
 #include "mc60/mc60_pal.h"
+#include "display/display_pal.h"
 #include "gtrack_nal.h"
 
 typedef enum {

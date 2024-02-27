@@ -51,5 +51,6 @@ bool MC60_ITF_DetectResponse(char c, const char* target, uint32_t target_length,
 bool MC60_ITF_WaitForResponse(mc60_t* mc60, const char* response, uint32_t response_length, uint32_t timeout);
 
 void MC60_ITF_GNSS_PowerOn(mc60_t* mc60);
+void MC60_ITF_GNSS_PowerOff(mc60_t* mc60);
 
 #endif

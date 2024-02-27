@@ -99,3 +99,7 @@ void MC60_ITF_GNSS_PowerOn(mc60_t* mc60) {
     MC60_ITF_SendCmd(mc60, "AT+QGNSSC=1");
     MC60_GPIO_Set(mc60->gpio_gnss_vcc_en);
 }
+
+void MC60_ITF_GNSS_PowerOff(mc60_t* mc60) {
+    MC60_ITF_SendCmd(mc60, "AT+QGNSSC=0");
+}

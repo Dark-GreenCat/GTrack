@@ -30,8 +30,8 @@ void PAL_MC60_PowerOn(mc60_state state) {
 }
 
 void PAL_MC60_GNSS_PowerOn(mc60_gnss_state state) {
-    if(state == MC60_GNSS_POWER_OFF) MC60_GNSS_PowerOff(&pal_mc60.core);
-    else MC60_GNSS_PowerOn(&pal_mc60.core);
+    if(state == MC60_GNSS_POWER_OFF) MC60_ITF_GNSS_PowerOff(&pal_mc60.core);
+    else MC60_ITF_GNSS_PowerOn(&pal_mc60.core);
 }
 
 void PAL_MC60_RunCommand(const char* cmd) {

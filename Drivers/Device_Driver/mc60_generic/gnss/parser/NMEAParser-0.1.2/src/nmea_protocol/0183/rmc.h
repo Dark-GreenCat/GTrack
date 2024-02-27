@@ -19,7 +19,11 @@ static inline void saveFieldNMEA_RMC(nmea_data* data, uint8_t field_index) {
     switch (field_index) {
         case RMC_FIELD_TIME:
             setRawTime(&data->Time, Term);
-            decodeTime(&data->Time);
+            if(data->Time.time_raw[0] != '\0') {
+                data->Time.is_valid = true;
+                decodeTime(&data->Time);
+            }
+            else data->Time.is_valid = false;
             break;
         
         case RMC_FIELD_DATA_VALID:
@@ -40,22 +44,38 @@ static inline void saveFieldNMEA_RMC(nmea_data* data, uint8_t field_index) {
 
         case RMC_FIELD_LONGITUDE_CARDINAL:
             setRawLocationCardinal(&data->Location.longitude_raw, Term);
-            decodeLocation(&data->Location);
+            if(data->Location.longitude_raw.location[0] != '\0') {
+                data->Location.is_valid = true;
+                decodeLocation(&data->Location);
+            }
+            else data->Location.is_valid = false;
             break;
 
         case RMC_FIELD_SPEED:
             setRawSpeed(&data->Speed, Term);
-            decodeSpeed(&data->Speed);
+            if(data->Speed.speed_raw[0] != '\0') {
+                data->Speed.is_valid = true;
+                decodeSpeed(&data->Speed);
+            }
+            else data->Speed.is_valid = false;
             break;
 
         case RMC_FIELD_COURSE:
             setRawCourse(&data->Course, Term);
-            decodeCourse(&data->Course);
+            if(data->Course.course_raw[0] != '\0') {
+                data->Course.is_valid = true;
+                decodeCourse(&data->Course);            
+            }
+            else data->Course.is_valid = false;
             break;
 
         case RMC_FIELD_DATE:
             setRawDate(&data->Date, Term);
-            decodeDate(&data->Date);
+            if(data->Date.date_raw[0] != '\0') {
+                data->Date.is_valid = true;
+                decodeDate(&data->Date);
+            }
+            else data->Date.is_valid = false;
             break;
 
         default:
