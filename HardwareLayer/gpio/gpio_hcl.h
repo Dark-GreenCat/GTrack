@@ -44,7 +44,7 @@ static inline void HCL_GPIO_Init() {
     HCL_GPIO_Config(&hgpio_mc60_vdd_ext, MC60_VDD_EXT_GPIO_Port, MC60_VDD_EXT_Pin);
 
     HCL_GPIO_WritePin(&hgpio_ctrl_led_r, GPIO_PIN_RESET);
-    HCL_GPIO_WritePin(&hgpio_ctrl_led_g, GPIO_PIN_SET);
+    HCL_GPIO_WritePin(&hgpio_ctrl_led_g, GPIO_PIN_RESET);
 }
 
 #endif

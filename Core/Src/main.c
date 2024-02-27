@@ -69,11 +69,7 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
-{
-  UNUSED(htim);
-  PAL_DISPLAY_Show("\nTimeout!\n");
-}
+
 /* USER CODE END 0 */
 
 /**
@@ -112,7 +108,7 @@ int main(void)
   HCL_GPIO_Init();
   HCL_UART_Init(huart_terminal, 64);
   HCL_UART_Init(huart_mc60, 512);
-  //HCL_TIMER_Init(&htim3);
+  HCL_TIMER_Init(&htim3);
 
   UAL_GTRACK_Init();
   //test_main_bma253();
@@ -123,7 +119,7 @@ int main(void)
   HCL_UART_StartReceive(huart_terminal);
   HCL_UART_StartReceive(huart_mc60);
 
-  UAL_GTRACK_GeoTrack_Enable();
+  //UAL_GTRACK_GeoTrack_Enable();
   
   // // HCL_TIMER_Start();
   uint32_t pre = HAL_GetTick();
@@ -147,24 +143,29 @@ int main(void)
       isRunning = !isRunning;
       if (isRunning == false) {
         PAL_DISPLAY_Show("\nPAUSE RUNNING");
+        HCL_TIMER_Stop(htim_led);
+
         PAL_MC60_PowerOn(MC60_POWER_OFF);
       }
-      else  PAL_DISPLAY_Show("\nCONTINUE RUNNING");
+      else  {
+        PAL_DISPLAY_Show("\nCONTINUE RUNNING");
+        HCL_TIMER_Start(htim_led);
+      }
     }
 
     if (!isRunning) {
       continue;
     }
 
-    if (!MC60_ITF_IsRunning(&pal_mc60.core)) {
-      UAL_GTRACK_GeoTrack_Enable();
-    }
+    // if (!MC60_ITF_IsRunning(&pal_mc60.core)) {
+    //   UAL_GTRACK_GeoTrack_Enable();
+    // }
 
-    if (cur - pre > 10000) {
-      // HCL_UART_OutChar(huart_mc60, '.');
-      UAL_GTRACK_GeoTrack_GetMetric();
-      pre = cur;
-    }
+    // if (cur - pre > 10000) {
+    //   // HCL_UART_OutChar(huart_mc60, '.');
+    //   UAL_GTRACK_GeoTrack_GetMetric();
+    //   pre = cur;
+    // }
   }
   /* USER CODE END 3 */
 }
