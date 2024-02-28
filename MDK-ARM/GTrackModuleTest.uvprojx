@@ -415,6 +415,16 @@
               <FileType>1</FileType>
               <FilePath>..\Components\Libraries\display\display_pal.c</FilePath>
             </File>
+            <File>
+              <FileName>timer_pal.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\AbstractionLayer\timer\timer_pal.c</FilePath>
+            </File>
+            <File>
+              <FileName>signal_pal.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Components\Libraries\signal\signal_pal.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
