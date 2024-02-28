@@ -69,7 +69,7 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+bool mc60LastState = false, mc60CurState = false;
 /* USER CODE END 0 */
 
 /**
@@ -119,18 +119,20 @@ int main(void)
   HCL_UART_StartReceive(huart_terminal);
   HCL_UART_StartReceive(huart_mc60);
 
-  //UAL_GTRACK_GeoTrack_Enable();
+  UAL_GTRACK_GeoTrack_Enable();
   
   // // HCL_TIMER_Start();
   uint32_t pre = HAL_GetTick();
   uint32_t cur = pre;
   bool isRunning = true;
   char data = 0;
+  
   while (1) {
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
     cur = HAL_GetTick();
+    mc60CurState = MC60_ITF_IsRunning(&pal_mc60.core);
     //PAL_UART_FlushToUART_Char(huart_terminal, huart_mc60);
     if (HCL_UART_IsAvailable(huart_terminal)) {
       data = HCL_UART_InChar(huart_terminal);
@@ -143,18 +145,28 @@ int main(void)
       isRunning = !isRunning;
       if (isRunning == false) {
         PAL_DISPLAY_Show("\nPAUSE RUNNING");
-        HCL_TIMER_Stop(htim_led);
 
         PAL_MC60_PowerOn(MC60_POWER_OFF);
       }
       else  {
         PAL_DISPLAY_Show("\nCONTINUE RUNNING");
-        HCL_TIMER_Start(htim_led);
       }
+    }
+
+    if (mc60LastState != mc60CurState) {
+      mc60LastState = mc60CurState;
+
+      if (mc60CurState == false) PAL_SIGNAL_LED_SetState(0);
+      else PAL_SIGNAL_LED_SetState(1);
     }
 
     if (!isRunning) {
       continue;
+    }
+    
+    if (cur - pre > 10000) {
+      HCL_GPIO_TogglePin(&hgpio_ctrl_led_g);
+      pre = cur;
     }
 
     // if (!MC60_ITF_IsRunning(&pal_mc60.core)) {

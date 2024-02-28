@@ -1,11 +1,16 @@
 #include "gtrack_ual.h"
 
+bool UAL_MC60_isTurningOn = false;
+
 void UAL_GTRACK_Init() {
     PAL_MC60_Init();
     NAL_GTrack_Init();
 }
 
 void UAL_GTRACK_GeoTrack_Enable() {
+    UAL_MC60_isTurningOn = true;
+    HCL_TIMER_Start(htim_led);
+
     bool mc60_state = false;
     PAL_DISPLAY_Show("\nCheck MC60 Status: ");
     mc60_state = PAL_MC60_IsRunning();
@@ -34,6 +39,8 @@ void UAL_GTRACK_GeoTrack_Enable() {
     PAL_MC60_RunCommand("AT+QGREFLOC=21.04196,105.786865");
     PAL_MC60_RunCommand("AT+QGNSSEPO=1");
     PAL_UART_FlushToUART_String(huart_mc60, huart_terminal);
+
+    UAL_MC60_isTurningOn = false;
 }
 
 void UAL_GTRACK_GeoTrack_Activate(feature_geotrack_state state) {
