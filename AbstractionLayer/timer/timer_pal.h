@@ -3,6 +3,8 @@
 
 #include "timer/timer_hcl.h"
 
+#define PAL_TIM_GETSCALE(htim, ms) ((ms) / ((htim)->Init.Period))
+
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef* htim);
 
 #endif

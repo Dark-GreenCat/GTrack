@@ -1,4 +1,5 @@
 #include "mc60_interface.h"
+#include <string.h>
 
 void MC60_ITF_Init(mc60_t* mc60, mc60_uart_interface_t* uart_interface, 
                              mc60_gpio_interface_t* gpio_pwrkey_interface,
@@ -102,4 +103,40 @@ void MC60_ITF_GNSS_PowerOn(mc60_t* mc60) {
 
 void MC60_ITF_GNSS_PowerOff(mc60_t* mc60) {
     MC60_ITF_SendCmd(mc60, "AT+QGNSSC=0");
+}
+
+bool MC60_ITF_GNSS_checkPower(mc60_t* mc60) {
+    bool ret = false;
+    
+    char temp[10];
+    MC60_ITF_SendCmd(mc60, "AT+QGNSSC?");
+
+    mc60_result_process_t process;
+    MC60_ITF_UTIL_ResultProcess_Init(temp, &process);
+    uint32_t last = MC60_MCU_Uptime();
+    while (MC60_MCU_Uptime() - last < MC60_DEFAULT_TIMEOUT) {
+        char c = MC60_ITF_ReceiveChar(mc60, MC60_DEFAULT_TIMEOUT);
+        if (c == 0) continue;
+
+        last = MC60_MCU_Uptime();
+        if (!MC60_ITF_UTIL_GetResult(&process, c)) continue;
+
+        switch (process.termCount) {
+            case 1:
+                if (strcmp(temp, "+QGNSSC") != 0) {
+                    MC60_ITF_UTIL_ResultProcess_Init(temp, &process);
+                    continue;
+                }
+                break;
+
+            case 2:
+                ret = (bool) MC60_ITF_UTIL_ResultToNum(temp);
+                return ret;
+
+            default:
+                break;
+        }
+    }
+
+    return ret;
 }

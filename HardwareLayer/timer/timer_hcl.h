@@ -4,7 +4,10 @@
 #include "tim.h"
 #include "stm32f0xx_hal.h"
 
+#include <stdbool.h>
+
 extern TIM_HandleTypeDef* htim_led;
+extern bool isTimerRunning;
 
 void HCL_TIMER_Init(TIM_HandleTypeDef* htim);
 void HCL_TIMER_Start(TIM_HandleTypeDef* htim);

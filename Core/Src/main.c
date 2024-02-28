@@ -69,7 +69,7 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-bool mc60LastState = false, mc60CurState = false;
+
 /* USER CODE END 0 */
 
 /**
@@ -126,7 +126,8 @@ int main(void)
   uint32_t cur = pre;
   bool isRunning = true;
   char data = 0;
-  
+  bool mc60LastState = false, mc60CurState = false;
+
   while (1) {
     /* USER CODE END WHILE */
 
@@ -142,10 +143,10 @@ int main(void)
 
     if (data == '#') {
       data = 0;
+      PAL_DISPLAY_ShowNumber(MC60_ITF_GNSS_checkPower(&pal_mc60.core));
       isRunning = !isRunning;
       if (isRunning == false) {
         PAL_DISPLAY_Show("\nPAUSE RUNNING");
-
         PAL_MC60_PowerOn(MC60_POWER_OFF);
       }
       else  {
@@ -153,31 +154,23 @@ int main(void)
       }
     }
 
-    if (mc60LastState != mc60CurState) {
-      mc60LastState = mc60CurState;
-
-      if (mc60CurState == false) PAL_SIGNAL_LED_SetState(0);
-      else PAL_SIGNAL_LED_SetState(1);
-    }
+    if (!isTimerRunning)
+      PAL_SIGNAL_LED_SetState(!mc60CurState);
 
     if (!isRunning) {
       continue;
     }
-    
-    if (cur - pre > 10000) {
-      HCL_GPIO_TogglePin(&hgpio_ctrl_led_g);
-      pre = cur;
+  
+
+    if (!mc60CurState) {
+      UAL_GTRACK_GeoTrack_Enable();
     }
 
-    // if (!MC60_ITF_IsRunning(&pal_mc60.core)) {
-    //   UAL_GTRACK_GeoTrack_Enable();
-    // }
-
-    // if (cur - pre > 10000) {
-    //   // HCL_UART_OutChar(huart_mc60, '.');
-    //   UAL_GTRACK_GeoTrack_GetMetric();
-    //   pre = cur;
-    // }
+    if (cur - pre > 15000) {
+      // HCL_UART_OutChar(huart_mc60, '.');
+      UAL_GTRACK_GeoTrack_GetMetric();
+      pre = cur;
+    }
   }
   /* USER CODE END 3 */
 }

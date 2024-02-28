@@ -14,6 +14,8 @@
 
 #define MC60_POWEROFF_PULSE_DELAY_MS        850
 
+#define MC60_DEFAULT_TIMEOUT                100
+
 
 typedef struct {
     mc60_uart_interface_t* uart_interface;
@@ -52,5 +54,6 @@ bool MC60_ITF_WaitForResponse(mc60_t* mc60, const char* response, uint32_t respo
 
 void MC60_ITF_GNSS_PowerOn(mc60_t* mc60);
 void MC60_ITF_GNSS_PowerOff(mc60_t* mc60);
+bool MC60_ITF_GNSS_checkPower(mc60_t* mc60);
 
 #endif

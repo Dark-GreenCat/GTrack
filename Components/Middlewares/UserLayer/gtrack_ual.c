@@ -1,6 +1,8 @@
 #include "gtrack_ual.h"
 
 bool UAL_MC60_isTurningOn = false;
+bool UAL_MC60_isGettingGNSS = false;
+bool UAL_MC60_isSendingToMQTT = false;
 
 void UAL_GTRACK_Init() {
     PAL_MC60_Init();
@@ -40,6 +42,7 @@ void UAL_GTRACK_GeoTrack_Enable() {
     PAL_MC60_RunCommand("AT+QGNSSEPO=1");
     PAL_UART_FlushToUART_String(huart_mc60, huart_terminal);
 
+    HCL_TIMER_Stop(htim_led);
     UAL_MC60_isTurningOn = false;
 }
 
@@ -49,6 +52,8 @@ void UAL_GTRACK_GeoTrack_Activate(feature_geotrack_state state) {
 }
 
 void UAL_GTRACK_GeoTrack_GetMetric() {
+    bool gnss_power_state = false;
+
     char buffer[256];
     nmea_data GPSData;
     NMEA_Parser_Reset(&GPSData);
@@ -56,8 +61,22 @@ void UAL_GTRACK_GeoTrack_GetMetric() {
     UAL_GTRACK_GeoTrack_Activate(GEOTRACK_ACTIVATE);
     HAL_Delay(2000);
     PAL_UART_FlushToUART_String(huart_mc60, huart_terminal);
+    gnss_power_state = MC60_ITF_GNSS_checkPower(&pal_mc60.core);
+    PAL_DISPLAY_Show("\nGNSS Power Status: "); PAL_DISPLAY_ShowNumber(gnss_power_state);
+
+    if (!gnss_power_state) {
+        PAL_DISPLAY_Show("\nGNSS is currently off!");
+        return;
+    }
+
     PAL_DISPLAY_Show("\nConnecting GNSS...\n");
-    if (MC60_GNSS_Get_Navigation_Info(&pal_mc60.core, &GPSData, 3000)) {
+    UAL_MC60_isGettingGNSS = true;
+    HCL_TIMER_Start(htim_led);
+    bool isGetGNSSSuccess = MC60_GNSS_Get_Navigation_Info(&pal_mc60.core, &GPSData, 3000);
+    HCL_TIMER_Stop(htim_led);
+    UAL_MC60_isGettingGNSS = false;
+    
+    if (isGetGNSSSuccess) {
         PAL_MC60_RunCommand("AT+QGNSSC=0");
         HAL_Delay(200);
         PAL_UART_FlushToUART_String(huart_mc60, huart_terminal);
@@ -77,7 +96,10 @@ void UAL_GTRACK_GeoTrack_GetMetric() {
         PAL_DISPLAY_Show(buffer);
         NAL_GTRACK_ConstructMessage(buffer, &GPSData);
 
+        UAL_MC60_isSendingToMQTT = true;
+        HCL_TIMER_Start(htim_led);
         NAL_GTRACK_Send(buffer);
+        HCL_TIMER_Stop(htim_led);
+        UAL_MC60_isSendingToMQTT = false;
     }
-
 }

@@ -3,6 +3,7 @@
 
 void MC60_ITF_UTIL_ResultProcess_Init(char* result, mc60_result_process_t* mc60_result_process) {
     mc60_result_process->result = result;
+    mc60_result_process->result[0] = '\0';
 
     mc60_result_process->termCount = 0;
     mc60_result_process->curTermIndex = 0;
