@@ -10,7 +10,7 @@ void MC60_ITF_Init(mc60_t* mc60, mc60_uart_interface_t* uart_interface,
     mc60->gpio_gnss_vcc_en = gpio_gnss_vcc_en;
     mc60->gpio_vdd_ext_interface = gpio_vdd_ext_interface;
 
-    MC60_GPIO_Reset(gpio_pwrkey_interface);
+    MC60_GPIO_Set(gpio_pwrkey_interface);
     MC60_GPIO_Reset(gpio_gnss_vcc_en);
 }
 

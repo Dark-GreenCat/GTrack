@@ -69,7 +69,53 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+// void ADC_Select_INPUT() {
+//   ADC_ChannelConfTypeDef sConfig = {0};
+//   sConfig.Channel = ADC_CHANNEL_2;
+//   sConfig.Rank = ADC_RANK_CHANNEL_NUMBER;
+//   sConfig.SamplingTime = ADC_SAMPLETIME_239CYCLES_5;
+//   if (HAL_ADC_ConfigChannel(&hadc, &sConfig) != HAL_OK)
+//   {
+//     Error_Handler();
+//   }
+// }
 
+// void ADC_Select_VBAT() {
+//   ADC_ChannelConfTypeDef sConfig = {0};
+//   sConfig.Channel = ADC_CHANNEL_1;
+//   sConfig.Rank = ADC_RANK_CHANNEL_NUMBER;
+//   sConfig.SamplingTime = ADC_SAMPLETIME_239CYCLES_5;
+//   if (HAL_ADC_ConfigChannel(&hadc, &sConfig) != HAL_OK)
+//   {
+//     Error_Handler();
+//   }
+// }
+
+// uint16_t ADCValue1;
+// float Voltage1;
+// bool isADCUpdate1 = false;
+// uint16_t ADCValue2;
+// float Voltage2;
+// bool isADCUpdate2 = false;
+// uint8_t ADCcount = 0;
+// void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc) {
+//   ADCcount++;
+
+//   if (ADCcount == 1) {
+//     ADCValue1 = HAL_ADC_GetValue(hadc);
+//     Voltage1 = (float)ADCValue1 / 4095 * 3.3;
+
+//     isADCUpdate1 = true;
+//   }
+//   if (ADCcount == 2) {
+//     ADCValue2 = HAL_ADC_GetValue(hadc);
+//     Voltage2 = (float)ADCValue2 / 4095 * 3.3;
+
+//     isADCUpdate2 = true;
+
+//     ADCcount = 0;
+//   }
+// }
 /* USER CODE END 0 */
 
 /**
@@ -111,23 +157,19 @@ int main(void)
   HCL_TIMER_Init(&htim3);
 
   UAL_GTRACK_Init();
-  //test_main_bma253();
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   HCL_UART_StartReceive(huart_terminal);
   HCL_UART_StartReceive(huart_mc60);
+  //UAL_GTRACK_GeoTrack_Enable();
 
-  UAL_GTRACK_GeoTrack_Enable();
-  
-  // // HCL_TIMER_Start();
   uint32_t pre = HAL_GetTick();
   uint32_t cur = pre;
   bool isRunning = true;
   char data = 0;
   bool mc60LastState = false, mc60CurState = false;
-
   while (1) {
     /* USER CODE END WHILE */
 
@@ -140,7 +182,7 @@ int main(void)
       HCL_UART_OutChar(huart_mc60, data);
     }
     PAL_UART_FlushToUART_Char(huart_mc60, huart_terminal);
-
+    
     if (data == '#') {
       data = 0;
       PAL_DISPLAY_ShowNumber(MC60_ITF_GNSS_checkPower(&pal_mc60.core));
@@ -160,7 +202,32 @@ int main(void)
     if (!isRunning) {
       continue;
     }
-  
+
+    // if (cur - pre > 1000) {
+    //   HAL_ADC_Start_IT(&hadc);
+    //   pre = cur;
+    // }
+
+    // if(isADCUpdate1) {
+    //   isADCUpdate1 = false;
+    //   PAL_DISPLAY_Show("\nPower input 1: ");
+    //   uint8_t integer = Voltage1;
+    //   PAL_DISPLAY_ShowNumber(integer);
+    //   PAL_DISPLAY_Show(".");
+    //   PAL_DISPLAY_ShowNumber((Voltage1 - (float) integer) *100);
+    //   PAL_DISPLAY_Show("V");
+    // }
+    // if(isADCUpdate2) {
+    //   isADCUpdate2 = false;
+    //   PAL_DISPLAY_Show("\nPower input 2: ");
+    //   uint8_t integer = Voltage2;
+    //   PAL_DISPLAY_ShowNumber(integer);
+    //   PAL_DISPLAY_Show(".");
+    //   PAL_DISPLAY_ShowNumber((Voltage2 - (float) integer) *100);
+    //   PAL_DISPLAY_Show("V");
+    // }
+
+    continue;
 
     if (!mc60CurState) {
       UAL_GTRACK_GeoTrack_Enable();

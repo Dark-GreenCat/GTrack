@@ -16,23 +16,10 @@ extern GPIO_HandleTypeDef hgpio_mc60_gnss_en;
 extern GPIO_HandleTypeDef hgpio_mc60_gsm_en;
 extern GPIO_HandleTypeDef hgpio_mc60_vdd_ext;
 
-static inline void HCL_GPIO_Config(GPIO_HandleTypeDef* hgpio, GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin) {
-    hgpio->Port = GPIOx;
-    hgpio->Pin = GPIO_Pin;
-}
-
-static inline void HCL_GPIO_WritePin(GPIO_HandleTypeDef* hgpio, GPIO_PinState PinState) {
-    HAL_GPIO_WritePin(hgpio->Port, hgpio->Pin, PinState);
-}
-
-static inline GPIO_PinState HCL_GPIO_ReadPin(GPIO_HandleTypeDef* hgpio) {
-    return HAL_GPIO_ReadPin(hgpio->Port, hgpio->Pin);
-}
-
-static inline void HCL_GPIO_TogglePin(GPIO_HandleTypeDef* hgpio) {
-    HAL_GPIO_TogglePin(hgpio->Port, hgpio->Pin);
-}
-
+void HCL_GPIO_Config(GPIO_HandleTypeDef* hgpio, GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin);
+void HCL_GPIO_WritePin(GPIO_HandleTypeDef* hgpio, GPIO_PinState PinState);
+GPIO_PinState HCL_GPIO_ReadPin(GPIO_HandleTypeDef* hgpio);
+void HCL_GPIO_TogglePin(GPIO_HandleTypeDef* hgpio);
 void HCL_GPIO_Init();
 
 #endif
