@@ -117,4 +117,12 @@ uint16_t BMA253_HWI_get_accd_z_msb_lsb(bma253_t* bma253) {
     return data_u16;
 }
 
+u8 BMA253_HWI_get_latch_int(bma253_t* bma253) {
+    return BMA253_GET_BITS(bma253, BMA253_LATCH_INTR, BMA253_GEN_READ_WRITE_LENGTH);
+}
+
+void BMA253_HWI_set_latch_int(bma253_t* bma253, u8 latch_int_u8) {
+    BMA253_SET_BITS(bma253, BMA253_LATCH_INTR, latch_int_u8);
+}
+
 

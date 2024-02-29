@@ -18,6 +18,8 @@ void PAL_BMA253_Init() {
     BMA253_HWI_set_fifo_mode(&pal_bma253, BMA253_FIFO_MODE_BYPASS);    
     /* Set Accel axis to be stored in FIFO */
     BMA253_HWI_set_fifo_data_select(&pal_bma253, BMA253_FIFO_XYZ_DATA_ENABLED);
+
+    BMA253_HWI_set_latch_int(&pal_bma253, BMA253_LATCH_DURN_NON_LATCH);
 }
 
 void PAL_BMA253_Get_Accel_XYZ(bma253_accel_data_t* bma253_accel_data) {

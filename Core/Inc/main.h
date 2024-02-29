@@ -69,6 +69,9 @@ void Error_Handler(void);
 #define LED_GREEN_GPIO_Port GPIOA
 #define LED_PWR_Pin GPIO_PIN_12
 #define LED_PWR_GPIO_Port GPIOA
+#define ACCE_INT1_Pin GPIO_PIN_3
+#define ACCE_INT1_GPIO_Port GPIOB
+#define ACCE_INT1_EXTI_IRQn EXTI2_3_IRQn
 #define STM32_I2C1_SCL_Pin GPIO_PIN_6
 #define STM32_I2C1_SCL_GPIO_Port GPIOB
 #define STM32_I2C1_SDA_Pin GPIO_PIN_7

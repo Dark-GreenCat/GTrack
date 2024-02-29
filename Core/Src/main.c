@@ -71,7 +71,10 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+{
+  PAL_DISPLAY_Show("\nEXT INTTERUPT DETECTED!\n");
+}
 /* USER CODE END 0 */
 
 /**
@@ -114,6 +117,7 @@ int main(void)
   HCL_UART_Init(huart_mc60, 512);
   HCL_TIMER_Init(&htim3);
 
+  PAL_BMA253_Init();
   UAL_GTRACK_Init();
   /* USER CODE END 2 */
 
@@ -128,10 +132,19 @@ int main(void)
   bool isRunning = true;
   char data = 0;
   bool mc60LastState = false, mc60CurState = false;
+  
   while (1) {
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+    PAL_DISPLAY_Show("\nRead data\n");
+  PAL_DISPLAY_ShowNumber(BMA253_HWI_get_latch_int(&pal_bma253));
+  BMA253_HWI_set_latch_int(&pal_bma253, 0x05);
+  PAL_DISPLAY_Show("\n");
+  PAL_DISPLAY_ShowNumber(BMA253_HWI_get_latch_int(&pal_bma253));
+
+  HAL_Delay(2000);
+    continue;
     cur = HAL_GetTick();
     mc60CurState = MC60_ITF_IsRunning(&pal_mc60.core);
 
@@ -162,7 +175,7 @@ int main(void)
     }
 
     continue;
-    
+
     if (!mc60CurState) {
       UAL_GTRACK_GeoTrack_Enable();
     }

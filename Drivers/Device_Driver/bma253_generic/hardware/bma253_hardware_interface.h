@@ -123,4 +123,7 @@ void BMA253_HWI_get_fifo_data_1frame(bma253_t* bma253, u8* fifo_data_u8);
 u16 BMA253_HWI_get_accd_x_msb_lsb(bma253_t* bma253);
 u16 BMA253_HWI_get_accd_y_msb_lsb(bma253_t* bma253);
 u16 BMA253_HWI_get_accd_z_msb_lsb(bma253_t* bma253);
+
+u8 BMA253_HWI_get_latch_int(bma253_t* bma253);
+void BMA253_HWI_set_latch_int(bma253_t* bam253, u8 latch_int_u8);
 #endif
