@@ -119,6 +119,8 @@ char* NAL_GTRACK_ConstructMessage(char* destination, nmea_data* data) {
         ptr += sprintf(ptr, "long:%s,",  NMEA_Parser_nmeafloattostr(data->Location.longitude, str_temp));
     }
 
+    ptr += sprintf(ptr, "bat:%.2f,chg:%.2f,", PAL_SUPPLIER_GetBatteryVoltage(), PAL_SUPPLIER_GetChargerVoltage());
+
     *(ptr - 1) = '}';
 
     strcpy(destination, temp); // Copy the temporary string to the destination
