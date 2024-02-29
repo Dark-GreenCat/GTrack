@@ -18,6 +18,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "adc.h"
 #include "i2c.h"
 #include "tim.h"
 #include "usart.h"
@@ -37,6 +38,7 @@
 #include "gtrack_nal.h"
 #include "gtrack_ual.h"
 #include "display/display_pal.h"
+#include "supplier/supplier_pal.h"
 ////#include "test_bma253.h"
 /* USER CODE END Includes */
 
@@ -69,53 +71,7 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-// void ADC_Select_INPUT() {
-//   ADC_ChannelConfTypeDef sConfig = {0};
-//   sConfig.Channel = ADC_CHANNEL_2;
-//   sConfig.Rank = ADC_RANK_CHANNEL_NUMBER;
-//   sConfig.SamplingTime = ADC_SAMPLETIME_239CYCLES_5;
-//   if (HAL_ADC_ConfigChannel(&hadc, &sConfig) != HAL_OK)
-//   {
-//     Error_Handler();
-//   }
-// }
 
-// void ADC_Select_VBAT() {
-//   ADC_ChannelConfTypeDef sConfig = {0};
-//   sConfig.Channel = ADC_CHANNEL_1;
-//   sConfig.Rank = ADC_RANK_CHANNEL_NUMBER;
-//   sConfig.SamplingTime = ADC_SAMPLETIME_239CYCLES_5;
-//   if (HAL_ADC_ConfigChannel(&hadc, &sConfig) != HAL_OK)
-//   {
-//     Error_Handler();
-//   }
-// }
-
-// uint16_t ADCValue1;
-// float Voltage1;
-// bool isADCUpdate1 = false;
-// uint16_t ADCValue2;
-// float Voltage2;
-// bool isADCUpdate2 = false;
-// uint8_t ADCcount = 0;
-// void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc) {
-//   ADCcount++;
-
-//   if (ADCcount == 1) {
-//     ADCValue1 = HAL_ADC_GetValue(hadc);
-//     Voltage1 = (float)ADCValue1 / 4095 * 3.3;
-
-//     isADCUpdate1 = true;
-//   }
-//   if (ADCcount == 2) {
-//     ADCValue2 = HAL_ADC_GetValue(hadc);
-//     Voltage2 = (float)ADCValue2 / 4095 * 3.3;
-
-//     isADCUpdate2 = true;
-
-//     ADCcount = 0;
-//   }
-// }
 /* USER CODE END 0 */
 
 /**
@@ -150,7 +106,9 @@ int main(void)
   MX_USART3_UART_Init();
   MX_TIM3_Init();
   MX_I2C1_Init();
+  MX_ADC_Init();
   /* USER CODE BEGIN 2 */
+  
   HCL_GPIO_Init();
   HCL_UART_Init(huart_terminal, 64);
   HCL_UART_Init(huart_mc60, 512);
@@ -170,6 +128,7 @@ int main(void)
   bool isRunning = true;
   char data = 0;
   bool mc60LastState = false, mc60CurState = false;
+  uint8_t SelectSupllier = 0;
   while (1) {
     /* USER CODE END WHILE */
 
@@ -199,33 +158,25 @@ int main(void)
     if (!isTimerRunning)
       PAL_SIGNAL_LED_SetState(!mc60CurState);
 
-    if (!isRunning) {
-      continue;
+    // if (!isRunning) {
+    //   continue;
+    // }
+
+    if (cur - pre > 1000) {
+      SelectSupllier = (SelectSupllier + 1) % 2; 
+
+      PAL_DISPLAY_Show("\nPower input: ");
+      float Voltage;
+      if(SelectSupllier == 0) Voltage = PAL_SUPPLIER_GetBatteryVoltage();
+      else Voltage = PAL_SUPPLIER_GetChargerVoltage();
+      
+      PAL_DISPLAY_ShowNumber((uint8_t) Voltage);
+      PAL_DISPLAY_Show(".");
+      PAL_DISPLAY_ShowNumber((Voltage - (float) ((uint8_t) Voltage)) * 100);
+      PAL_DISPLAY_Show("V");
+	    
+      pre = cur;
     }
-
-    // if (cur - pre > 1000) {
-    //   HAL_ADC_Start_IT(&hadc);
-    //   pre = cur;
-    // }
-
-    // if(isADCUpdate1) {
-    //   isADCUpdate1 = false;
-    //   PAL_DISPLAY_Show("\nPower input 1: ");
-    //   uint8_t integer = Voltage1;
-    //   PAL_DISPLAY_ShowNumber(integer);
-    //   PAL_DISPLAY_Show(".");
-    //   PAL_DISPLAY_ShowNumber((Voltage1 - (float) integer) *100);
-    //   PAL_DISPLAY_Show("V");
-    // }
-    // if(isADCUpdate2) {
-    //   isADCUpdate2 = false;
-    //   PAL_DISPLAY_Show("\nPower input 2: ");
-    //   uint8_t integer = Voltage2;
-    //   PAL_DISPLAY_ShowNumber(integer);
-    //   PAL_DISPLAY_Show(".");
-    //   PAL_DISPLAY_ShowNumber((Voltage2 - (float) integer) *100);
-    //   PAL_DISPLAY_Show("V");
-    // }
 
     continue;
 
@@ -255,9 +206,11 @@ void SystemClock_Config(void)
   /** Initializes the RCC Oscillators according to the specified parameters
   * in the RCC_OscInitTypeDef structure.
   */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI;
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI|RCC_OSCILLATORTYPE_HSI14;
   RCC_OscInitStruct.HSIState = RCC_HSI_ON;
+  RCC_OscInitStruct.HSI14State = RCC_HSI14_ON;
   RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
+  RCC_OscInitStruct.HSI14CalibrationValue = 16;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_NONE;
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
   {
