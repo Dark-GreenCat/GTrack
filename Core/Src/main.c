@@ -128,14 +128,13 @@ int main(void)
   bool isRunning = true;
   char data = 0;
   bool mc60LastState = false, mc60CurState = false;
-  uint8_t SelectSupllier = 0;
   while (1) {
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
     cur = HAL_GetTick();
     mc60CurState = MC60_ITF_IsRunning(&pal_mc60.core);
-    //PAL_UART_FlushToUART_Char(huart_terminal, huart_mc60);
+
     if (HCL_UART_IsAvailable(huart_terminal)) {
       data = HCL_UART_InChar(huart_terminal);
       HCL_UART_OutChar(huart_mc60, data);
@@ -158,28 +157,12 @@ int main(void)
     if (!isTimerRunning)
       PAL_SIGNAL_LED_SetState(!mc60CurState);
 
-    // if (!isRunning) {
-    //   continue;
-    // }
-
-    if (cur - pre > 1000) {
-      SelectSupllier = (SelectSupllier + 1) % 2; 
-
-      PAL_DISPLAY_Show("\nPower input: ");
-      float Voltage;
-      if(SelectSupllier == 0) Voltage = PAL_SUPPLIER_GetBatteryVoltage();
-      else Voltage = PAL_SUPPLIER_GetChargerVoltage();
-      
-      PAL_DISPLAY_ShowNumber((uint8_t) Voltage);
-      PAL_DISPLAY_Show(".");
-      PAL_DISPLAY_ShowNumber((Voltage - (float) ((uint8_t) Voltage)) * 100);
-      PAL_DISPLAY_Show("V");
-	    
-      pre = cur;
+    if (!isRunning) {
+      continue;
     }
 
     continue;
-
+    
     if (!mc60CurState) {
       UAL_GTRACK_GeoTrack_Enable();
     }
