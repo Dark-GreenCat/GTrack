@@ -138,12 +138,13 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
     PAL_DISPLAY_Show("\nRead data\n");
-  PAL_DISPLAY_ShowNumber(BMA253_HWI_get_latch_int(&pal_bma253));
-  BMA253_HWI_set_latch_int(&pal_bma253, 0x05);
-  PAL_DISPLAY_Show("\n");
-  PAL_DISPLAY_ShowNumber(BMA253_HWI_get_latch_int(&pal_bma253));
+    PAL_DISPLAY_ShowNumber(BMA253_HWI_get_slope_en(&pal_bma253, BMA253_SLOPE_X_INTR));
+    BMA253_HWI_set_slope_en(&pal_bma253, BMA253_SLOPE_X_INTR, BMA253_INTR_ENABLE);
+    PAL_DISPLAY_Show("\n");
+    PAL_DISPLAY_ShowNumber(BMA253_HWI_get_slope_en(&pal_bma253, BMA253_SLOPE_X_INTR));
 
-  HAL_Delay(2000);
+    HAL_Delay(2000);
+    
     continue;
     cur = HAL_GetTick();
     mc60CurState = MC60_ITF_IsRunning(&pal_mc60.core);

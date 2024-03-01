@@ -276,6 +276,18 @@ define the data types manually
 #define		BMA253_POWER_MODE_RANGE			((u8)6)
 #define		BMA253_SELF_TEST_AXIS_RANGE		((u8)4)
 #define		BMA253_SELF_TEST_SIGN_RANGE		((u8)2)
+  /** INTERRUPT NUMBER  **/
+#define   BMA253_INTR1           ((u8)1)
+#define   BMA253_INTR2           ((u8)2)
+	/** INTERRUPT TYPES **/
+#define		BMA253_INTR_PAD_LOW_G				((u8)0)
+#define		BMA253_INTR_PAD_HIGH_G				((u8)1)
+#define		BMA253_INTR_PAD_SLOPE				((u8)2)
+#define		BMA253_INTR_PAD_SLOW_NO_MOTION		((u8)3)
+#define 	BMA253_INTR_PAD_DOUBLE_TAP			((u8)4)
+#define 	BMA253_INTR_PAD_SINGLE_TAP			((u8)5)
+#define 	BMA253_INTR_PAD_ORIENT				((u8)6)
+#define 	BMA253_INTR_PAD_FLAT				((u8)7)
 
 /**************************************************************/
 /**\name	BMA253_ERROR CODE DEFINITIONS    */
@@ -1142,6 +1154,13 @@ BMA253_INTR_SOURCE_ADDR
 #define BMA253_TAP_QUIET_DURN_MSK             (0x80)
 #define BMA253_TAP_QUIET_DURN_REG             BMA253_TAP_PARAM_ADDR
 /****************************************************/
+/**\name   SLOPE THRESHOLD */
+/****************************************************/
+#define BMA253_SLOPE_THRES_POS                  (0)
+#define BMA253_SLOPE_THRES_LEN                  (8)
+#define BMA253_SLOPE_THRES_MSK                  (0xFF)
+#define BMA253_SLOPE_THRES_REG                  BMA253_SLOPE_THRES_ADDR
+/****************************************************/
 /**\name   TAP THRESHOLD */
 /****************************************************/
 #define BMA253_TAP_THRES_POS                  (0)
@@ -1400,25 +1419,25 @@ BMA253_INTR_SOURCE_ADDR
 /****************************************************/
 /**\name  ENABLE DISABLE SELECTION     */
 /***************************************************/
-#define INTR_ENABLE	(0X01)
+#define BMA253_INTR_ENABLE	(0X01)
 /**< Enable selection for bit */
-#define INTR_DISABLE	(0x00)
+#define BMA253_INTR_DISABLE	(0x00)
 /**< Disable selection for bit */
 
 /****************************************************/
 /**\name  OUTPUT TYPE SELECT     */
 /***************************************************/
-#define OPEN_DRAIN	(0x01)
+#define BMA253_OPEN_DRAIN	(0x01)
 /**< It refers open drain selection*/
-#define PUSS_PULL	(0x01)
+#define BMA253_PUSS_PULL	(0x00)
 /**< It refers push pull selection*/
 
 /****************************************************/
 /**\name  LEVEL SELECT     */
 /***************************************************/
-#define	ACTIVE_LOW	(0x00)
+#define	BMA253_ACTIVE_LOW	(0x00)
 /**< It refers active low selection*/
-#define	ACTIVE_HIGH	(0x01)
+#define	BMA253_ACTIVE_HIGH	(0x01)
 /**< It refers active high selection*/
 
 /****************************************************/

@@ -125,4 +125,291 @@ void BMA253_HWI_set_latch_int(bma253_t* bma253, u8 latch_int_u8) {
     BMA253_SET_BITS(bma253, BMA253_LATCH_INTR, latch_int_u8);
 }
 
+u8 BMA253_HWI_get_source(bma253_t* bma253, u8 channel_u8) {
+    u8 int_src_u8 = -1;
+
+    switch (channel_u8) {
+        case BMA253_SOURCE_LOW_G:
+            int_src_u8 = BMA253_GET_BITS(bma253, BMA253_UNFILT_INTR_SOURCE_LOW_G, BMA253_GEN_READ_WRITE_LENGTH);
+            break;
+
+        case BMA253_SOURCE_HIGH_G:
+            int_src_u8 = BMA253_GET_BITS(bma253, BMA253_UNFILT_INTR_SOURCE_HIGH_G, BMA253_GEN_READ_WRITE_LENGTH);
+            break;
+
+        case BMA253_SOURCE_SLOPE:
+            int_src_u8 = BMA253_GET_BITS(bma253, BMA253_UNFILT_INTR_SOURCE_SLOPE, BMA253_GEN_READ_WRITE_LENGTH);
+            break;
+
+        case BMA253_SOURCE_SLOW_NO_MOTION:
+            int_src_u8 = BMA253_GET_BITS(bma253, BMA253_UNFILT_INTR_SOURCE_SLOW_NO_MOTION, BMA253_GEN_READ_WRITE_LENGTH);
+            break;
+
+        case BMA253_SOURCE_TAP:
+            int_src_u8 = BMA253_GET_BITS(bma253, BMA253_UNFILT_INTR_SOURCE_TAP, BMA253_GEN_READ_WRITE_LENGTH);
+            break;
+
+        case BMA253_SOURCE_DATA:
+            int_src_u8 = BMA253_GET_BITS(bma253, BMA253_UNFILT_INTR_SOURCE_DATA, BMA253_GEN_READ_WRITE_LENGTH);
+            break;
+
+        default:
+            break;
+    }
+
+    return int_src_u8;
+}
+
+void BMA253_HWI_set_source(bma253_t* bma253, u8 channel_u8, u8 int_src_u8) {
+    switch (channel_u8) {
+        case BMA253_SOURCE_LOW_G:
+            BMA253_SET_BITS(bma253, BMA253_UNFILT_INTR_SOURCE_LOW_G, int_src_u8);
+            break;
+
+        case BMA253_SOURCE_HIGH_G:
+            BMA253_SET_BITS(bma253, BMA253_UNFILT_INTR_SOURCE_HIGH_G, int_src_u8);
+            break;
+
+        case BMA253_SOURCE_SLOPE:
+            BMA253_SET_BITS(bma253, BMA253_UNFILT_INTR_SOURCE_SLOPE, int_src_u8);
+            break;
+
+        case BMA253_SOURCE_SLOW_NO_MOTION:
+            BMA253_SET_BITS(bma253, BMA253_UNFILT_INTR_SOURCE_SLOW_NO_MOTION, int_src_u8);
+            break;
+
+        case BMA253_SOURCE_TAP:
+            BMA253_SET_BITS(bma253, BMA253_UNFILT_INTR_SOURCE_TAP, int_src_u8);
+            break;
+
+        case BMA253_SOURCE_DATA:
+            BMA253_SET_BITS(bma253, BMA253_UNFILT_INTR_SOURCE_DATA, int_src_u8);
+            break;
+
+        default:
+            break;
+    }
+}
+
+u8 BMA253_HWI_get_int_map(bma253_t* bma253, u8 channel_u8, u8 int_number_u8) {
+    switch (channel_u8) {
+        case BMA253_INTR_PAD_LOW_G:
+            return (int_number_u8 == BMA253_INTR1 ? BMA253_GET_BITS(bma253, BMA253_ENABLE_INTR1_PAD_LOW_G, BMA253_GEN_READ_WRITE_LENGTH) :
+                BMA253_GET_BITS(bma253, BMA253_ENABLE_INTR2_PAD_LOW_G, BMA253_GEN_READ_WRITE_LENGTH));
+            break;
+
+        case BMA253_INTR_PAD_HIGH_G:
+            return (int_number_u8 == BMA253_INTR1 ? BMA253_GET_BITS(bma253, BMA253_ENABLE_INTR1_PAD_HIGH_G, BMA253_GEN_READ_WRITE_LENGTH) :
+                BMA253_GET_BITS(bma253, BMA253_ENABLE_INTR2_PAD_HIGH_G, BMA253_GEN_READ_WRITE_LENGTH));
+            break;
+
+        case BMA253_INTR_PAD_SLOPE:
+            return (int_number_u8 == BMA253_INTR1 ? BMA253_GET_BITS(bma253, BMA253_ENABLE_INTR1_PAD_SLOPE, BMA253_GEN_READ_WRITE_LENGTH) :
+                BMA253_GET_BITS(bma253, BMA253_ENABLE_INTR2_PAD_SLOPE, BMA253_GEN_READ_WRITE_LENGTH));
+            break;
+
+        case BMA253_INTR_PAD_SLOW_NO_MOTION:
+            return (int_number_u8 == BMA253_INTR1 ? BMA253_GET_BITS(bma253, BMA253_ENABLE_INTR1_PAD_SLOW_NO_MOTION, BMA253_GEN_READ_WRITE_LENGTH) :
+                BMA253_GET_BITS(bma253, BMA253_ENABLE_INTR2_PAD_SLOW_NO_MOTION, BMA253_GEN_READ_WRITE_LENGTH));
+            break;
+
+        case BMA253_INTR_PAD_DOUBLE_TAP:
+            return (int_number_u8 == BMA253_INTR1 ? BMA253_GET_BITS(bma253, BMA253_ENABLE_INTR1_PAD_DOUBLE_TAP, BMA253_GEN_READ_WRITE_LENGTH) :
+                BMA253_GET_BITS(bma253, BMA253_ENABLE_INTR2_PAD_DOUBLE_TAP, BMA253_GEN_READ_WRITE_LENGTH));
+            break;
+
+        case BMA253_INTR_PAD_SINGLE_TAP:
+            return (int_number_u8 == BMA253_INTR1 ? BMA253_GET_BITS(bma253, BMA253_ENABLE_INTR1_PAD_SINGLE_TAP, BMA253_GEN_READ_WRITE_LENGTH) :
+                BMA253_GET_BITS(bma253, BMA253_ENABLE_INTR2_PAD_SINGLE_TAP, BMA253_GEN_READ_WRITE_LENGTH));
+            break;
+
+        case BMA253_INTR_PAD_ORIENT:
+            return (int_number_u8 == BMA253_INTR1 ? BMA253_GET_BITS(bma253, BMA253_ENABLE_INTR1_PAD_ORIENT, BMA253_GEN_READ_WRITE_LENGTH) :
+                BMA253_GET_BITS(bma253, BMA253_ENABLE_INTR2_PAD_ORIENT, BMA253_GEN_READ_WRITE_LENGTH));
+            break;
+            
+        case BMA253_INTR_PAD_FLAT:
+            return (int_number_u8 == BMA253_INTR1 ? BMA253_GET_BITS(bma253, BMA253_ENABLE_INTR1_PAD_FLAT, BMA253_GEN_READ_WRITE_LENGTH) :
+                BMA253_GET_BITS(bma253, BMA253_ENABLE_INTR2_PAD_FLAT, BMA253_GEN_READ_WRITE_LENGTH));
+            break;
+
+        default:
+            return 0;
+            break;
+    }
+}
+
+void BMA253_HWI_set_int_map(bma253_t* bma253, u8 channel_u8, u8 int_number_u8, u8 int_map_u8) {
+    switch (channel_u8) {
+        case BMA253_INTR_PAD_LOW_G:
+            (int_number_u8 == BMA253_INTR1 ? BMA253_SET_BITS(bma253, BMA253_ENABLE_INTR1_PAD_LOW_G, int_map_u8) :
+                BMA253_SET_BITS(bma253, BMA253_ENABLE_INTR2_PAD_LOW_G, int_map_u8));
+            break;
+
+        case BMA253_INTR_PAD_HIGH_G:
+            (int_number_u8 == BMA253_INTR1 ? BMA253_SET_BITS(bma253, BMA253_ENABLE_INTR1_PAD_HIGH_G, int_map_u8) :
+                BMA253_SET_BITS(bma253, BMA253_ENABLE_INTR2_PAD_HIGH_G, int_map_u8));
+            break;
+
+        case BMA253_INTR_PAD_SLOPE:
+            (int_number_u8 == BMA253_INTR1 ? BMA253_SET_BITS(bma253, BMA253_ENABLE_INTR1_PAD_SLOPE, int_map_u8) :
+                BMA253_SET_BITS(bma253, BMA253_ENABLE_INTR2_PAD_SLOPE, int_map_u8));
+            break;
+
+        case BMA253_INTR_PAD_SLOW_NO_MOTION:
+            (int_number_u8 == BMA253_INTR1 ? BMA253_SET_BITS(bma253, BMA253_ENABLE_INTR1_PAD_SLOW_NO_MOTION, int_map_u8) :
+                BMA253_SET_BITS(bma253, BMA253_ENABLE_INTR2_PAD_SLOW_NO_MOTION, int_map_u8));
+            break;
+
+        case BMA253_INTR_PAD_DOUBLE_TAP:
+            (int_number_u8 == BMA253_INTR1 ? BMA253_SET_BITS(bma253, BMA253_ENABLE_INTR1_PAD_DOUBLE_TAP, int_map_u8) :
+                BMA253_SET_BITS(bma253, BMA253_ENABLE_INTR2_PAD_DOUBLE_TAP, int_map_u8));
+            break;
+
+        case BMA253_INTR_PAD_SINGLE_TAP:
+            (int_number_u8 == BMA253_INTR1 ? BMA253_SET_BITS(bma253, BMA253_ENABLE_INTR1_PAD_SINGLE_TAP, int_map_u8) :
+                BMA253_SET_BITS(bma253, BMA253_ENABLE_INTR2_PAD_SINGLE_TAP, int_map_u8));
+            break;
+
+        case BMA253_INTR_PAD_ORIENT:
+            (int_number_u8 == BMA253_INTR1 ? BMA253_SET_BITS(bma253, BMA253_ENABLE_INTR1_PAD_ORIENT, int_map_u8) :
+                BMA253_SET_BITS(bma253, BMA253_ENABLE_INTR2_PAD_ORIENT, int_map_u8));
+            break;
+            
+        case BMA253_INTR_PAD_FLAT:
+            (int_number_u8 == BMA253_INTR1 ? BMA253_SET_BITS(bma253, BMA253_ENABLE_INTR1_PAD_FLAT, int_map_u8) :
+                BMA253_SET_BITS(bma253, BMA253_ENABLE_INTR2_PAD_FLAT, int_map_u8));
+            break;
+
+        default:
+            break;
+    }
+}
+
+u8 BMA253_HWI_get_intr_level(bma253_t* bma253, u8 channel_u8) {
+    switch (channel_u8)
+    {
+    case BMA253_INTR1_LEVEL:
+        return BMA253_GET_BITS(bma253, BMA253_INTR1_PAD_ACTIVE_LEVEL, BMA253_GEN_READ_WRITE_LENGTH);
+        break;
+    
+    case BMA253_INTR2_LEVEL:
+        return BMA253_GET_BITS(bma253, BMA253_INTR2_PAD_ACTIVE_LEVEL, BMA253_GEN_READ_WRITE_LENGTH);
+        break;
+
+    default:
+        return -1;
+        break;
+    }
+}
+
+void BMA253_HWI_set_intr_level(bma253_t* bma253, u8 channel_u8, u8 intr_level_u8) {
+    switch (channel_u8)
+    {
+    case BMA253_INTR1_LEVEL:
+        BMA253_SET_BITS(bma253, BMA253_INTR1_PAD_ACTIVE_LEVEL, intr_level_u8);
+        break;
+
+    case BMA253_INTR2_LEVEL:
+        BMA253_SET_BITS(bma253, BMA253_INTR2_PAD_ACTIVE_LEVEL, intr_level_u8);
+        break;
+    
+    default:
+        break;
+    }
+}
+
+u8 BMA253_HWI_get_intr_output_type(bma253_t* bma253, u8 channel_u8) {
+    switch (channel_u8)
+    {
+    case BMA253_INTR1_OUTPUT:
+        return BMA253_GET_BITS(bma253, BMA253_INTR1_PAD_OUTPUT_TYPE, BMA253_GEN_READ_WRITE_LENGTH);
+        break;
+    
+    case BMA253_INTR2_OUTPUT:
+        return BMA253_GET_BITS(bma253, BMA253_INTR2_PAD_OUTPUT_TYPE, BMA253_GEN_READ_WRITE_LENGTH);
+        break;
+
+    default:
+        return -1;
+        break;
+    }
+}
+
+void BMA253_HWI_set_intr_output_type(bma253_t* bma253, u8 channel_u8, u8 intr_output_type_u8) {
+    switch (channel_u8)
+    {
+    case BMA253_INTR1_OUTPUT:
+        BMA253_SET_BITS(bma253, BMA253_INTR1_PAD_OUTPUT_TYPE, intr_output_type_u8);
+        break;
+
+    case BMA253_INTR2_OUTPUT:
+        BMA253_SET_BITS(bma253, BMA253_INTR2_PAD_OUTPUT_TYPE, intr_output_type_u8);
+        break;
+    
+    default:
+        break;
+    }
+}
+
+u8 BMA253_HWI_get_slope_th(bma253_t* bma253) {
+    return BMA253_GET_BITS(bma253, BMA253_SLOPE_THRES, BMA253_GEN_READ_WRITE_LENGTH);
+}
+
+void BMA253_HWI_set_slope_th(bma253_t* bma253, u8 slope_th_u8) {
+    BMA253_SET_BITS(bma253, BMA253_SLOPE_THRES, slope_th_u8);
+}
+
+u8 BMA253_HWI_get_slope_dur(bma253_t* bma253) {
+    return BMA253_GET_BITS(bma253, BMA253_SLOPE_DURN, BMA253_GEN_READ_WRITE_LENGTH);
+}
+
+void BMA253_HWI_set_slope_dur(bma253_t* bma253, u8 slope_dur_u8) {
+    if (slope_dur_u8 > 0x03) slope_dur_u8 = 0x03;
+    BMA253_SET_BITS(bma253, BMA253_SLOPE_DURN, slope_dur_u8);
+}
+
+u8 BMA253_HWI_get_slope_en(bma253_t* bma253, u8 slope_axis_u8) {
+    switch (slope_axis_u8)
+    {
+    case BMA253_SLOPE_X_INTR:
+        return BMA253_GET_BITS(bma253, BMA253_ENABLE_SLOPE_X_INTR, BMA253_GEN_READ_WRITE_LENGTH);
+        break;
+    
+    case BMA253_SLOPE_Y_INTR:
+        return BMA253_GET_BITS(bma253, BMA253_ENABLE_SLOPE_Y_INTR, BMA253_GEN_READ_WRITE_LENGTH);
+        break;
+    
+    case BMA253_SLOPE_Z_INTR:
+        return BMA253_GET_BITS(bma253, BMA253_ENABLE_SLOPE_Z_INTR, BMA253_GEN_READ_WRITE_LENGTH);
+        break;
+    
+    default:
+        return -1;
+        break;
+    }
+}
+
+void BMA253_HWI_set_slope_en(bma253_t* bma253, u8 slope_axis_u8, u8 slope_en_axis_u8) {
+    switch (slope_axis_u8)
+    {
+    case BMA253_SLOPE_X_INTR:
+        BMA253_SET_BITS(bma253, BMA253_ENABLE_SLOPE_X_INTR, slope_en_axis_u8);
+        break;
+    
+    case BMA253_SLOPE_Y_INTR:
+        BMA253_SET_BITS(bma253, BMA253_ENABLE_SLOPE_Y_INTR, slope_en_axis_u8);
+        break;
+    
+    case BMA253_SLOPE_Z_INTR:
+        BMA253_SET_BITS(bma253, BMA253_ENABLE_SLOPE_Z_INTR, slope_en_axis_u8);
+        break;
+    
+    default:
+        break;
+    }
+}
+
+
+
 

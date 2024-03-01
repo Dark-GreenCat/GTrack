@@ -126,4 +126,26 @@ u16 BMA253_HWI_get_accd_z_msb_lsb(bma253_t* bma253);
 
 u8 BMA253_HWI_get_latch_int(bma253_t* bma253);
 void BMA253_HWI_set_latch_int(bma253_t* bam253, u8 latch_int_u8);
+
+u8 BMA253_HWI_get_source(bma253_t* bma253, u8 channel_u8);
+void BMA253_HWI_set_source(bma253_t* bma253, u8 channel_u8, u8 int_src_u8);
+
+u8 BMA253_HWI_get_int_map(bma253_t* bma253, u8 channel_u8, u8 int_number_u8);
+void BMA253_HWI_set_int_map(bma253_t* bma253, u8 channel_u8, u8 int_number_u8, u8 int_map_u8);
+
+u8 BMA253_HWI_get_intr_level(bma253_t* bma253, u8 channel_u8);
+void BMA253_HWI_set_intr_level(bma253_t* bma253, u8 channel_u8, u8 intr_level_u8);
+
+u8 BMA253_HWI_get_intr_output_type(bma253_t* bma253, u8 channel_u8);
+void BMA253_HWI_set_intr_output_type(bma253_t* bma253, u8 channel_u8, u8 intr_output_type_u8);
+
+u8 BMA253_HWI_get_slope_th(bma253_t* bma253);
+void BMA253_HWI_set_slope_th(bma253_t* bma253, u8 slope_th_u8);
+
+u8 BMA253_HWI_get_slope_dur(bma253_t* bma253);
+void BMA253_HWI_set_slope_dur(bma253_t* bma253, u8 slope_dur_u8);
+
+u8 BMA253_HWI_get_slope_en(bma253_t* bma253, u8 slope_axis_u8);
+void BMA253_HWI_set_slope_en(bma253_t* bma253, u8 slope_axis_u8, u8 slope_en_axis_u8);
+
 #endif
