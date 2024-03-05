@@ -113,8 +113,8 @@ int main(void)
   /* USER CODE BEGIN 2 */
   
   HCL_GPIO_Init();
-  HCL_UART_Init(huart_terminal, 64);
-  HCL_UART_Init(huart_mc60, 512);
+  HCL_UART_Init(huart_terminal);
+  HCL_UART_Init(huart_mc60);
   HCL_TIMER_Init(&htim3);
 
   PAL_BMA253_Init();

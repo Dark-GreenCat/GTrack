@@ -8,11 +8,14 @@
 #include "fifo_hcl.h"
 #include "signal/signal_pal.h"
 
+#define FIFO_TERMINAL_SIZE 64
+#define FIFO_MC60_SIZE 512
+
 extern UART_HandleTypeDef* huart_terminal;
 extern UART_HandleTypeDef* huart_mc60;
 
 /* Kết nối UART với UART của STM32 -> Đặt kích thước FIFO*/
-void HCL_UART_Init(UART_HandleTypeDef* huart, uint32_t size);
+void HCL_UART_Init(UART_HandleTypeDef* huart);
 /* Bật Interrupt khi nhận dữ liệu */
 void HCL_UART_StartReceive(UART_HandleTypeDef* huart);
 /* Busy-wait đợi FIFO có dữ liệu -> Trả về kí tự */

@@ -10,9 +10,10 @@
 // Initializes a software FIFO of a
 // fixed size and sets up indexes for
 // put and get operations
-void Fifo_Init(Fifo_t* Fifo, uint32_t size) {
+void Fifo_Init(Fifo_t* Fifo, uint8_t* allocated_buffer, uint32_t buffer_size) {
   Fifo->PutI = Fifo->GetI = 0;  // empty
-  Fifo->Size = size;
+  Fifo->Fifo = allocated_buffer;
+  Fifo->Size = buffer_size;
 }
 
 // *********** FiFo_Put**********

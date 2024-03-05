@@ -18,10 +18,10 @@ typedef struct {
     uint32_t PutI;  // index to put new
     uint32_t GetI;  // index of oldest
     uint32_t Size;
-    uint8_t Fifo[FIFO_SIZE_MAX];
+    uint8_t* Fifo;
 } Fifo_t;
 
-void Fifo_Init(Fifo_t* Fifo, uint32_t size);
+void Fifo_Init(Fifo_t* Fifo, uint8_t* allocated_buffer, uint32_t buffer_size);
 uint8_t Fifo_Put(Fifo_t* Fifo, char data);
 uint8_t Fifo_Get(Fifo_t* Fifo);
 
