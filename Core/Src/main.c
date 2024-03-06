@@ -20,6 +20,7 @@
 #include "main.h"
 #include "adc.h"
 #include "i2c.h"
+#include "spi.h"
 #include "tim.h"
 #include "usart.h"
 #include "gpio.h"
@@ -39,6 +40,7 @@
 #include "gtrack_ual.h"
 #include "display/display_pal.h"
 #include "supplier/supplier_pal.h"
+#include "hardware/w25qxx_interface.h"
 ////#include "test_bma253.h"
 /* USER CODE END Includes */
 
@@ -110,6 +112,7 @@ int main(void)
   MX_TIM3_Init();
   MX_I2C1_Init();
   MX_ADC_Init();
+  MX_SPI1_Init();
   /* USER CODE BEGIN 2 */
   
   HCL_GPIO_Init();
@@ -132,11 +135,27 @@ int main(void)
   bool isRunning = true;
   char data = 0;
   bool mc60LastState = false, mc60CurState = false;
-  
+  uint8_t TxData[] = "MS830 - Hello World! My name is Barry Allen";
+  uint8_t RxData[51];
+
+  w25q_t w25q;
+  W25Q_ITF_Init(&w25q, &hspi1, &hgpio_stm32_spi1_nss);
+  W25Q_ITF_Reset(&w25q);
   while (1) {
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+    uint32_t ID = W25Q_ITF_ReadID(&w25q);
+    PAL_DISPLAY_ShowNumber(ID);
+    PAL_DISPLAY_Show("\n");
+
+    W25Q_ITF_Read(&w25q, 0, 0, 50, RxData);
+    W25Q_ITF_WritePage(&w25q, 0, 0, 43, TxData);
+    W25Q_ITF_Read(&w25q, 0, 0, 50, RxData);
+    
+    HAL_Delay(100000);
+
+    continue;
     PAL_DISPLAY_Show("\nRead data\n");
     PAL_DISPLAY_ShowNumber(BMA253_HWI_get_slope_en(&pal_bma253, BMA253_SLOPE_X_INTR));
     BMA253_HWI_set_slope_en(&pal_bma253, BMA253_SLOPE_X_INTR, BMA253_INTR_ENABLE);

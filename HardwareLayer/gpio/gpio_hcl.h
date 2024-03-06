@@ -16,6 +16,8 @@ extern GPIO_HandleTypeDef hgpio_mc60_gnss_en;
 extern GPIO_HandleTypeDef hgpio_mc60_gsm_en;
 extern GPIO_HandleTypeDef hgpio_mc60_vdd_ext;
 
+extern GPIO_HandleTypeDef hgpio_stm32_spi1_nss;
+
 void HCL_GPIO_Config(GPIO_HandleTypeDef* hgpio, GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin);
 void HCL_GPIO_WritePin(GPIO_HandleTypeDef* hgpio, GPIO_PinState PinState);
 GPIO_PinState HCL_GPIO_ReadPin(GPIO_HandleTypeDef* hgpio);

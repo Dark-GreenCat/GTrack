@@ -57,6 +57,8 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define STM32_SPI1_NSS_Pin GPIO_PIN_4
+#define STM32_SPI1_NSS_GPIO_Port GPIOA
 #define GSM_EN_Pin GPIO_PIN_12
 #define GSM_EN_GPIO_Port GPIOB
 #define GNSS_EN_Pin GPIO_PIN_13
