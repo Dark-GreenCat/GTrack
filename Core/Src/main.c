@@ -135,8 +135,8 @@ int main(void)
   bool isRunning = true;
   char data = 0;
   bool mc60LastState = false, mc60CurState = false;
-  uint8_t TxData[] = "MS830 - Hello World! My name is Barry Allen";
-  uint8_t RxData[51];
+  uint8_t TxData[] = "0123456789_0123456789_0123456789_0123456789_0123456789_0123456789_0123456789_0123456789_0123456789_0123456789_0123456789_0123456789_0123456789_0123456789_0123456789_0123456789_0123456789_0123456789_0123456789_0123456789_0123456789_0123456789_0123456789_012";
+  uint8_t RxData[256];
 
   w25q_t w25q;
   W25Q_ITF_Init(&w25q, &hspi1, &hgpio_stm32_spi1_nss);
@@ -149,9 +149,9 @@ int main(void)
     PAL_DISPLAY_ShowNumber(ID);
     PAL_DISPLAY_Show("\n");
 
-    W25Q_ITF_Read(&w25q, 0, 0, 50, RxData);
-    W25Q_ITF_WritePage(&w25q, 0, 0, 43, TxData);
-    W25Q_ITF_Read(&w25q, 0, 0, 50, RxData);
+    W25Q_ITF_Read(&w25q, 0, 0, 256, RxData);
+    W25Q_ITF_WritePage(&w25q, 0, 0, 15, TxData);
+    W25Q_ITF_Read(&w25q, 0, 0, 256, RxData);
     
     HAL_Delay(100000);
 
