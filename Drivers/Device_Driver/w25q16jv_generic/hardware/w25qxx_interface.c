@@ -97,7 +97,7 @@ void W25Q_ITF_WritePage(w25q_t* w25q, uint16_t page_index, uint8_t address_offse
         uint8_t tx_data[4];
         uint32_t mem_addr;
 
-        uint8_t bytes_send = 0;
+        uint16_t bytes_send = 0;
         
         if (page_number == page_start) {
             mem_addr = (page_number * W25QXX_PAGE_SIZE) + address_offset;
@@ -113,7 +113,7 @@ void W25Q_ITF_WritePage(w25q_t* w25q, uint16_t page_index, uint8_t address_offse
             mem_addr = page_number * W25QXX_PAGE_SIZE;
 
             if (write_size > 256) {
-                bytes_send = (uint8_t) 256;
+                bytes_send = 256;
             }
             else {
                 bytes_send = write_size;
@@ -128,5 +128,7 @@ void W25Q_ITF_WritePage(w25q_t* w25q, uint16_t page_index, uint8_t address_offse
         W25Q_CS_SetHigh(w25q->gpio_interface);
         W25Q_Delay(5);
         W25Q_ITF_DisableWrite(w25q);
+
+        p_data += bytes_send;
     }
 }

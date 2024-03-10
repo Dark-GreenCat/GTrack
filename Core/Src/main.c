@@ -107,11 +107,11 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-  MX_USART1_UART_Init();
-  MX_USART3_UART_Init();
-  MX_TIM3_Init();
-  MX_I2C1_Init();
-  MX_ADC_Init();
+//  MX_USART1_UART_Init();
+//  MX_USART3_UART_Init();
+//  MX_TIM3_Init();
+//  MX_I2C1_Init();
+//  MX_ADC_Init();
   MX_SPI1_Init();
   /* USER CODE BEGIN 2 */
   
@@ -135,25 +135,15 @@ int main(void)
   bool isRunning = true;
   char data = 0;
   bool mc60LastState = false, mc60CurState = false;
-  uint8_t TxData[] = "0123456789_0123456789_0123456789_0123456789_0123456789_0123456789_0123456789_0123456789_0123456789_0123456789_0123456789_0123456789_0123456789_0123456789_0123456789_0123456789_0123456789_0123456789_0123456789_0123456789_0123456789_0123456789_0123456789_012";
-  uint8_t RxData[256];
 
-  w25q_t w25q;
-  W25Q_ITF_Init(&w25q, &hspi1, &hgpio_stm32_spi1_nss);
-  W25Q_ITF_Reset(&w25q);
   while (1) {
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-    uint32_t ID = W25Q_ITF_ReadID(&w25q);
-    PAL_DISPLAY_ShowNumber(ID);
-    PAL_DISPLAY_Show("\n");
-
-    W25Q_ITF_Read(&w25q, 0, 0, 256, RxData);
-    W25Q_ITF_WritePage(&w25q, 0, 0, 15, TxData);
-    W25Q_ITF_Read(&w25q, 0, 0, 256, RxData);
+    //DEBUG("Start\n");
+	 PAL_DISPLAY_Show("Hello\n");
     
-    HAL_Delay(100000);
+    HAL_Delay(1000);
 
     continue;
     PAL_DISPLAY_Show("\nRead data\n");
