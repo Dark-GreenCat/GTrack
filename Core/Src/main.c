@@ -107,11 +107,11 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-//  MX_USART1_UART_Init();
-//  MX_USART3_UART_Init();
-//  MX_TIM3_Init();
-//  MX_I2C1_Init();
-//  MX_ADC_Init();
+  MX_USART1_UART_Init();
+  MX_USART3_UART_Init();
+  MX_TIM3_Init();
+  MX_I2C1_Init();
+  MX_ADC_Init();
   MX_SPI1_Init();
   /* USER CODE BEGIN 2 */
   
@@ -135,16 +135,31 @@ int main(void)
   bool isRunning = true;
   char data = 0;
   bool mc60LastState = false, mc60CurState = false;
+  uint8_t TxData[] = "MS830 - Hello World! My name is Barry Allen";
+  uint8_t RxData[51];
 
+  w25q_t w25q;
+  W25Q_ITF_Init(&w25q, &hspi1, &hgpio_stm32_spi1_nss);
+  W25Q_ITF_Reset(&w25q);
+  //W25Q_ITF_WritePage(&w25q, 0, 0, 43, TxData);
   while (1) {
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-    //DEBUG("Start\n");
-	 PAL_DISPLAY_Show("Hello\n");
-    
-    HAL_Delay(1000);
+	continue;
+    uint32_t ID = W25Q_ITF_ReadID(&w25q);
+    PAL_DISPLAY_ShowNumber(ID);
+    PAL_DISPLAY_Show("\n");
 
+    W25Q_ITF_Read(&w25q, 0, 0, 50, RxData);
+	RxData[50] = '\0';
+	PAL_DISPLAY_Show((char*) RxData);
+    //W25Q_ITF_WritePage(&w25q, 0, 0, 43, TxData);
+//    W25Q_ITF_Read(&w25q, 0, 0, 50, RxData);
+//	RxData[50] = '\0';
+//	PAL_DISPLAY_Show((char*) RxData);
+    
+    HAL_Delay(2000);
     continue;
     PAL_DISPLAY_Show("\nRead data\n");
     PAL_DISPLAY_ShowNumber(BMA253_HWI_get_slope_en(&pal_bma253, BMA253_SLOPE_X_INTR));
