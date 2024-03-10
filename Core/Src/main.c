@@ -51,7 +51,36 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+#include <stdarg.h>
+#include <stdio.h>
 
+void myprint(char* format, ...)
+{
+    // Create a va_list to hold the variable arguments
+    va_list args;
+
+    // Start processing the variable arguments
+    va_start(args, format);
+    int size = vsnprintf(NULL, 0, format, args);
+
+    // Create a copy of the va_list
+    va_list args_copy;
+    va_copy(args_copy, args);
+
+    // Use vsprintf to format the string and store it in the buffer
+    char buffer[size + 1];
+    vsprintf(buffer, format, args_copy);
+
+    // Clean up the copied va_list
+    va_end(args_copy);
+
+    PAL_DISPLAY_Show(buffer);
+
+    // Clean up the va_list
+    va_end(args);
+}
+
+#define DEBUG(...) PAL_DISPLAY_Debug(__VA_ARGS__);
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -144,7 +173,13 @@ int main(void)
   //W25Q_ITF_WritePage(&w25q, 0, 0, 43, TxData);
   while (1) {
     /* USER CODE END WHILE */
-
+    DEBUG("\nHello World %d %c %s %.9f %f", -234, 'o', "My name is you\n", -3.14, 7.893)
+	  PAL_DISPLAY_Debug("DEBUG: \n");
+    PAL_UART_OutNumber_Double(huart_terminal, -3.1415678, 15);
+    //myprint("%d %s %c\n", 3, "haiz", 'u');
+	//myprint("%s", "Hello\n");
+  //myprint("%s", "MS830 - Hello World! My name is Barry Allen*MS830 - Hello World! My name is Barry Allen*MS830 -MS830 - Hello World! My name is Barry Allen*MS830 - Hello World! My name is Barry Allen*MS830 - Hello World! My name is Barry Allen*MS830 - Hello World! My name is Barry AllenMS830 - Hello World! My name is Barry AllenMS830 - Hello World! My name is Barry AllenMS830 - Hello World! My name is Barry AllenMS830 - Hello World! My name is Barry AllenMS830 - Hello World! My name is Barry AllenMS830 - Hello World! My name is Barry AllenMS830 - Hello World! My name is Barry AllenMS830 - Hello World! My name is Barry Allen*MS830 - Hello World! My name is Barry Allen*MS830 - Hello World! My name is Barry Allen*MS830 - Hello World! My name is Barry AllenMS830 - Hello World! My name is Barry AllenMS830 - Hello World! My name is Barry AllenMS830 - Hello World! My name is Barry AllenMS830 - Hello World! My name is Barry AllenMS830 - Hello World! My name is Barry AllenMS830 - Hello World! My name is Barry AllenMS830 - Hello World! My name is Barry Allen\n");
+    HAL_Delay(1000);
     /* USER CODE BEGIN 3 */
 	continue;
     uint32_t ID = W25Q_ITF_ReadID(&w25q);

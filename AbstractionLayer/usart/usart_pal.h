@@ -11,6 +11,7 @@ bool PAL_UART_ReadStringUntil(UART_HandleTypeDef* huart, char terminatedChar, ch
 void PAL_UART_OutString(UART_HandleTypeDef* huart, const char* str);
 void PAL_UART_OutNumber(UART_HandleTypeDef* huart, uint32_t number);
 void PAL_UART_OutNumber_Signed(UART_HandleTypeDef* huart, int32_t number);
+void PAL_UART_OutNumber_Double(UART_HandleTypeDef* huart, double number, uint8_t precision);
 void PAL_UART_OutBinary_8BIT(UART_HandleTypeDef* huart, uint8_t data);
 void PAL_UART_OutBinary_16BIT(UART_HandleTypeDef* huart, uint16_t data);
 

@@ -7,4 +7,6 @@ void PAL_DISPLAY_Show(const char* str);
 void PAL_DISPLAY_ShowNumber(uint32_t number);
 void PAL_DISPLAY_ShowNumberSigned(int32_t number);
 
+void PAL_DISPLAY_Debug(const char* format, ...);
+
 #endif

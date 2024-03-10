@@ -65,6 +65,33 @@ void PAL_UART_OutNumber_Signed(UART_HandleTypeDef* huart, int32_t number) {
 	while(index--) HCL_UART_OutChar(huart, number_str[index]);
 }
 
+void PAL_UART_OutNumber_Double(UART_HandleTypeDef* huart, double number, uint8_t precision) {
+    if (number < 0) {
+        HCL_UART_OutChar(huart, '-');
+        number = -number;
+    }
+    
+    // Convert the double to an integer
+    uint32_t integer = (uint32_t)number;
+
+    // Output the integer part
+    PAL_UART_OutNumber(huart, integer);
+
+    // Output the decimal point
+    HCL_UART_OutChar(huart, '.');
+
+    // Calculate the fractional part
+    double fractional = number - integer;
+
+    // Output the fractional part with the desired precision
+    for (uint8_t i = 0; i < precision; i++) {
+        fractional *= 10; // Shift the decimal point to the right
+        uint32_t digit = (uint32_t)fractional;
+        PAL_UART_OutNumber(huart, digit);
+        fractional -= digit;
+    }
+}
+
 void PAL_UART_OutBinary_8BIT(UART_HandleTypeDef* huart, uint8_t data) {
     uint8_t bit;
 	uint8_t i = 8;
