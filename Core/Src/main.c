@@ -51,36 +51,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#include <stdarg.h>
-#include <stdio.h>
 
-void myprint(char* format, ...)
-{
-    // Create a va_list to hold the variable arguments
-    va_list args;
-
-    // Start processing the variable arguments
-    va_start(args, format);
-    int size = vsnprintf(NULL, 0, format, args);
-
-    // Create a copy of the va_list
-    va_list args_copy;
-    va_copy(args_copy, args);
-
-    // Use vsprintf to format the string and store it in the buffer
-    char buffer[size + 1];
-    vsprintf(buffer, format, args_copy);
-
-    // Clean up the copied va_list
-    va_end(args_copy);
-
-    PAL_DISPLAY_Show(buffer);
-
-    // Clean up the va_list
-    va_end(args);
-}
-
-#define DEBUG(...) PAL_DISPLAY_Debug(__VA_ARGS__);
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -106,6 +77,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
   PAL_DISPLAY_Show("\nEXT INTTERUPT DETECTED!\n");
 }
+
 /* USER CODE END 0 */
 
 /**
@@ -173,29 +145,22 @@ int main(void)
   //W25Q_ITF_WritePage(&w25q, 0, 0, 43, TxData);
   while (1) {
     /* USER CODE END WHILE */
-    DEBUG("\nHello World %d %c %s %.9f %f", -234, 'o', "My name is you\n", -3.14, 7.893)
-	  PAL_DISPLAY_Debug("DEBUG: \n");
-    PAL_UART_OutNumber_Double(huart_terminal, -3.1415678, 15);
-    //myprint("%d %s %c\n", 3, "haiz", 'u');
-	//myprint("%s", "Hello\n");
-  //myprint("%s", "MS830 - Hello World! My name is Barry Allen*MS830 - Hello World! My name is Barry Allen*MS830 -MS830 - Hello World! My name is Barry Allen*MS830 - Hello World! My name is Barry Allen*MS830 - Hello World! My name is Barry Allen*MS830 - Hello World! My name is Barry AllenMS830 - Hello World! My name is Barry AllenMS830 - Hello World! My name is Barry AllenMS830 - Hello World! My name is Barry AllenMS830 - Hello World! My name is Barry AllenMS830 - Hello World! My name is Barry AllenMS830 - Hello World! My name is Barry AllenMS830 - Hello World! My name is Barry AllenMS830 - Hello World! My name is Barry Allen*MS830 - Hello World! My name is Barry Allen*MS830 - Hello World! My name is Barry Allen*MS830 - Hello World! My name is Barry AllenMS830 - Hello World! My name is Barry AllenMS830 - Hello World! My name is Barry AllenMS830 - Hello World! My name is Barry AllenMS830 - Hello World! My name is Barry AllenMS830 - Hello World! My name is Barry AllenMS830 - Hello World! My name is Barry AllenMS830 - Hello World! My name is Barry Allen\n");
-    HAL_Delay(1000);
+
     /* USER CODE BEGIN 3 */
-	continue;
+	//continue;
     uint32_t ID = W25Q_ITF_ReadID(&w25q);
-    PAL_DISPLAY_ShowNumber(ID);
-    PAL_DISPLAY_Show("\n");
+    DEBUG("%d\n", ID);
 
     W25Q_ITF_Read(&w25q, 0, 0, 50, RxData);
 	RxData[50] = '\0';
-	PAL_DISPLAY_Show((char*) RxData);
+	DEBUG("%s", RxData);
     //W25Q_ITF_WritePage(&w25q, 0, 0, 43, TxData);
 //    W25Q_ITF_Read(&w25q, 0, 0, 50, RxData);
 //	RxData[50] = '\0';
 //	PAL_DISPLAY_Show((char*) RxData);
     
     HAL_Delay(2000);
-    continue;
+    //continue;
     PAL_DISPLAY_Show("\nRead data\n");
     PAL_DISPLAY_ShowNumber(BMA253_HWI_get_slope_en(&pal_bma253, BMA253_SLOPE_X_INTR));
     BMA253_HWI_set_slope_en(&pal_bma253, BMA253_SLOPE_X_INTR, BMA253_INTR_ENABLE);
@@ -204,26 +169,26 @@ int main(void)
 
     HAL_Delay(2000);
     
-    continue;
+    //continue;
     cur = HAL_GetTick();
     mc60CurState = MC60_ITF_IsRunning(&pal_mc60.core);
 
     if (HCL_UART_IsAvailable(huart_terminal)) {
       data = HCL_UART_InChar(huart_terminal);
       HCL_UART_OutChar(huart_mc60, data);
-    }
+    }	
     PAL_UART_FlushToUART_Char(huart_mc60, huart_terminal);
     
     if (data == '#') {
       data = 0;
-      PAL_DISPLAY_ShowNumber(MC60_ITF_GNSS_checkPower(&pal_mc60.core));
+      DEBUG("%d", MC60_ITF_GNSS_checkPower(&pal_mc60.core))
       isRunning = !isRunning;
       if (isRunning == false) {
-        PAL_DISPLAY_Show("\nPAUSE RUNNING");
+        DEBUG("\nPAUSE RUNNING")
         PAL_MC60_PowerOn(MC60_POWER_OFF);
       }
       else  {
-        PAL_DISPLAY_Show("\nCONTINUE RUNNING");
+        DEBUG("\nCONTINUE RUNNING");
       }
     }
 
@@ -234,7 +199,7 @@ int main(void)
       continue;
     }
 
-    continue;
+    //continue;
 
     if (!mc60CurState) {
       UAL_GTRACK_GeoTrack_Enable();

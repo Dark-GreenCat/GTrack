@@ -44,34 +44,34 @@ void NAL_GTRACK_Send(const char* message) {
     uint32_t timestart = HAL_GetTick();
     while (HAL_GetTick() - timestart < pal_mc60.timeout) {
 		if (errorCount >= 10) {
-			PAL_DISPLAY_Show("\nToo many attemps failed. Restarting GTrack...");
+			DEBUG("\nToo many attemps failed. Restarting GTrack...");
 			NVIC_SystemReset();
 		}
 		
         if (!isMQTTOpen) {
-            PAL_DISPLAY_Show("\n*** Opening MQTT connection...");
+            DEBUG("\n*** Opening MQTT connection...");
             result = NAL_GTRACK_OpenNetwork();
             isSuccess = (result == 0 || result == 2);
-            PAL_DISPLAY_Show("\nResult code: "); PAL_DISPLAY_ShowNumberSigned(result);
+            DEBUG("\nResult code: %d", result);
             if (!isSuccess) {
 				errorCount++;
                 if (result == 3) {
-                    PAL_DISPLAY_Show("\nFailed to setup PDP context. Restarting GTrack...");
+                    DEBUG("\nFailed to setup PDP context. Restarting GTrack...");
                     NVIC_SystemReset();
                 }
-                PAL_DISPLAY_Show("\nFailed to open MQTT connection. Retrying in 3 seconds...");
+                DEBUG("\nFailed to open MQTT connection. Retrying in 3 seconds...");
                 continue;
             }
 			errorCount = 0;
             isMQTTOpen = true;
         }
 
-        PAL_DISPLAY_Show("\n*** Connecting MQTT broker...");
+        DEBUG("\n*** Connecting MQTT broker...");
         result = NAL_GTRACK_ConnectBroker();
-        PAL_DISPLAY_Show("\nResult code: "); PAL_DISPLAY_ShowNumberSigned(result);
+        DEBUG("\nResult code: %d", result);
         isSuccess = (result == 0 || result == 1);
         if (!isSuccess) {
-            PAL_DISPLAY_Show("\nFailed to connect to MQTT broker. Retrying in 3 seconds...");
+            DEBUG("\nFailed to connect to MQTT broker. Retrying in 3 seconds...");
             NAL_GTRACK_Disconnect();
 			errorCount++;
             isMQTTOpen = false;
@@ -79,19 +79,18 @@ void NAL_GTRACK_Send(const char* message) {
         }
 		errorCount = 0;
 		
-        PAL_DISPLAY_Show("\n*** Publishing MQTT message: ");
-        PAL_DISPLAY_Show(message);
+        DEBUG("\n*** Publishing MQTT message: %s", message);
         result = NAL_GTRACK_PublishMessage(message);
-        PAL_DISPLAY_Show("\nResult code: "); PAL_DISPLAY_ShowNumberSigned(result);
+        DEBUG("\nResult code: %d", result);
         isSuccess = (result == 0);
 
         if (isSuccess) {
 			errorCount = 0;
-			PAL_DISPLAY_Show("\nMessage published successfully. Disconnecting from MQTT broker...");
+			DEBUG("\nMessage published successfully. Disconnecting from MQTT broker...");
         }
 		else {
 			errorCount++;
-			PAL_DISPLAY_Show("\nFailed to publish MQTT message. Disconnecting and retrying in 3 seconds...");
+			DEBUG("\nFailed to publish MQTT message. Disconnecting and retrying in 3 seconds...");
 		}
 		
         NAL_GTRACK_Disconnect();

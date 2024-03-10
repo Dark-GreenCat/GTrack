@@ -46,7 +46,14 @@ extern "C" {
 
 /* Exported macro ------------------------------------------------------------*/
 /* USER CODE BEGIN EM */
+#define DEBUG_ENABLE
 
+
+#ifdef DEBUG_ENABLE
+#define DEBUG(...) PAL_DISPLAY_Debug(__VA_ARGS__);
+#else
+#define DEBUG(...)
+#endif
 /* USER CODE END EM */
 
 /* Exported functions prototypes ---------------------------------------------*/
