@@ -40,7 +40,7 @@
 #include "gtrack_ual.h"
 #include "display/display_pal.h"
 #include "supplier/supplier_pal.h"
-#include "hardware/w25qxx_interface.h"
+#include "hardware/w25q_interface.h"
 ////#include "test_bma253.h"
 /* USER CODE END Includes */
 
@@ -136,24 +136,27 @@ int main(void)
   bool isRunning = true;
   char data = 0;
   bool mc60LastState = false, mc60CurState = false;
-  uint8_t TxData[] = "MS830 - Hello World! My name is Barry Allen";
-  uint8_t RxData[51];
+  uint8_t TxData[] = "The quick brown fox jumps over the lazy dog. This is a sample English text for testing purposes. It contains 318 characters, including spaces and punctuation. The text is meant to showcase the usage of the English language in a concise manner. Feel free to use this sample text for your C program or any other testing needs.";
+  uint8_t RxData[513];
 
   w25q_t w25q;
   W25Q_ITF_Init(&w25q, &hspi1, &hgpio_stm32_spi1_nss);
   W25Q_ITF_Reset(&w25q);
-  //W25Q_ITF_WritePage(&w25q, 0, 0, 43, TxData);
+  // W25Q_ITF_EraseBlock(&w25q, 0);
+  // W25Q_ITF_EraseBlock(&w25q, 1);
+  // W25Q_ITF_WriteBlock(&w25q, 0, 65500, 326, TxData);
   while (1) {
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	//continue;
     uint32_t ID = W25Q_ITF_ReadID(&w25q);
-    DEBUG("%d\n", ID);
+    DEBUG("\nChip ID: %X", ID);
 
-    W25Q_ITF_Read(&w25q, 0, 0, 50, RxData);
-	RxData[50] = '\0';
-	DEBUG("%s", RxData);
+    W25Q_ITF_ReadBlock(&w25q, 0, 65400, 512, RxData);
+    RxData[512] = '\0';
+    DEBUG("\n%s", RxData);
+    HAL_Delay(2000);
+    continue;
     //W25Q_ITF_WritePage(&w25q, 0, 0, 43, TxData);
 //    W25Q_ITF_Read(&w25q, 0, 0, 50, RxData);
 //	RxData[50] = '\0';

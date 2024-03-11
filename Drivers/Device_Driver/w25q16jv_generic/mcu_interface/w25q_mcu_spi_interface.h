@@ -2,6 +2,7 @@
 #define __W25QXX_MCU_SPI_INTERFACE
 
 #include <stdint.h>
+#include <stdbool.h>
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -50,12 +51,8 @@ static inline void W25Q_SPI_Receive(spi_interface_t* spi_interface, uint8_t* p_d
     HCL_SPI_Receive(spi_interface, p_data, length);
 }
 
-static inline void W25Q_CS_SetHigh(gpio_interface_t* gpio_interface) {
-    HCL_GPIO_WritePin(&hgpio_stm32_spi1_nss, GPIO_PIN_SET);
-}
-
-static inline void W25Q_CS_SetLow(gpio_interface_t* gpio_interface) {
-    HCL_GPIO_WritePin(&hgpio_stm32_spi1_nss, GPIO_PIN_RESET);
+static inline void W25Q_CS_Select(gpio_interface_t* gpio_interface, bool select) {
+    HCL_GPIO_WritePin(&hgpio_stm32_spi1_nss, (GPIO_PinState) select);
 }
 
 static inline void W25Q_Delay(uint32_t ms) {

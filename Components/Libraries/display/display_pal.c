@@ -51,6 +51,18 @@ void PAL_DISPLAY_Debug(const char* format, ...) {
                 char* value = va_arg(args, char*);
                 PAL_UART_OutString(huart_terminal, value);
             }
+            else if (*p == 'x') {
+                int value = va_arg(args, int);
+                char buffer[9];
+                sprintf(buffer, "%x", value);
+                PAL_UART_OutString(huart_terminal, buffer);
+            }
+            else if (*p == 'X') {
+                int value = va_arg(args, int);
+                char buffer[9];
+                sprintf(buffer, "%X", value);
+                PAL_UART_OutString(huart_terminal, buffer);
+            }            
             // Add more format specifiers as needed
         }
         else {

@@ -556,9 +556,9 @@
           <GroupName>Hardware/Drivers/W25Q</GroupName>
           <Files>
             <File>
-              <FileName>w25qxx_interface.c</FileName>
+              <FileName>w25q_interface.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Drivers\Device_Driver\w25q16jv_generic\hardware\w25qxx_interface.c</FilePath>
+              <FilePath>..\Drivers\Device_Driver\w25q16jv_generic\hardware\w25q_interface.c</FilePath>
             </File>
           </Files>
         </Group>
