@@ -149,28 +149,28 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-    uint32_t ID = W25Q_ITF_ReadID(&w25q);
-    DEBUG("\nChip ID: %X", ID);
+//     uint32_t ID = W25Q_ITF_ReadID(&w25q);
+//     DEBUG("\nChip ID: %X", ID);
 
-    W25Q_ITF_ReadBlock(&w25q, 0, 65400, 512, RxData);
-    RxData[512] = '\0';
-    DEBUG("\n%s", RxData);
-    HAL_Delay(2000);
-    continue;
-    //W25Q_ITF_WritePage(&w25q, 0, 0, 43, TxData);
-//    W25Q_ITF_Read(&w25q, 0, 0, 50, RxData);
-//	RxData[50] = '\0';
-//	PAL_DISPLAY_Show((char*) RxData);
+//     W25Q_ITF_ReadBlock(&w25q, 0, 65400, 512, RxData);
+//     RxData[512] = '\0';
+//     DEBUG("\n%s", RxData);
+//     HAL_Delay(2000);
+//     continue;
+//     //W25Q_ITF_WritePage(&w25q, 0, 0, 43, TxData);
+// //    W25Q_ITF_Read(&w25q, 0, 0, 50, RxData);
+// //	RxData[50] = '\0';
+// //	PAL_DISPLAY_Show((char*) RxData);
     
-    HAL_Delay(2000);
-    //continue;
-    PAL_DISPLAY_Show("\nRead data\n");
-    PAL_DISPLAY_ShowNumber(BMA253_HWI_get_slope_en(&pal_bma253, BMA253_SLOPE_X_INTR));
-    BMA253_HWI_set_slope_en(&pal_bma253, BMA253_SLOPE_X_INTR, BMA253_INTR_ENABLE);
-    PAL_DISPLAY_Show("\n");
-    PAL_DISPLAY_ShowNumber(BMA253_HWI_get_slope_en(&pal_bma253, BMA253_SLOPE_X_INTR));
+//     HAL_Delay(2000);
+//     //continue;
+//     PAL_DISPLAY_Show("\nRead data\n");
+//     PAL_DISPLAY_ShowNumber(BMA253_HWI_get_slope_en(&pal_bma253, BMA253_SLOPE_X_INTR));
+//     BMA253_HWI_set_slope_en(&pal_bma253, BMA253_SLOPE_X_INTR, BMA253_INTR_ENABLE);
+//     PAL_DISPLAY_Show("\n");
+//     PAL_DISPLAY_ShowNumber(BMA253_HWI_get_slope_en(&pal_bma253, BMA253_SLOPE_X_INTR));
 
-    HAL_Delay(2000);
+//     HAL_Delay(2000);
     
     //continue;
     cur = HAL_GetTick();

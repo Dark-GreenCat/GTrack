@@ -20,7 +20,6 @@ void PAL_DISPLAY_Debug(const char* format, ...) {
     va_start(args, format);
 
     const char* p = format;
-    char buffer[2] = { 0 };
 
     int precision = 0;
     while (*p != '\0') {
@@ -30,39 +29,56 @@ void PAL_DISPLAY_Debug(const char* format, ...) {
                 while (*++p != 'f') precision = precision * 10 + (*p - '0');
             }
 
-            if (*p == '%') {
-                HCL_UART_OutChar(huart_terminal, '%'); // Print literal '%'
-            }
-            else if (*p == 'c') {
-                char value = va_arg(args, int);
+            switch (*p) {
+            case '%':
+                HCL_UART_OutChar(huart_terminal, '%');
+                break;
+            case 'c': {
+                char value;
+                value = va_arg(args, int);
                 HCL_UART_OutChar(huart_terminal, value);
+                break;
             }
-            else if (*p == 'd') {
-                int value = va_arg(args, int);
+            case 'd': {
+                int value;
+                value = va_arg(args, int);
                 PAL_UART_OutNumber_Signed(huart_terminal, value);
+                break;
             }
-            else if (*p == 'f') {
-                double value = va_arg(args, double);
-                if(precision == 0) precision = 6;
+            case 'f': {
+                double value;
+                value = va_arg(args, double);
+                if (precision == 0)
+                    precision = 6;
                 PAL_UART_OutNumber_Double(huart_terminal, value, precision);
                 precision = 0;
+                break;
             }
-            else if (*p == 's') {
-                char* value = va_arg(args, char*);
+            case 's': {
+                char* value;
+                value = va_arg(args, char*);
                 PAL_UART_OutString(huart_terminal, value);
+                break;
             }
-            else if (*p == 'x') {
-                int value = va_arg(args, int);
+            case 'x': {
+                int value;
                 char buffer[9];
+                value = va_arg(args, int);
                 sprintf(buffer, "%x", value);
                 PAL_UART_OutString(huart_terminal, buffer);
+                break;
             }
-            else if (*p == 'X') {
-                int value = va_arg(args, int);
+            case 'X': {
+                int value;
                 char buffer[9];
+                value = va_arg(args, int);
                 sprintf(buffer, "%X", value);
                 PAL_UART_OutString(huart_terminal, buffer);
-            }            
+                break;
+            }
+            default:
+                break;
+            }
             // Add more format specifiers as needed
         }
         else {
