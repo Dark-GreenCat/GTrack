@@ -45,8 +45,15 @@ void UAL_GTRACK_GeoTrack_Enable() {
 }
 
 void UAL_GTRACK_GeoTrack_Activate(feature_geotrack_state state) {
-    DEBUG("\n-------- Power on GNSS --------\n");
-    PAL_MC60_GNSS_PowerOn(MC60_GNSS_POWER_ON);
+    if (state == GEOTRACK_DEACTIVATE) {
+        DEBUG("\n-------- Power off GNSS --------\n");
+        PAL_MC60_GNSS_PowerOn(MC60_GNSS_POWER_OFF);
+    }
+    else {
+        DEBUG("\n-------- Power on GNSS --------\n");
+        PAL_MC60_GNSS_PowerOn(MC60_GNSS_POWER_ON);
+        HAL_Delay(2000);
+    }
 }
 
 void UAL_GTRACK_GeoTrack_GetMetric() {
@@ -57,7 +64,6 @@ void UAL_GTRACK_GeoTrack_GetMetric() {
     NMEA_Parser_Reset(&GPSData);
 
     UAL_GTRACK_GeoTrack_Activate(GEOTRACK_ACTIVATE);
-    HAL_Delay(2000);
     PAL_UART_FlushToUART_String(huart_mc60, huart_terminal);
     gnss_power_state = MC60_ITF_GNSS_checkPower(&pal_mc60.core);
     DEBUG("\nGNSS Power Status: %d", gnss_power_state);
@@ -75,7 +81,7 @@ void UAL_GTRACK_GeoTrack_GetMetric() {
     UAL_MC60_isGettingGNSS = false;
     
     if (isGetGNSSSuccess) {
-        PAL_MC60_RunCommand("AT+QGNSSC=0");
+        UAL_GTRACK_GeoTrack_Activate(GEOTRACK_DEACTIVATE);
         HAL_Delay(200);
         PAL_UART_FlushToUART_String(huart_mc60, huart_terminal);
         NMEA_Parser_changeTimezone(&GPSData, 7);

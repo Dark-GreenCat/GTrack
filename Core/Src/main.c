@@ -136,43 +136,15 @@ int main(void)
   bool isRunning = true;
   char data = 0;
   bool mc60LastState = false, mc60CurState = false;
-  uint8_t TxData[] = "The quick brown fox jumps over the lazy dog. This is a sample English text for testing purposes. It contains 318 characters, including spaces and punctuation. The text is meant to showcase the usage of the English language in a concise manner. Feel free to use this sample text for your C program or any other testing needs.";
-  uint8_t RxData[513];
 
   w25q_t w25q;
   W25Q_ITF_Init(&w25q, &hspi1, &hgpio_stm32_spi1_nss);
   W25Q_ITF_Reset(&w25q);
-  // W25Q_ITF_EraseBlock(&w25q, 0);
-  // W25Q_ITF_EraseBlock(&w25q, 1);
-  // W25Q_ITF_WriteBlock(&w25q, 0, 65500, 326, TxData);
+
   while (1) {
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-//     uint32_t ID = W25Q_ITF_ReadID(&w25q);
-//     DEBUG("\nChip ID: %X", ID);
-
-//     W25Q_ITF_ReadBlock(&w25q, 0, 65400, 512, RxData);
-//     RxData[512] = '\0';
-//     DEBUG("\n%s", RxData);
-//     HAL_Delay(2000);
-//     continue;
-//     //W25Q_ITF_WritePage(&w25q, 0, 0, 43, TxData);
-// //    W25Q_ITF_Read(&w25q, 0, 0, 50, RxData);
-// //	RxData[50] = '\0';
-// //	PAL_DISPLAY_Show((char*) RxData);
-    
-//     HAL_Delay(2000);
-//     //continue;
-//     PAL_DISPLAY_Show("\nRead data\n");
-//     PAL_DISPLAY_ShowNumber(BMA253_HWI_get_slope_en(&pal_bma253, BMA253_SLOPE_X_INTR));
-//     BMA253_HWI_set_slope_en(&pal_bma253, BMA253_SLOPE_X_INTR, BMA253_INTR_ENABLE);
-//     PAL_DISPLAY_Show("\n");
-//     PAL_DISPLAY_ShowNumber(BMA253_HWI_get_slope_en(&pal_bma253, BMA253_SLOPE_X_INTR));
-
-//     HAL_Delay(2000);
-    
-    //continue;
     cur = HAL_GetTick();
     mc60CurState = MC60_ITF_IsRunning(&pal_mc60.core);
 
@@ -202,14 +174,13 @@ int main(void)
       continue;
     }
 
-    //continue;
-
     if (!mc60CurState) {
       UAL_GTRACK_GeoTrack_Enable();
+      UAL_GTRACK_GeoTrack_GetMetric();
     }
 
-    if (cur - pre > 15000) {
-      // HCL_UART_OutChar(huart_mc60, '.');
+    if (cur - pre > 5000) {
+      // HCL_UART_OutChar(huart_mc60, '\0');
       UAL_GTRACK_GeoTrack_GetMetric();
       pre = cur;
     }

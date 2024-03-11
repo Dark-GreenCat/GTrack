@@ -53,7 +53,7 @@ static inline void saveFieldNMEA_RMC(nmea_data* data, uint8_t field_index) {
 
         case RMC_FIELD_SPEED:
             setRawSpeed(&data->Speed, Term);
-            if(data->Speed.speed_raw[0] != '\0') {
+            if(isFix) {
                 data->Speed.is_valid = true;
                 decodeSpeed(&data->Speed);
             }
@@ -62,7 +62,7 @@ static inline void saveFieldNMEA_RMC(nmea_data* data, uint8_t field_index) {
 
         case RMC_FIELD_COURSE:
             setRawCourse(&data->Course, Term);
-            if(data->Course.course_raw[0] != '\0') {
+            if(isFix) {
                 data->Course.is_valid = true;
                 decodeCourse(&data->Course);            
             }

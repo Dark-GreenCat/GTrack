@@ -107,16 +107,28 @@ char* NAL_GTRACK_ConstructMessage(char* destination, nmea_data* data) {
 
     *ptr = '{'; ptr++;
 
-    if (data->Time.is_valid)
-        ptr += sprintf(ptr, "time:'%02d:%02d:%02d',", data->Time.hours, data->Time.minutes, data->Time.seconds);
-
     if (data->Date.is_valid)
         ptr += sprintf(ptr, "date:'%02d/%02d/%04d',", data->Date.day, data->Date.month, 2000 + data->Date.year);
+
+    if (data->Time.is_valid)
+        ptr += sprintf(ptr, "time:'%02d:%02d:%02d',", data->Time.hours, data->Time.minutes, data->Time.seconds);
     
     if (data->Location.is_valid) {
-        ptr += sprintf(ptr, "lat:%s,",  NMEA_Parser_nmeafloattostr(data->Location.latitude, str_temp));
-        ptr += sprintf(ptr, "long:%s,",  NMEA_Parser_nmeafloattostr(data->Location.longitude, str_temp));
+        ptr += sprintf(ptr, "lat:%s,", NMEA_Parser_nmeafloattostr(data->Location.latitude, str_temp));
+        ptr += sprintf(ptr, "long:%s,", NMEA_Parser_nmeafloattostr(data->Location.longitude, str_temp));
     }
+
+    if (data->Speed.is_valid)
+        ptr += sprintf(ptr, "spd:%s,", NMEA_Parser_nmeafloattostr(data->Speed.speed_knot, str_temp));
+
+    if (data->Altitude.is_valid)
+        ptr += sprintf(ptr, "alt:%s,", NMEA_Parser_nmeafloattostr(data->Altitude.altitude_meter, str_temp));
+
+    if (data->Course.is_valid)
+        ptr += sprintf(ptr, "crs:%s,", NMEA_Parser_nmeafloattostr(data->Course.course_degree, str_temp));
+
+    if (data->HDOP.is_valid)
+        ptr += sprintf(ptr, "hdop:%s,", NMEA_Parser_nmeafloattostr(data->HDOP.hdop, str_temp));
 
     ptr += sprintf(ptr, "bat:%.2f,chg:%.2f,", PAL_SUPPLIER_GetBatteryVoltage(), PAL_SUPPLIER_GetChargerVoltage());
 
