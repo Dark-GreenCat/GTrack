@@ -45,6 +45,7 @@ void NAL_GTRACK_Send(const char* message) {
     while (HAL_GetTick() - timestart < pal_mc60.timeout) {
 		if (errorCount >= 10) {
 			DEBUG("\nToo many attemps failed. Restarting GTrack...");
+            PAL_MC60_PowerOn(MC60_POWER_OFF);
 			NVIC_SystemReset();
 		}
 		
@@ -130,6 +131,10 @@ char* NAL_GTRACK_ConstructMessage(char* destination, nmea_data* data) {
     if (data->HDOP.is_valid)
         ptr += sprintf(ptr, "hdop:%s,", NMEA_Parser_nmeafloattostr(data->HDOP.hdop, str_temp));
 
+    bma253_accel_data_t bma253_accel_data;
+    PAL_BMA253_Get_Accel_XYZ(&bma253_accel_data);
+    ptr += sprintf(ptr, "ax:%d,ay:%d,az:%d,", bma253_accel_data.x, bma253_accel_data.y, bma253_accel_data.z);
+    
     ptr += sprintf(ptr, "bat:%.2f,chg:%.2f,", PAL_SUPPLIER_GetBatteryVoltage(), PAL_SUPPLIER_GetChargerVoltage());
 
     *(ptr - 1) = '}';

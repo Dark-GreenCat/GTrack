@@ -4,6 +4,7 @@
 #include "mc60/mc60_pal.h"
 #include "display/display_pal.h"
 #include "supplier/supplier_pal.h"
+#include "bma253/bma253_pal.h"
 
 #define NAL_GTRACK_MQTT_TCP_ID          MC60_MQTT_TCP_CONNECT_ID_0
 #define NAL_GTRACK_MQTT_PORT            1883

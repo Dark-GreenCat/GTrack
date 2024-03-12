@@ -129,7 +129,6 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   HCL_UART_StartReceive(huart_terminal);
   HCL_UART_StartReceive(huart_mc60);
-  //UAL_GTRACK_GeoTrack_Enable();
 
   uint32_t pre = HAL_GetTick();
   uint32_t cur = pre;
@@ -179,7 +178,7 @@ int main(void)
       UAL_GTRACK_GeoTrack_GetMetric();
     }
 
-    if (cur - pre > 5000) {
+    if (cur - pre > 10000) {
       // HCL_UART_OutChar(huart_mc60, '\0');
       UAL_GTRACK_GeoTrack_GetMetric();
       pre = cur;
