@@ -3,18 +3,6 @@
 #include "stdio.h"
 #include "stdarg.h"
 
-void PAL_DISPLAY_Show(const char* str) {
-    PAL_UART_OutString(huart_terminal, str);
-}
-
-void PAL_DISPLAY_ShowNumber(uint32_t number) {
-    PAL_UART_OutNumber(huart_terminal, number);
-}
-
-void PAL_DISPLAY_ShowNumberSigned(int32_t number) {
-    PAL_UART_OutNumber_Signed(huart_terminal, number);
-}
-
 void PAL_DISPLAY_Debug(const char* format, ...) {
     va_list args;
     va_start(args, format);
@@ -41,18 +29,34 @@ void PAL_DISPLAY_Debug(const char* format, ...) {
             }
             case 'd': {
                 int value;
+                char buffer[12];
                 value = va_arg(args, int);
-                PAL_UART_OutNumber_Signed(huart_terminal, value);
+                sprintf(buffer, "%d", value);
+                PAL_UART_OutString(huart_terminal, buffer);
                 break;
+
+                // int value;
+                // value = va_arg(args, int);
+                // PAL_UART_OutNumber_Signed(huart_terminal, value);
+                // break;
             }
             case 'f': {
                 double value;
+                char buffer[20];
                 value = va_arg(args, double);
-                if (precision == 0)
-                    precision = 6;
-                PAL_UART_OutNumber_Double(huart_terminal, value, precision);
+                if (precision == 0) precision = 6;
+                sprintf(buffer, "%.*f", precision, value);
+                PAL_UART_OutString(huart_terminal, buffer);
                 precision = 0;
                 break;
+
+                // double value;
+                // value = va_arg(args, double);
+                // if (precision == 0)
+                //     precision = 6;
+                // PAL_UART_OutNumber_Double(huart_terminal, value, precision);
+                // precision = 0;
+                // break;
             }
             case 's': {
                 char* value;

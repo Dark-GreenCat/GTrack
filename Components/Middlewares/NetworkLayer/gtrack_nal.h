@@ -28,5 +28,6 @@ int8_t NAL_GTRACK_PublishMessage(const char* message);
 void NAL_GTRACK_Send(const char* message);
 
 char* NAL_GTRACK_ConstructMessage(char* destination, nmea_data* data);
+char* NAL_GTRACK_ConstructMessageShort(char* destination, nmea_data* data);
 
 #endif

@@ -19,4 +19,6 @@ void NMEA_Parser_tm_to_nmeadata(const struct tm* timeinfo, nmea_data* data);
 // Changes the time zone of the NMEA data structure.
 void NMEA_Parser_changeTimezone(nmea_data* data, int timezone_offset);
 
+char* NMEA_Parser_nmeadata_to_timestamp(const nmea_data* data, char* timestamp);
+
 #endif

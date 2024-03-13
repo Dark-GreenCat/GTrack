@@ -16,5 +16,6 @@ void UAL_GTRACK_Init();
 void UAL_GTRACK_GeoTrack_Enable();
 void UAL_GTRACK_GeoTrack_Activate(feature_geotrack_state state);
 void UAL_GTRACK_GeoTrack_GetMetric();
+void UAL_GTRACK_GeoTrack_UploadData();
 
 #endif

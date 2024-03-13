@@ -48,6 +48,8 @@ char HCL_UART_InChar(UART_HandleTypeDef* huart) {
 }
 
 void HCL_UART_OutChar(UART_HandleTypeDef* huart, char data) {
+    // UART_WaitOnFlagUntilTimeout(huart, UART_FLAG_TXE, RESET, HAL_GetTick(), 1);
+    // huart->Instance->TDR = (uint8_t)(data & 0xFFU);
     HAL_UART_Transmit(huart, (uint8_t*)&data, 1, 1);
 }
 

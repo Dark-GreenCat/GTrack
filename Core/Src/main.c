@@ -41,6 +41,7 @@
 #include "display/display_pal.h"
 #include "supplier/supplier_pal.h"
 #include "hardware/w25q_interface.h"
+#include "w25q/w25q_pal.h"
 ////#include "test_bma253.h"
 /* USER CODE END Includes */
 
@@ -75,13 +76,13 @@ void SystemClock_Config(void);
 /* USER CODE BEGIN 0 */
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
-  PAL_DISPLAY_Show("\nEXT INTTERUPT DETECTED!\n");
+  DEBUG("\nEXT INTTERUPT DETECTED!\n");
 }
 
 /* USER CODE END 0 */
 
 /**
-  * @brief  The application entry point.
+  * @brief  The application entry point.	
   * @retval int
   */
 int main(void)

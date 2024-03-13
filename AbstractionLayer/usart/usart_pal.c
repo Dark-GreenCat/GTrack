@@ -1,29 +1,5 @@
 #include "usart_pal.h"
 
-bool PAL_UART_ReadStringUntil(UART_HandleTypeDef *huart, char terminatedChar, char *destination) {
-    static bool isFirstInit = true;
-    static char* p_Destination = NULL;
-    
-    if(isFirstInit) p_Destination = destination;
-    isFirstInit = false;
-    bool isDone = false;
-    if (HCL_UART_IsAvailable(huart)) {
-      char data = HCL_UART_InChar(huart);
-      while (data != terminatedChar) {
-        *p_Destination++ = data;
-        if (!HCL_UART_IsAvailable(huart)) break;
-        data = HCL_UART_InChar(huart);
-      }
-      if(data == terminatedChar) isDone = true;
-      if (isDone) {
-        *p_Destination = '\0';
-        p_Destination = destination;
-      }
-    }
-
-    return isDone;
-}
-
 void PAL_UART_OutString(UART_HandleTypeDef* huart, const char* str) {
     while (*str != '\0')
         HCL_UART_OutChar(huart, (uint8_t)*str++);

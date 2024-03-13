@@ -6,6 +6,9 @@ const char* mqtt_username = "3QcnES9LsYKtGIIXxNXU";
 const char* mqtt_password = "";
 const char* mqtt_topic = "v1/devices/me/telemetry";
 
+static nmea_date last_valid_date = { "", 12, 3, 24 , 1};
+static nmea_time last_valid_time = { 0 };
+
 void NAL_GTrack_Init() {
     mc60_mqtt_t mqtt = {
         .tcpid = NAL_GTRACK_MQTT_TCP_ID,
@@ -101,18 +104,30 @@ void NAL_GTRACK_Send(const char* message) {
 }
 
 char* NAL_GTRACK_ConstructMessage(char* destination, nmea_data* data) {
-    char temp[256] = { 0 }; // Define a temporary string
-    char* ptr = temp; // Pointer to the temporary string
+    char* ptr = destination; // Pointer to the temporary string
 
     char str_temp[15] = { 0 };
 
     *ptr = '{'; ptr++;
 
-    if (data->Date.is_valid)
-        ptr += sprintf(ptr, "date:'%02d/%02d/%04d',", data->Date.day, data->Date.month, 2000 + data->Date.year);
+    // if (data->Date.is_valid)
+    //     ptr += sprintf(ptr, "date:'%02d/%02d/%04d',", data->Date.day, data->Date.month, 2000 + data->Date.year);
 
-    if (data->Time.is_valid)
-        ptr += sprintf(ptr, "time:'%02d:%02d:%02d',", data->Time.hours, data->Time.minutes, data->Time.seconds);
+    // if (data->Time.is_valid)
+    //     ptr += sprintf(ptr, "time:'%02d:%02d:%02d',", data->Time.hours, data->Time.minutes, data->Time.seconds);
+
+    if (data->Time.is_valid && data->Date.is_valid) {
+        if (data->Date.year != 80) {
+            last_valid_date = data->Date;
+            last_valid_time = data->Time;
+        }
+        else {
+            data->Time = last_valid_time;
+            data->Date = last_valid_date;
+            data->Time.seconds += 10;
+        }
+    }
+        ptr += sprintf(ptr, "ts:%s,values:{", NMEA_Parser_nmeadata_to_timestamp(data, str_temp));
     
     if (data->Location.is_valid) {
         ptr += sprintf(ptr, "lat:%s,", NMEA_Parser_nmeafloattostr(data->Location.latitude, str_temp));
@@ -138,8 +153,43 @@ char* NAL_GTRACK_ConstructMessage(char* destination, nmea_data* data) {
     ptr += sprintf(ptr, "bat:%.2f,chg:%.2f,", PAL_SUPPLIER_GetBatteryVoltage(), PAL_SUPPLIER_GetChargerVoltage());
 
     *(ptr - 1) = '}';
+    *ptr = '}';
+    *(ptr + 1) = '\0';
 
-    strcpy(destination, temp); // Copy the temporary string to the destination
+    return destination;
+}
+
+char* NAL_GTRACK_ConstructMessageShort(char* destination, nmea_data* data) {
+    char* ptr = destination; // Pointer to the temporary string
+
+    char str_temp[15] = { 0 };
+
+    *ptr = '{'; ptr++;
+    
+    if (data->Time.is_valid && data->Date.is_valid) {
+        if (data->Date.year != 80) {
+            last_valid_date = data->Date;
+            last_valid_time = data->Time;
+        }
+        else {
+            data->Time = last_valid_time;
+            data->Date = last_valid_date;
+            data->Time.seconds += 10;
+        }
+        DEBUG("\nYEAR: %d\n", data->Date.year);
+        ptr += sprintf(ptr, "ts:%s,values:{", NMEA_Parser_nmeadata_to_timestamp(data, str_temp));
+    }
+    
+    if (data->Location.is_valid) {
+        ptr += sprintf(ptr, "l:%s,", NMEA_Parser_nmeafloattostr(data->Location.latitude, str_temp));
+        ptr += sprintf(ptr, "L:%s,", NMEA_Parser_nmeafloattostr(data->Location.longitude, str_temp));
+    }
+
+    ptr += sprintf(ptr, "b:%.2f,", PAL_SUPPLIER_GetBatteryVoltage());
+
+    *(ptr - 1) = '}';
+    *(ptr + 0) = '}';
+    *(ptr + 1) = '\0';
 
     return destination;
 }

@@ -89,6 +89,7 @@ void UAL_GTRACK_GeoTrack_GetMetric() {
         sprintf(buffer, "\n----- CAPTURING GNSS DATA -----\n");
         sprintf(buffer + strlen(buffer), "Time: %02d:%02d:%02d\n", GPSData.Time.hours, GPSData.Time.minutes, GPSData.Time.seconds);
         sprintf(buffer + strlen(buffer), "Date: %02d/%02d/%04d\n", GPSData.Date.day, GPSData.Date.month, 2000 + GPSData.Date.year);
+        sprintf(buffer + strlen(buffer), "Timestamp: %s\n", NMEA_Parser_nmeadata_to_timestamp(&GPSData, temp));
         sprintf(buffer + strlen(buffer), "Latitude: %s\n", NMEA_Parser_nmeafloattostr(GPSData.Location.latitude, temp));
         sprintf(buffer + strlen(buffer), "Longitude: %s\n", NMEA_Parser_nmeafloattostr(GPSData.Location.longitude, temp));
         sprintf(buffer + strlen(buffer), "Speed: %s knots\n", NMEA_Parser_nmeafloattostr(GPSData.Speed.speed_knot, temp));
@@ -98,7 +99,8 @@ void UAL_GTRACK_GeoTrack_GetMetric() {
         sprintf(buffer + strlen(buffer), "\n");
 
         DEBUG(buffer);
-        NAL_GTRACK_ConstructMessage(buffer, &GPSData);
+        NMEA_Parser_changeTimezone(&GPSData, -7);
+        NAL_GTRACK_ConstructMessageShort(buffer, &GPSData);
 
         UAL_MC60_isSendingToMQTT = true;
         HCL_TIMER_Start(htim_led);
@@ -106,4 +108,8 @@ void UAL_GTRACK_GeoTrack_GetMetric() {
         HCL_TIMER_Stop(htim_led);
         UAL_MC60_isSendingToMQTT = false;
     }
+}
+
+void UAL_GTRACK_GeoTrack_UploadData() {
+    
 }
