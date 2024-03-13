@@ -45,7 +45,7 @@ bool NAL_GTRACK_Send(const char* message) {
 	uint8_t errorCount = 0;
 
     uint32_t timestart = HAL_GetTick();
-    while (HAL_GetTick() - timestart < pal_mc60.timeout) {
+    while (HAL_GetTick() - timestart < pal_mc60.timeout || errorCount < 10) {
 		if (errorCount >= 10) {
 			DEBUG("\nToo many attemps failed. Restarting GTrack...");
             PAL_MC60_PowerOn(MC60_POWER_OFF);
@@ -55,7 +55,7 @@ bool NAL_GTRACK_Send(const char* message) {
         if (!isMQTTOpen) {
             DEBUG("\n*** Opening MQTT connection...");
             result = NAL_GTRACK_OpenNetwork();
-            isSuccess = (result == 0 || result == 2);
+            isSuccess = (result == -1 || result == 0 || result == 2);
             DEBUG("\nResult code: %d", result);
             if (!isSuccess) {
 				errorCount++;

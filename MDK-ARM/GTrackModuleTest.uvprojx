@@ -505,6 +505,11 @@
               <FileType>1</FileType>
               <FilePath>..\HardwareLayer\spi\spi_hcl.c</FilePath>
             </File>
+            <File>
+              <FileName>power_hcl.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\HardwareLayer\power\power_hcl.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

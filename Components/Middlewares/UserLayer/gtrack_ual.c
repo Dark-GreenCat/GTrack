@@ -29,7 +29,6 @@ void UAL_GTRACK_GeoTrack_Enable() {
     DEBUG("\nCheck MC60 Status: %d", mc60_state);
     if (!mc60_state) return;
 
-    PAL_MC60_RunCommand("AT+QSCLK=2");
 
     PAL_MC60_RunCommand("AT+QIFGCNT=2");
     PAL_MC60_RunCommand("AT+QICSGP=1,\"m-wap\",\"mms\",\"mms\"");
@@ -39,6 +38,7 @@ void UAL_GTRACK_GeoTrack_Enable() {
     PAL_MC60_RunCommand("AT+QGNSSTS?");
     PAL_MC60_RunCommand("AT+QGREFLOC=21.04196,105.786865");
     PAL_MC60_RunCommand("AT+QGNSSEPO=1");
+    PAL_MC60_RunCommand("AT+QSCLK=2");
     PAL_UART_FlushToUART_String(huart_mc60, huart_terminal);
 
     HCL_TIMER_Stop(htim_led);
@@ -106,14 +106,14 @@ void UAL_GTRACK_GeoTrack_GetMetric() {
     }
 }
 
-void UAL_GTRACK_GeoTrack_UploadData() {
+bool UAL_GTRACK_GeoTrack_UploadData() {
     bool isSuccess = false;
     uint16_t BackUpDataIndex = flash.PageIndexGet;
 
     char buffer[BUFFER_SIZE] = { 0 };
 
     char* ptr = buffer;
-    char str_temp[MAX_MESSAGE_SIZE];
+    char str_temp[MAX_MESSAGE_SIZE] = {0};
     bool IsDataExist = false;
 
     *ptr++ = '[';
@@ -132,7 +132,6 @@ void UAL_GTRACK_GeoTrack_UploadData() {
         *(ptr - 1) = ']';
         UAL_MC60_isSendingToMQTT = true;
         HCL_TIMER_Start(htim_led);
-        DEBUG("\nUPLOADING: %s\n", buffer);
         isSuccess = NAL_GTRACK_Send(buffer);
         HCL_TIMER_Stop(htim_led);
         UAL_MC60_isSendingToMQTT = false;
@@ -148,4 +147,6 @@ void UAL_GTRACK_GeoTrack_UploadData() {
             flash.Count = (flash.Size - flash.PageIndexGet) + flash.PageIndexPut;
         }
     }
+
+    return isSuccess;
 }

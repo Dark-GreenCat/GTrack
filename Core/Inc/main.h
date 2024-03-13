@@ -31,7 +31,7 @@ extern "C" {
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "display/display_pal.h"
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/

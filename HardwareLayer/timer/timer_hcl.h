@@ -7,6 +7,7 @@
 #include <stdbool.h>
 
 extern TIM_HandleTypeDef* htim_led;
+extern TIM_HandleTypeDef* htim_pwr;
 extern bool isTimerRunning;
 
 void HCL_TIMER_Init(TIM_HandleTypeDef* htim);

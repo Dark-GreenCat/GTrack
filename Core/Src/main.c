@@ -15,8 +15,8 @@
  *
  ******************************************************************************
  */
-/* USER CODE END Header */
-/* Includes ------------------------------------------------------------------*/
+ /* USER CODE END Header */
+ /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "adc.h"
 #include "i2c.h"
@@ -42,6 +42,7 @@
 #include "supplier/supplier_pal.h"
 #include "hardware/w25q_interface.h"
 #include "w25q/w25q_pal.h"
+#include "power/power_hcl.h"
 ////#include "test_bma253.h"
 /* USER CODE END Includes */
 
@@ -52,6 +53,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+#define MAX_UPLOAD_RETRIES 3
 
 /* USER CODE END PD */
 
@@ -63,7 +65,9 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-
+bool UAL_MC60_isGetMetric = false;
+static uint32_t  stop_pre;
+static uint32_t  flash_count = 9;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -74,19 +78,29 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
-{
-  DEBUG("\nEXT INTTERUPT DETECTED!\n");
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
+  stop_pre = HAL_GetTick();
+
+  if (IsStop) {
+    DEBUG("\nWAKE UP FROM STOP\n");
+    HAL_ResumeTick();
+    IsStop = false;
+  }
+  if (IsSleep) {
+    DEBUG("\nWAKE UP FROM SLEEP\n");
+    HAL_ResumeTick();
+    HAL_PWR_DisableSleepOnExit();
+    IsSleep = false;
+  }
 }
 
 /* USER CODE END 0 */
 
 /**
-  * @brief  The application entry point.	
+  * @brief  The application entry point.
   * @retval int
   */
-int main(void)
-{
+int main(void) {
   /* USER CODE BEGIN 1 */
 
   /* USER CODE END 1 */
@@ -115,12 +129,14 @@ int main(void)
   MX_I2C1_Init();
   MX_ADC_Init();
   MX_SPI1_Init();
+  MX_TIM6_Init();
   /* USER CODE BEGIN 2 */
-  
+
   HCL_GPIO_Init();
   HCL_UART_Init(huart_terminal);
   HCL_UART_Init(huart_mc60);
   HCL_TIMER_Init(&htim3);
+  HCL_TIMER_Init(&htim6);
 
   PAL_BMA253_Init();
   UAL_GTRACK_Init();
@@ -143,30 +159,56 @@ int main(void)
 
   PAL_W25Q_Queue_Init(&flash, &w25q);
 
+  HCL_TIMER_Start(htim_pwr);
+  IsSleep = false;
+  HCL_POWER_EnterStopMode();
   while (1) {
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-    if (flash.Count >= 9) UAL_GTRACK_GeoTrack_UploadData();
+    if (flash.Count >= flash_count) {
+      flash_count = 9;
+      bool uploadSuccess = false;
+      uint8_t uploadRetries = 0;
 
+      while (!uploadSuccess && uploadRetries < MAX_UPLOAD_RETRIES) {
+        uploadSuccess = UAL_GTRACK_GeoTrack_UploadData();
+        uploadRetries++;
+
+        if (!uploadSuccess) {
+          // Delay before retrying to avoid excessive retries in a short time
+          // Adjust the delay duration as per your requirements
+          HAL_Delay(1000);
+        }
+      }
+    }
+
+    if (HAL_GetTick() - stop_pre >= 120000) {
+      if (PAL_W25Q_Queue_IsEmpty(&flash)) {
+        PAL_MC60_PowerOn(MC60_POWER_OFF);
+        flash_count = 3;
+        HCL_POWER_EnterStopMode();
+      }
+    }
     cur = HAL_GetTick();
     mc60CurState = MC60_ITF_IsRunning(&pal_mc60.core);
 
     if (HCL_UART_IsAvailable(huart_terminal)) {
       data = HCL_UART_InChar(huart_terminal);
       HCL_UART_OutChar(huart_mc60, data);
-    }	
-    PAL_UART_FlushToUART_Char(huart_mc60, huart_terminal);
-    
+    }
+    PAL_UART_FlushToUART_String(huart_mc60, huart_terminal);
+
     if (data == '#') {
       data = 0;
       DEBUG("%d", MC60_ITF_GNSS_checkPower(&pal_mc60.core))
-      isRunning = !isRunning;
+        isRunning = !isRunning;
       if (isRunning == false) {
         DEBUG("\nPAUSE RUNNING")
-        PAL_MC60_PowerOn(MC60_POWER_OFF);
+          PAL_MC60_PowerOn(MC60_POWER_OFF);
       }
-      else  {
+      else {
         DEBUG("\nCONTINUE RUNNING");
       }
     }
@@ -184,10 +226,11 @@ int main(void)
       UAL_GTRACK_GeoTrack_GetMetric();
     }
 
-    if (cur - pre > 15000) {
+    if (UAL_MC60_isGetMetric == true) {
       HCL_UART_OutChar(huart_mc60, '\0');
       UAL_GTRACK_GeoTrack_GetMetric();
-      pre = cur;
+      UAL_MC60_isGetMetric = false;
+      HCL_POWER_EnterSleepMode();
     }
   }
   /* USER CODE END 3 */
@@ -197,43 +240,39 @@ int main(void)
   * @brief System Clock Configuration
   * @retval None
   */
-void SystemClock_Config(void)
-{
-  RCC_OscInitTypeDef RCC_OscInitStruct = {0};
-  RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
-  RCC_PeriphCLKInitTypeDef PeriphClkInit = {0};
+void SystemClock_Config(void) {
+  RCC_OscInitTypeDef RCC_OscInitStruct = { 0 };
+  RCC_ClkInitTypeDef RCC_ClkInitStruct = { 0 };
+  RCC_PeriphCLKInitTypeDef PeriphClkInit = { 0 };
 
   /** Initializes the RCC Oscillators according to the specified parameters
   * in the RCC_OscInitTypeDef structure.
   */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI|RCC_OSCILLATORTYPE_HSI14;
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI | RCC_OSCILLATORTYPE_HSI14;
   RCC_OscInitStruct.HSIState = RCC_HSI_ON;
   RCC_OscInitStruct.HSI14State = RCC_HSI14_ON;
   RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
   RCC_OscInitStruct.HSI14CalibrationValue = 16;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_NONE;
-  if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
-  {
+  if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK) {
     Error_Handler();
   }
 
   /** Initializes the CPU, AHB and APB buses clocks
   */
-  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
-                              |RCC_CLOCKTYPE_PCLK1;
+  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK
+    | RCC_CLOCKTYPE_PCLK1;
   RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_HSI;
   RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
 
-  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_0) != HAL_OK)
-  {
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_0) != HAL_OK) {
     Error_Handler();
   }
-  PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_USART1|RCC_PERIPHCLK_I2C1;
+  PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_USART1 | RCC_PERIPHCLK_I2C1;
   PeriphClkInit.Usart1ClockSelection = RCC_USART1CLKSOURCE_PCLK1;
   PeriphClkInit.I2c1ClockSelection = RCC_I2C1CLKSOURCE_HSI;
-  if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)
-  {
+  if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK) {
     Error_Handler();
   }
 }
@@ -246,8 +285,7 @@ void SystemClock_Config(void)
   * @brief  This function is executed in case of error occurrence.
   * @retval None
   */
-void Error_Handler(void)
-{
+void Error_Handler(void) {
   /* USER CODE BEGIN Error_Handler_Debug */
   /* User can add his own implementation to report the HAL error return state */
   __disable_irq();
@@ -264,12 +302,11 @@ void Error_Handler(void)
   * @param  line: assert_param error line source number
   * @retval None
   */
-void assert_failed(uint8_t *file, uint32_t line)
-{
+void assert_failed(uint8_t* file, uint32_t line) {
   /* USER CODE BEGIN 6 */
   /* User can add his own implementation to report the file name and line
      number, ex: printf("Wrong parameters value: file %s on line %d\r\n", file,
      line) */
-  /* USER CODE END 6 */
+     /* USER CODE END 6 */
 }
 #endif /* USE_FULL_ASSERT */

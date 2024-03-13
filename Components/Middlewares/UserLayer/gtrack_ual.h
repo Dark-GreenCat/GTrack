@@ -6,7 +6,7 @@
 #include "display/display_pal.h"
 #include "gtrack_nal.h"
 
-#define BUFFER_SIZE 550
+#define BUFFER_SIZE 256
 #define MAX_MESSAGE_SIZE 60
 
 typedef enum {
@@ -19,6 +19,6 @@ void UAL_GTRACK_Init();
 void UAL_GTRACK_GeoTrack_Enable();
 void UAL_GTRACK_GeoTrack_Activate(feature_geotrack_state state);
 void UAL_GTRACK_GeoTrack_GetMetric();
-void UAL_GTRACK_GeoTrack_UploadData();
+bool UAL_GTRACK_GeoTrack_UploadData();
 
 #endif
