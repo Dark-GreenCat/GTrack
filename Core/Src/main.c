@@ -141,10 +141,14 @@ int main(void)
   W25Q_ITF_Init(&w25q, &hspi1, &hgpio_stm32_spi1_nss);
   W25Q_ITF_Reset(&w25q);
 
+  PAL_W25Q_Queue_Init(&flash, &w25q);
+
   while (1) {
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+    if (flash.Count >= 9) UAL_GTRACK_GeoTrack_UploadData();
+
     cur = HAL_GetTick();
     mc60CurState = MC60_ITF_IsRunning(&pal_mc60.core);
 
@@ -176,11 +180,12 @@ int main(void)
 
     if (!mc60CurState) {
       UAL_GTRACK_GeoTrack_Enable();
+      HCL_UART_OutChar(huart_mc60, '\0');
       UAL_GTRACK_GeoTrack_GetMetric();
     }
 
-    if (cur - pre > 10000) {
-      // HCL_UART_OutChar(huart_mc60, '\0');
+    if (cur - pre > 15000) {
+      HCL_UART_OutChar(huart_mc60, '\0');
       UAL_GTRACK_GeoTrack_GetMetric();
       pre = cur;
     }

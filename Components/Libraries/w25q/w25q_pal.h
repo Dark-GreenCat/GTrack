@@ -11,6 +11,8 @@ typedef struct {
     uint16_t Size;
 } w25q_queue_t;
 
+extern w25q_queue_t flash;
+
 // Initialize the W25Q queue
 void PAL_W25Q_Queue_Init(w25q_queue_t* w25q_queue, w25q_t* w25q);
 

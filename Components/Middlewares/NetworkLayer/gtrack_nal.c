@@ -38,7 +38,7 @@ int8_t NAL_GTRACK_PublishMessage(const char* message) {
     return PAL_MC60_MQTT_Publish(&pal_mc60, NAL_GTRACK_MQTT_MESSAGE_ID, NAL_GTRACK_MQTT_QOS, NAL_GTRACK_MQTT_RETAIN, mqtt_topic, message);
 }
 
-void NAL_GTRACK_Send(const char* message) {
+bool NAL_GTRACK_Send(const char* message) {
     bool isMQTTOpen = false;
     bool isSuccess = false;
     int8_t result;
@@ -101,6 +101,8 @@ void NAL_GTRACK_Send(const char* message) {
         isMQTTOpen = false;
         break;
     }
+
+    return isSuccess;
 }
 
 char* NAL_GTRACK_ConstructMessage(char* destination, nmea_data* data) {
@@ -185,7 +187,7 @@ char* NAL_GTRACK_ConstructMessageShort(char* destination, nmea_data* data) {
         ptr += sprintf(ptr, "L:%s,", NMEA_Parser_nmeafloattostr(data->Location.longitude, str_temp));
     }
 
-    ptr += sprintf(ptr, "b:%.2f,", PAL_SUPPLIER_GetBatteryVoltage());
+    ptr += sprintf(ptr, "B:%.2f,", PAL_SUPPLIER_GetBatteryVoltage());
 
     *(ptr - 1) = '}';
     *(ptr + 0) = '}';

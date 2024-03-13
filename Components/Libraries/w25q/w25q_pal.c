@@ -1,5 +1,7 @@
 #include "w25q_pal.h"
 
+w25q_queue_t flash;
+
 void PAL_W25Q_Queue_Init(w25q_queue_t* w25q_queue, w25q_t* w25q) {
     w25q_queue->w25q = w25q;
 

@@ -1,4 +1,5 @@
 #include "gtrack_ual.h"
+#include "w25q/w25q_pal.h"
 
 bool UAL_MC60_isTurningOn = false;
 bool UAL_MC60_isGettingGNSS = false;
@@ -28,11 +29,11 @@ void UAL_GTRACK_GeoTrack_Enable() {
     DEBUG("\nCheck MC60 Status: %d", mc60_state);
     if (!mc60_state) return;
 
-    PAL_MC60_RunCommand("AT+QSCLK=0");
+    PAL_MC60_RunCommand("AT+QSCLK=2");
 
     PAL_MC60_RunCommand("AT+QIFGCNT=2");
     PAL_MC60_RunCommand("AT+QICSGP=1,\"m-wap\",\"mms\",\"mms\"");
-	//PAL_MC60_RunCommand("AT+QICSGP=1,\"v-internet\"");
+    //PAL_MC60_RunCommand("AT+QICSGP=1,\"v-internet\"");
     HAL_Delay(10000);
     PAL_MC60_RunCommand("AT+CREG?;+CGREG?");
     PAL_MC60_RunCommand("AT+QGNSSTS?");
@@ -79,7 +80,7 @@ void UAL_GTRACK_GeoTrack_GetMetric() {
     bool isGetGNSSSuccess = MC60_GNSS_Get_Navigation_Info(&pal_mc60.core, &GPSData, 3000);
     HCL_TIMER_Stop(htim_led);
     UAL_MC60_isGettingGNSS = false;
-    
+
     if (isGetGNSSSuccess) {
         UAL_GTRACK_GeoTrack_Activate(GEOTRACK_DEACTIVATE);
         HAL_Delay(200);
@@ -101,15 +102,50 @@ void UAL_GTRACK_GeoTrack_GetMetric() {
         DEBUG(buffer);
         NMEA_Parser_changeTimezone(&GPSData, -7);
         NAL_GTRACK_ConstructMessageShort(buffer, &GPSData);
-
-        UAL_MC60_isSendingToMQTT = true;
-        HCL_TIMER_Start(htim_led);
-        NAL_GTRACK_Send(buffer);
-        HCL_TIMER_Stop(htim_led);
-        UAL_MC60_isSendingToMQTT = false;
+        PAL_W25Q_Queue_Enqueue(&flash, buffer, strlen(buffer) + 1);
     }
 }
 
 void UAL_GTRACK_GeoTrack_UploadData() {
-    
+    bool isSuccess = false;
+    uint16_t BackUpDataIndex = flash.PageIndexGet;
+
+    char buffer[BUFFER_SIZE] = { 0 };
+
+    char* ptr = buffer;
+    char str_temp[MAX_MESSAGE_SIZE];
+    bool IsDataExist = false;
+
+    *ptr++ = '[';
+    while (!PAL_W25Q_Queue_IsEmpty(&flash)) {
+        IsDataExist = true;
+
+        PAL_W25Q_Queue_Dequeue(&flash, str_temp, MAX_MESSAGE_SIZE);
+        // Check if there is enough space in the buffer for the next string
+        if ((ptr - buffer) + strlen(str_temp) + 1 >= BUFFER_SIZE) {
+            // Buffer is full, stop copying data
+            break;
+        }
+        ptr += sprintf(ptr, "%s,", str_temp);
+    }
+    if (IsDataExist) {
+        *(ptr - 1) = ']';
+        UAL_MC60_isSendingToMQTT = true;
+        HCL_TIMER_Start(htim_led);
+        DEBUG("\nUPLOADING: %s\n", buffer);
+        isSuccess = NAL_GTRACK_Send(buffer);
+        HCL_TIMER_Stop(htim_led);
+        UAL_MC60_isSendingToMQTT = false;
+    }
+
+    if (!isSuccess) {
+        flash.PageIndexGet = BackUpDataIndex;
+
+        if (flash.PageIndexPut >= flash.PageIndexGet) {
+            flash.Count = flash.PageIndexPut - flash.PageIndexGet;
+        }
+        else {
+            flash.Count = (flash.Size - flash.PageIndexGet) + flash.PageIndexPut;
+        }
+    }
 }
