@@ -167,8 +167,9 @@ int main(void) {
   W25Q_ITF_EraseSector(&w25q, 31);
   HCL_TIMER_Start(htim_pwr);
   IsSleep = false;
-  HCL_POWER_EnterStopMode();
+  //HCL_POWER_EnterStopMode();
   while (1) {
+    continue;
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

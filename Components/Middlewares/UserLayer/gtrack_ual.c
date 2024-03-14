@@ -63,6 +63,7 @@ void UAL_GTRACK_GeoTrack_GetMetric() {
     char buffer[256];
     nmea_data GPSData;
     NMEA_Parser_Reset(&GPSData);
+    uint8_t errorCount = 0;
 
     UAL_GTRACK_GeoTrack_Activate(GEOTRACK_ACTIVATE);
     PAL_UART_FlushToUART_String(huart_mc60, huart_terminal);
@@ -71,7 +72,18 @@ void UAL_GTRACK_GeoTrack_GetMetric() {
 
     if (!gnss_power_state) {
         DEBUG("\nGNSS is currently off!");
-        return;
+        while (errorCount < 4) {
+            errorCount++;
+            UAL_GTRACK_GeoTrack_Activate(GEOTRACK_ACTIVATE);
+            PAL_UART_FlushToUART_String(huart_mc60, huart_terminal);
+            gnss_power_state = MC60_ITF_GNSS_checkPower(&pal_mc60.core);
+            DEBUG("\nGNSS Power Status: %d", gnss_power_state);
+        }
+        if (!gnss_power_state) {
+            DEBUG("\nGNSS cannot be turned on! Restarting GTrack...");
+            PAL_W25Q_Queue_SaveState(&w25q, &flash);
+            NVIC_SystemReset();
+        }
     }
 
     DEBUG("\nConnecting GNSS...\n");

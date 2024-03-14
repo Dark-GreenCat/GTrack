@@ -187,14 +187,11 @@ char* NAL_GTRACK_ConstructMessageShort(char* destination, nmea_data* data) {
     }
     
     if (data->Location.is_valid) {
-        ptr += sprintf(ptr, "lh:%s,", NMEA_Parser_nmeafloattostr(data->Location.latitude, str_temp));
-        ptr += sprintf(ptr, "Lh:%s,", NMEA_Parser_nmeafloattostr(data->Location.longitude, str_temp));
+        ptr += sprintf(ptr, "l:%s,", NMEA_Parser_nmeafloattostr(data->Location.latitude, str_temp));
+        ptr += sprintf(ptr, "L:%s,", NMEA_Parser_nmeafloattostr(data->Location.longitude, str_temp));
     }
 
-    if (data->Speed.is_valid)
-        ptr += sprintf(ptr, "sh:%s", NMEA_Parser_nmeafloattostr(data->Speed.speed_knot, str_temp));
-
-    ptr += sprintf(ptr, "Bh:%.2f,", PAL_SUPPLIER_GetBatteryVoltage());
+    ptr += sprintf(ptr, "B:%.2f,", PAL_SUPPLIER_GetBatteryVoltage());
 
     *(ptr - 1) = '}';
     *(ptr + 0) = '}';
