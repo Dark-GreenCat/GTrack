@@ -54,7 +54,7 @@
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 #define MAX_UPLOAD_RETRIES 3
-#define MIN_NUMBER_OF_DATA 3
+#define MIN_NUMBER_OF_DATA 8
 
 /* USER CODE END PD */
 
@@ -80,7 +80,7 @@ void SystemClock_Config(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
-  DEBUG("\n\nSLOPE!\n");
+  // DEBUG("\n\nSLOPE!\n");
   HAL_ResumeTick();
   HAL_PWR_DisableSleepOnExit();
   stop_pre = HAL_GetTick();
@@ -178,6 +178,7 @@ int main(void) {
       uint8_t uploadRetries = 0;
 
       while (!uploadSuccess && uploadRetries < MAX_UPLOAD_RETRIES) {
+        DEBUG("\n\nNUMBER OF DATA:%d\n", flash.Count);
         uploadSuccess = UAL_GTRACK_GeoTrack_UploadData();
         uploadRetries++;
 
@@ -185,6 +186,10 @@ int main(void) {
           // Delay before retrying to avoid excessive retries in a short time
           // Adjust the delay duration as per your requirements
           HAL_Delay(1000);
+        }
+        else if (!PAL_W25Q_Queue_IsEmpty(&flash)) {
+          uploadSuccess = false;
+          uploadRetries = 0;
         }
       }
     }

@@ -126,7 +126,7 @@ char* NMEA_Parser_nmeadata_to_timestamp(const nmea_data* data, char* timestamp) 
     NMEA_Parser_nmeadata_to_tm(data, &timeinfo);
 
     time_t timestamp_value = mktime(&timeinfo);
-    sprintf(timestamp, "%d%d", timestamp_value, data->Time.milliseconds);
+    sprintf(timestamp, "%d000", timestamp_value);
 
     return timestamp;
 }

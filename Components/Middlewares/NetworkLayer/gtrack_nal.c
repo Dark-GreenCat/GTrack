@@ -64,9 +64,10 @@ bool NAL_GTRACK_Send(const char* message) {
                 if (result == 3) {
                     DEBUG("\nFailed to setup PDP context. Restarting GTrack...");
                     PAL_W25Q_Queue_SaveState(&w25q, &flash);
+                    PAL_MC60_PowerOn(MC60_POWER_OFF);
                     NVIC_SystemReset();
                 }
-                DEBUG("\nFailed to open MQTT connection. Retrying in 3 seconds...");
+                DEBUG("\nFailed to open MQTT connection. Retrying in 3 seconds...\nError count:%d", errorCount);
                 continue;
             }
 			// errorCount = 0;

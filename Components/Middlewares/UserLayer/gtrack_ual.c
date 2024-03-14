@@ -126,17 +126,19 @@ bool UAL_GTRACK_GeoTrack_UploadData() {
     char buffer[BUFFER_SIZE] = { 0 };
 
     char* ptr = buffer;
-    char str_temp[MAX_MESSAGE_SIZE] = {0};
+    char str_temp[MAX_MESSAGE_SIZE] = { 0 };
     bool IsDataExist = false;
 
     *ptr++ = '[';
     while (!PAL_W25Q_Queue_IsEmpty(&flash)) {
         IsDataExist = true;
-
+        uint16_t BackUpDataIndex = flash.PageIndexGet;
+        uint16_t BackUpDataCount = flash.Count;
         PAL_W25Q_Queue_Dequeue(&flash, str_temp, MAX_MESSAGE_SIZE);
         // Check if there is enough space in the buffer for the next string
         if ((ptr - buffer) + strlen(str_temp) + 1 >= BUFFER_SIZE) {
-            // Buffer is full, stop copying data
+            flash.PageIndexGet = BackUpDataIndex;
+            flash.Count = BackUpDataCount;
             break;
         }
         ptr += sprintf(ptr, "%s,", str_temp);

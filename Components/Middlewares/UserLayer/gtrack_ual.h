@@ -6,8 +6,8 @@
 #include "display/display_pal.h"
 #include "gtrack_nal.h"
 
-#define BUFFER_SIZE 256
-#define MAX_MESSAGE_SIZE 60
+#define BUFFER_SIZE 270
+#define MAX_MESSAGE_SIZE 65
 
 typedef enum {
     GEOTRACK_DEACTIVATE = 0,
