@@ -55,7 +55,7 @@ bool NAL_GTRACK_Send(const char* message) {
         if (!isMQTTOpen) {
             DEBUG("\n*** Opening MQTT connection...");
             result = NAL_GTRACK_OpenNetwork();
-            isSuccess = (result == -1 || result == 0 || result == 2);
+            isSuccess = (result == 0 || result == 2);
             DEBUG("\nResult code: %d", result);
             if (!isSuccess) {
 				errorCount++;
@@ -66,7 +66,7 @@ bool NAL_GTRACK_Send(const char* message) {
                 DEBUG("\nFailed to open MQTT connection. Retrying in 3 seconds...");
                 continue;
             }
-			errorCount = 0;
+			// errorCount = 0;
             isMQTTOpen = true;
         }
 
@@ -81,7 +81,7 @@ bool NAL_GTRACK_Send(const char* message) {
             isMQTTOpen = false;
             continue;
         }
-		errorCount = 0;
+		// errorCount = 0;
 		
         DEBUG("\n*** Publishing MQTT message: %s", message);
         result = NAL_GTRACK_PublishMessage(message);
@@ -89,7 +89,7 @@ bool NAL_GTRACK_Send(const char* message) {
         isSuccess = (result == 0);
 
         if (isSuccess) {
-			errorCount = 0;
+			// errorCount = 0;
 			DEBUG("\nMessage published successfully. Disconnecting from MQTT broker...");
         }
 		else {

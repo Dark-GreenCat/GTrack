@@ -54,6 +54,7 @@
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 #define MAX_UPLOAD_RETRIES 3
+#define MIN_NUMBER_OF_DATA 9
 
 /* USER CODE END PD */
 
@@ -67,7 +68,7 @@
 /* USER CODE BEGIN PV */
 bool UAL_MC60_isGetMetric = false;
 static uint32_t  stop_pre;
-static uint32_t  flash_count = 9;
+static uint32_t  flash_count = MIN_NUMBER_OF_DATA;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -79,17 +80,22 @@ void SystemClock_Config(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
+  DEBUG("\nSLOPE!\n!");
   stop_pre = HAL_GetTick();
 
   if (IsStop) {
     DEBUG("\nWAKE UP FROM STOP\n");
     HAL_ResumeTick();
     IsStop = false;
+
+    PAL_SIGNAL_PWR_SetState(1);
   }
   if (IsSleep) {
     DEBUG("\nWAKE UP FROM SLEEP\n");
     HAL_ResumeTick();
     HAL_PWR_DisableSleepOnExit();
+
+    PAL_SIGNAL_PWR_SetState(1);
     IsSleep = false;
   }
 }
@@ -161,14 +167,14 @@ int main(void) {
 
   HCL_TIMER_Start(htim_pwr);
   IsSleep = false;
-  HCL_POWER_EnterStopMode();
+  // HCL_POWER_EnterStopMode();
   while (1) {
 
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
     if (flash.Count >= flash_count) {
-      flash_count = 9;
+      flash_count = MIN_NUMBER_OF_DATA;
       bool uploadSuccess = false;
       uint8_t uploadRetries = 0;
 
@@ -186,8 +192,10 @@ int main(void) {
 
     if (HAL_GetTick() - stop_pre >= 120000) {
       if (PAL_W25Q_Queue_IsEmpty(&flash)) {
+        flash_count = 0;
+      }
+      else {
         PAL_MC60_PowerOn(MC60_POWER_OFF);
-        flash_count = 3;
         HCL_POWER_EnterStopMode();
       }
     }

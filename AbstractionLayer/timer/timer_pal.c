@@ -1,6 +1,7 @@
 #include "timer/timer_pal.h"
 #include "signal/signal_pal.h"
 #include "gtrack_ual.h"
+#include "power/power_hcl.h"
 
 extern bool UAL_MC60_isTurningOn;
 extern bool UAL_MC60_isGettingGNSS;
@@ -24,8 +25,15 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef* htim) {
   }
 
   if (htim == htim_pwr) {
-    HAL_ResumeTick();
-    HAL_PWR_DisableSleepOnExit();
+    if (IsSleep) {
+      DEBUG("\nWAKE UP FROM SLEEP\n");
+      HAL_ResumeTick();
+      HAL_PWR_DisableSleepOnExit();
+      IsSleep = false;
+
+      PAL_SIGNAL_PWR_SetState(1);
+    }
+
     UAL_MC60_isGetMetric = true;
   }
 }
