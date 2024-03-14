@@ -27,13 +27,12 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef* htim) {
   if (htim == htim_pwr) {
     if (IsSleep) {
       DEBUG("\nWAKE UP FROM SLEEP\n");
-      HAL_ResumeTick();
-      HAL_PWR_DisableSleepOnExit();
-      IsSleep = false;
-
-      PAL_SIGNAL_PWR_SetState(1);
     }
 
+    HAL_ResumeTick();
+    HAL_PWR_DisableSleepOnExit();
+    PAL_SIGNAL_PWR_SetState(1);
+    IsSleep = false;
     UAL_MC60_isGetMetric = true;
   }
 }

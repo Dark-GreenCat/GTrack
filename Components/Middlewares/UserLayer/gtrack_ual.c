@@ -109,6 +109,7 @@ void UAL_GTRACK_GeoTrack_GetMetric() {
 bool UAL_GTRACK_GeoTrack_UploadData() {
     bool isSuccess = false;
     uint16_t BackUpDataIndex = flash.PageIndexGet;
+    uint16_t BackUpDataCount = flash.Count;
 
     char buffer[BUFFER_SIZE] = { 0 };
 
@@ -121,6 +122,7 @@ bool UAL_GTRACK_GeoTrack_UploadData() {
         IsDataExist = true;
 
         PAL_W25Q_Queue_Dequeue(&flash, str_temp, MAX_MESSAGE_SIZE);
+        DEBUG("\nDEQUEUE:%s ==== Count:%d", str_temp, flash.Count);
         // Check if there is enough space in the buffer for the next string
         if ((ptr - buffer) + strlen(str_temp) + 1 >= BUFFER_SIZE) {
             // Buffer is full, stop copying data
@@ -139,13 +141,7 @@ bool UAL_GTRACK_GeoTrack_UploadData() {
 
     if (!isSuccess) {
         flash.PageIndexGet = BackUpDataIndex;
-
-        if (flash.PageIndexPut >= flash.PageIndexGet) {
-            flash.Count = flash.PageIndexPut - flash.PageIndexGet;
-        }
-        else {
-            flash.Count = (flash.Size - flash.PageIndexGet) + flash.PageIndexPut;
-        }
+        flash.Count = BackUpDataCount;
     }
 
     return isSuccess;

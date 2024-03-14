@@ -11,6 +11,7 @@ typedef struct {
     uint16_t Size;
 } w25q_queue_t;
 
+extern w25q_t w25q;
 extern w25q_queue_t flash;
 
 // Initialize the W25Q queue
@@ -27,5 +28,8 @@ void PAL_W25Q_Queue_Enqueue(w25q_queue_t* w25q_queue, const char* data, uint16_t
 
 // Dequeue data from the W25Q queue
 void PAL_W25Q_Queue_Dequeue(w25q_queue_t* w25q_queue, char* data, uint16_t data_size);
+
+void PAL_W25Q_Queue_SaveState(w25q_t* w25q, const w25q_queue_t* w25q_queue);
+void PAL_W25Q_Queue_RestoreState(w25q_t* w25q, w25q_queue_t* w25q_queue);
 
 #endif

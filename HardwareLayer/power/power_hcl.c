@@ -6,7 +6,7 @@ bool IsStop;
 
 void HCL_POWER_EnterSleepMode() {
     IsSleep = true;
-    DEBUG("\n\n====== ENTER SLEEP MODE ======\n\n");
+    DEBUG("\n\n====== ENTER SLEEP MODE ======\n\nSLEEP: %d\n\n", IsSleep);
     HCL_GPIO_WritePin(&hgpio_ctrl_led_g, GPIO_PIN_SET);
     HCL_GPIO_WritePin(&hgpio_ctrl_led_r, GPIO_PIN_SET);
     HAL_SuspendTick();

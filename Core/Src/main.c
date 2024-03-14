@@ -54,7 +54,7 @@
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 #define MAX_UPLOAD_RETRIES 3
-#define MIN_NUMBER_OF_DATA 9
+#define MIN_NUMBER_OF_DATA 3
 
 /* USER CODE END PD */
 
@@ -80,23 +80,22 @@ void SystemClock_Config(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
-  DEBUG("\nSLOPE!\n!");
+  DEBUG("\n\nSLOPE!\nSTOP:%d\nSLEEP:%d\nFLASH COUNT:%d", IsStop, IsSleep, flash.Count);
+  HAL_ResumeTick();
+  HAL_PWR_DisableSleepOnExit();
   stop_pre = HAL_GetTick();
 
   if (IsStop) {
     DEBUG("\nWAKE UP FROM STOP\n");
-    HAL_ResumeTick();
     IsStop = false;
 
     PAL_SIGNAL_PWR_SetState(1);
   }
   if (IsSleep) {
     DEBUG("\nWAKE UP FROM SLEEP\n");
-    HAL_ResumeTick();
-    HAL_PWR_DisableSleepOnExit();
+    IsSleep = false;
 
     PAL_SIGNAL_PWR_SetState(1);
-    IsSleep = false;
   }
 }
 
@@ -159,17 +158,15 @@ int main(void) {
   char data = 0;
   bool mc60LastState = false, mc60CurState = false;
 
-  w25q_t w25q;
   W25Q_ITF_Init(&w25q, &hspi1, &hgpio_stm32_spi1_nss);
   W25Q_ITF_Reset(&w25q);
 
-  PAL_W25Q_Queue_Init(&flash, &w25q);
-
+  //PAL_W25Q_Queue_RestoreState(&w25q, &flash);
+  //W25Q_ITF_EraseSector(&w25q, 31);
   HCL_TIMER_Start(htim_pwr);
   IsSleep = false;
   // HCL_POWER_EnterStopMode();
   while (1) {
-
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

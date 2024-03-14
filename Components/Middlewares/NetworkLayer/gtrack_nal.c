@@ -1,4 +1,5 @@
 #include "gtrack_nal.h"
+#include "w25q/w25q_pal.h"
 
 const char* mqtt_hostname = "demo.thingsboard.io";
 const char* mqtt_clientid = "demo.thingsboard.io";
@@ -48,6 +49,7 @@ bool NAL_GTRACK_Send(const char* message) {
     while (HAL_GetTick() - timestart < pal_mc60.timeout || errorCount < 10) {
 		if (errorCount >= 10) {
 			DEBUG("\nToo many attemps failed. Restarting GTrack...");
+            PAL_W25Q_Queue_SaveState(&w25q, &flash);
             PAL_MC60_PowerOn(MC60_POWER_OFF);
 			NVIC_SystemReset();
 		}
@@ -61,6 +63,7 @@ bool NAL_GTRACK_Send(const char* message) {
 				errorCount++;
                 if (result == 3) {
                     DEBUG("\nFailed to setup PDP context. Restarting GTrack...");
+                    PAL_W25Q_Queue_SaveState(&w25q, &flash);
                     NVIC_SystemReset();
                 }
                 DEBUG("\nFailed to open MQTT connection. Retrying in 3 seconds...");

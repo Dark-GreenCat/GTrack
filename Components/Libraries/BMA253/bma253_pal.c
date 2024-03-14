@@ -29,7 +29,7 @@ void PAL_BMA253_Init() {
     BMA253_HWI_set_int_map(&pal_bma253, BMA253_INTR_PAD_SLOPE, BMA253_INTR1, BMA253_INTR_ENABLE);
     BMA253_HWI_set_intr_level(&pal_bma253, BMA253_INTR1_LEVEL, BMA253_ACTIVE_HIGH);
     BMA253_HWI_set_intr_output_type(&pal_bma253, BMA253_INTR1_OUTPUT, BMA253_PUSS_PULL);
-    BMA253_HWI_set_slope_th(&pal_bma253, 0x04);
+    BMA253_HWI_set_slope_th(&pal_bma253, 0x16);
     BMA253_HWI_set_slope_dur(&pal_bma253, 0x03);
 
     BMA253_HWI_set_slope_en(&pal_bma253, BMA253_SLOPE_X_INTR, BMA253_INTR_ENABLE);

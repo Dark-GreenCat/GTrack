@@ -1,5 +1,6 @@
 #include "w25q_pal.h"
 
+w25q_t w25q;
 w25q_queue_t flash;
 
 void PAL_W25Q_Queue_Init(w25q_queue_t* w25q_queue, w25q_t* w25q) {
@@ -8,7 +9,7 @@ void PAL_W25Q_Queue_Init(w25q_queue_t* w25q_queue, w25q_t* w25q) {
     w25q_queue->PageIndexPut = 0;
     w25q_queue->PageIndexGet = 0;
     w25q_queue->Count = 0;
-    w25q_queue->Size = W25Q_PAGES_PER_SECTOR * W25Q_SECTORS_PER_BLOCK * W25Q_BLOCKS_PER_CHIP;
+    w25q_queue->Size = W25Q_PAGES_PER_SECTOR * W25Q_SECTORS_PER_BLOCK * W25Q_BLOCKS_PER_CHIP - 256;
 }
 
 bool PAL_W25Q_Queue_IsEmpty(const w25q_queue_t* w25q_queue) {
@@ -46,4 +47,20 @@ void PAL_W25Q_Queue_Dequeue(w25q_queue_t* w25q_queue, char* data, uint16_t data_
 
     w25q_queue->PageIndexGet = (w25q_queue->PageIndexGet + 1) % w25q_queue->Size;
     w25q_queue->Count--;
+}
+
+void PAL_W25Q_Queue_SaveState(w25q_t* w25q, const w25q_queue_t* w25q_queue) {
+    const uint16_t size = sizeof(w25q_queue_t);
+    W25Q_ITF_EraseSector(w25q, 31);
+    W25Q_ITF_WriteSector(w25q, 31, 0, size, (uint8_t*) w25q_queue);
+}
+
+void PAL_W25Q_Queue_RestoreState(w25q_t* w25q, w25q_queue_t* w25q_queue) {
+  w25q_queue_t w25q_queue_temp = { 0 };
+  const uint16_t size = sizeof(w25q_queue_t);
+  W25Q_ITF_ReadSector(w25q, 31, 0, size, (uint8_t*) &w25q_queue_temp);
+  if ((((uint16_t) (w25q_queue_temp.PageIndexPut)) & 0xFF) == 0xFF) return;
+
+  w25q_queue_temp.w25q = w25q;
+  *w25q_queue = w25q_queue_temp;
 }
