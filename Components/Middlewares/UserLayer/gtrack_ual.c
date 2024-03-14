@@ -122,7 +122,6 @@ bool UAL_GTRACK_GeoTrack_UploadData() {
         IsDataExist = true;
 
         PAL_W25Q_Queue_Dequeue(&flash, str_temp, MAX_MESSAGE_SIZE);
-        DEBUG("\nDEQUEUE:%s ==== Count:%d", str_temp, flash.Count);
         // Check if there is enough space in the buffer for the next string
         if ((ptr - buffer) + strlen(str_temp) + 1 >= BUFFER_SIZE) {
             // Buffer is full, stop copying data

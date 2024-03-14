@@ -161,8 +161,10 @@ int main(void) {
   W25Q_ITF_Init(&w25q, &hspi1, &hgpio_stm32_spi1_nss);
   W25Q_ITF_Reset(&w25q);
 
-  //PAL_W25Q_Queue_RestoreState(&w25q, &flash);
-  //W25Q_ITF_EraseSector(&w25q, 31);
+  PAL_W25Q_Queue_Init(&flash, &w25q);
+
+  PAL_W25Q_Queue_RestoreState(&w25q, &flash);
+  W25Q_ITF_EraseSector(&w25q, 31);
   HCL_TIMER_Start(htim_pwr);
   IsSleep = false;
   // HCL_POWER_EnterStopMode();
