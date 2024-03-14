@@ -80,7 +80,7 @@ void SystemClock_Config(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
-  DEBUG("\n\nSLOPE!\nSTOP:%d\nSLEEP:%d\nFLASH COUNT:%d", IsStop, IsSleep, flash.Count);
+  DEBUG("\n\nSLOPE!\n");
   HAL_ResumeTick();
   HAL_PWR_DisableSleepOnExit();
   stop_pre = HAL_GetTick();
@@ -167,7 +167,7 @@ int main(void) {
   W25Q_ITF_EraseSector(&w25q, 31);
   HCL_TIMER_Start(htim_pwr);
   IsSleep = false;
-  // HCL_POWER_EnterStopMode();
+  HCL_POWER_EnterStopMode();
   while (1) {
     /* USER CODE END WHILE */
 
@@ -189,7 +189,7 @@ int main(void) {
       }
     }
 
-    if (HAL_GetTick() - stop_pre >= 120000) {
+    if (HAL_GetTick() - stop_pre >= 600000) {
       if (PAL_W25Q_Queue_IsEmpty(&flash)) {
         flash_count = 0;
       }
@@ -229,12 +229,13 @@ int main(void) {
 
     if (!mc60CurState) {
       UAL_GTRACK_GeoTrack_Enable();
-      HCL_UART_OutChar(huart_mc60, '\0');
+      //UAL_GTRACK_GeoTrack_Activate(GEOTRACK_ACTIVATE);
+      //HCL_UART_OutChar(huart_mc60, '\0');
       UAL_GTRACK_GeoTrack_GetMetric();
     }
 
     if (UAL_MC60_isGetMetric == true) {
-      HCL_UART_OutChar(huart_mc60, '\0');
+      //HCL_UART_OutChar(huart_mc60, '\0');
       UAL_GTRACK_GeoTrack_GetMetric();
       UAL_MC60_isGetMetric = false;
       HCL_POWER_EnterSleepMode();

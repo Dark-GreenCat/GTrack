@@ -172,6 +172,7 @@ char* NAL_GTRACK_ConstructMessageShort(char* destination, nmea_data* data) {
     *ptr = '{'; ptr++;
     
     if (data->Time.is_valid && data->Date.is_valid) {
+        DEBUG("\nYEAR: %d\n", data->Date.year);
         if (data->Date.year != 80) {
             last_valid_date = data->Date;
             last_valid_time = data->Time;
@@ -181,16 +182,19 @@ char* NAL_GTRACK_ConstructMessageShort(char* destination, nmea_data* data) {
             data->Date = last_valid_date;
             data->Time.seconds += 10;
         }
-        DEBUG("\nYEAR: %d\n", data->Date.year);
+        
         ptr += sprintf(ptr, "ts:%s,values:{", NMEA_Parser_nmeadata_to_timestamp(data, str_temp));
     }
     
     if (data->Location.is_valid) {
-        ptr += sprintf(ptr, "l:%s,", NMEA_Parser_nmeafloattostr(data->Location.latitude, str_temp));
-        ptr += sprintf(ptr, "L:%s,", NMEA_Parser_nmeafloattostr(data->Location.longitude, str_temp));
+        ptr += sprintf(ptr, "lh:%s,", NMEA_Parser_nmeafloattostr(data->Location.latitude, str_temp));
+        ptr += sprintf(ptr, "Lh:%s,", NMEA_Parser_nmeafloattostr(data->Location.longitude, str_temp));
     }
 
-    ptr += sprintf(ptr, "B:%.2f,", PAL_SUPPLIER_GetBatteryVoltage());
+    if (data->Speed.is_valid)
+        ptr += sprintf(ptr, "sh:%s", NMEA_Parser_nmeafloattostr(data->Speed.speed_knot, str_temp));
+
+    ptr += sprintf(ptr, "Bh:%.2f,", PAL_SUPPLIER_GetBatteryVoltage());
 
     *(ptr - 1) = '}';
     *(ptr + 0) = '}';

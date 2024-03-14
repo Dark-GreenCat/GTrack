@@ -38,7 +38,7 @@ void UAL_GTRACK_GeoTrack_Enable() {
     PAL_MC60_RunCommand("AT+QGNSSTS?");
     PAL_MC60_RunCommand("AT+QGREFLOC=21.04196,105.786865");
     PAL_MC60_RunCommand("AT+QGNSSEPO=1");
-    PAL_MC60_RunCommand("AT+QSCLK=2");
+    PAL_MC60_RunCommand("AT+QSCLK=0");
     PAL_UART_FlushToUART_String(huart_mc60, huart_terminal);
 
     HCL_TIMER_Stop(htim_led);
