@@ -169,7 +169,6 @@ int main(void) {
   IsSleep = false;
   //HCL_POWER_EnterStopMode();
   while (1) {
-    continue;
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
